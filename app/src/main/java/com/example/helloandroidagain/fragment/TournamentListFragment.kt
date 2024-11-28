@@ -1,6 +1,7 @@
 package com.example.helloandroidagain.fragment
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,13 @@ import com.example.helloandroidagain.TournamentActionListener
 import com.example.helloandroidagain.TournamentListAdapter
 import com.example.helloandroidagain.databinding.FragmentTournamentListBinding
 import com.example.helloandroidagain.model.Tournament
+import com.example.helloandroidagain.model.TournamentListListener
 import com.example.helloandroidagain.model.TournamentService
+import com.example.helloandroidagain.navigation.CreateTournamentResultListener
 import com.example.helloandroidagain.navigation.router
 
-class TournamentListFragment : Fragment(), TournamentActionListener {
+class TournamentListFragment : Fragment(), TournamentActionListener, TournamentListListener,
+    CreateTournamentResultListener {
 
     private lateinit var binding: FragmentTournamentListBinding
     private lateinit var adapter: TournamentListAdapter
@@ -22,7 +26,7 @@ class TournamentListFragment : Fragment(), TournamentActionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         adapter = TournamentListAdapter(this)
-        tournamentService = TournamentService()
+        tournamentService = TournamentService(this)
         super.onCreate(savedInstanceState)
     }
 
@@ -41,11 +45,21 @@ class TournamentListFragment : Fragment(), TournamentActionListener {
                 tournamentService.getTournaments().size + 1
             )
         }
+        router().listenToCreateResult(viewLifecycleOwner, this)
 
         return binding.root
     }
 
     override fun onTournamentRemove(tournament: Tournament) {
+        tournamentService.removeTournament(tournament)
         Log.d("TournamentListFragment", "On click pressed by ${tournament.id}")
+    }
+
+    override fun tournamentListUpdated(tournamentList: List<Tournament>) {
+        adapter.tournaments = tournamentList
+    }
+
+    override fun tournaemntCreated(tournament: Tournament) {
+        tournamentService.addTournament(tournament)
     }
 }

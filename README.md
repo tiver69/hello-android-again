@@ -27,12 +27,13 @@ __Bonus:__
 - [x] ViewBinding
 - [x] Constraint Layout
 - [ ] Different ViewHolders for active/outdated tournaments
-- [ ] Actual add and remove actions with list, add diffUtils
+- [x] Actual add and remove actions with list, add diffUtils
 - [ ] Survive configuration changes
 - [ ] Apply correct icons
 - [ ] Transform all strings to recourses
-- [ ] Toolbar Back button action
+- [x] Toolbar Back button action
 - [ ] Saving&Restoring to/from SharedPreferences
 - [ ] Second language
 - [ ] D/N themes
+- [ ] General design
 

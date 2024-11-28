@@ -3,6 +3,7 @@ package com.example.helloandroidagain
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.helloandroidagain.databinding.ItemTournamentBinding
 import com.example.helloandroidagain.model.Tournament
@@ -17,8 +18,9 @@ class TournamentListAdapter(private val actionListener: TournamentActionListener
 
     var tournaments: List<Tournament> = emptyList()
         set(newValue) {
+            val diffResult = DiffUtil.calculateDiff(TournamentListDiffCallback(field, newValue))
             field = newValue
-            notifyDataSetChanged()
+            diffResult.dispatchUpdatesTo(this)
         }
 
     class TournamentViewHolder(
@@ -48,4 +50,19 @@ class TournamentListAdapter(private val actionListener: TournamentActionListener
     override fun onClick(removeButtonView: View) {
         actionListener.onTournamentRemove(removeButtonView.tag as Tournament)
     }
+}
+
+class TournamentListDiffCallback(
+    private val oldTournamentList: List<Tournament>,
+    private val newTournamentList: List<Tournament>
+) : DiffUtil.Callback() {
+    override fun getOldListSize(): Int = oldTournamentList.size
+
+    override fun getNewListSize(): Int = newTournamentList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+        oldTournamentList[oldItemPosition].id == newTournamentList[newItemPosition].id
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+        oldTournamentList[oldItemPosition] == newTournamentList[newItemPosition]
 }

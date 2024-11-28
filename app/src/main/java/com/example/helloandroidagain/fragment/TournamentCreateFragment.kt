@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.helloandroidagain.R
 import com.example.helloandroidagain.databinding.FragmentTournamentCreateBinding
+import com.example.helloandroidagain.model.Tournament
 import com.example.helloandroidagain.navigation.router
+import java.time.LocalDate
 
 class TournamentCreateFragment : Fragment(), FragmentToolbar {
 
@@ -20,9 +22,23 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
     ): View {
         binding = FragmentTournamentCreateBinding.inflate(inflater, container, false)
         binding.tournamentCreateName.setText("Tournament${arguments?.getInt(NEXT_TOURNAMENT_COUNT)}")
-        binding.tournamentItemSaveButton.setOnClickListener { router().navToTournamentList() }
+        binding.tournamentCreateParticipantCount.setText("2")
+        binding.tournamentCreateDate.updateDate(2025, 2, 17)
+        binding.tournamentItemSaveButton.setOnClickListener {
+            router().createResult(createTournamentResult())
+            router().navBack()
+        }
         return binding.root
     }
+
+    private fun createTournamentResult(): Tournament = Tournament(
+        id = 0L,
+        name = binding.tournamentCreateName.text.toString(),
+        participantCount = Integer.valueOf(binding.tournamentCreateParticipantCount.text.toString()),
+        date = with(binding.tournamentCreateDate) {
+            LocalDate.of(year, month + 1, dayOfMonth)
+        }
+    )
 
     companion object {
 
@@ -42,7 +58,10 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
     override fun getFragmentAction(): FragmentAction {
         return FragmentAction(
             R.drawable.ic_delete,
-            "Save",
-            Runnable { router().navToTournamentList() })
+            "Save"
+        ) {
+            router().createResult(createTournamentResult())
+            router().navBack()
+        }
     }
 }

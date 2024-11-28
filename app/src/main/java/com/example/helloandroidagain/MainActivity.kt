@@ -1,17 +1,22 @@
 package com.example.helloandroidagain
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentResultListener
+import androidx.lifecycle.LifecycleOwner
 import com.example.helloandroidagain.databinding.ActivityMainBinding
 import com.example.helloandroidagain.fragment.FragmentToolbar
 import com.example.helloandroidagain.fragment.TournamentCreateFragment
 import com.example.helloandroidagain.fragment.TournamentListFragment
+import com.example.helloandroidagain.navigation.CreateTournamentResultListener
 import com.example.helloandroidagain.navigation.Router
 
 class MainActivity : AppCompatActivity(), Router {
@@ -67,6 +72,31 @@ class MainActivity : AppCompatActivity(), Router {
 
     override fun navToTournamentList() {
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    override fun navBack() {
+        onBackPressedDispatcher.onBackPressed()
+    }
+
+    override fun createResult(tournament: Parcelable) {
+        supportFragmentManager.setFragmentResult(
+            "CREATE_TOURNAMENT_RESULT",
+            bundleOf("CREATE_TOURNAMENT_RESULT_KEY" to tournament)
+        )
+    }
+
+    override fun listenToCreateResult(
+        owner: LifecycleOwner,
+        listener: CreateTournamentResultListener
+    ) {
+        supportFragmentManager.setFragmentResultListener("CREATE_TOURNAMENT_RESULT", owner, FragmentResultListener {
+                _, bundle -> listener.tournaemntCreated(bundle.getParcelable("CREATE_TOURNAMENT_RESULT_KEY")!!)
+        })
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
     }
 
     private fun updateToolbar() {

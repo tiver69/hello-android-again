@@ -3,9 +3,17 @@ package com.example.helloandroidagain.model
 import java.time.LocalDate
 import kotlin.random.Random
 
-class TournamentService {
+interface TournamentListListener {
+    fun tournamentListUpdated(tournamentList: List<Tournament>)
+}
+
+class TournamentService(val tournamentListListener: TournamentListListener) {
 
     private var tournaments = mutableListOf<Tournament>()
+    private var tmpIdGenerator: Long = 20
+        get() {
+            return ++field
+        }
 
     init {
         tournaments = (0..19).map {
@@ -20,7 +28,17 @@ class TournamentService {
     }
 
     fun addTournament(tournament: Tournament) {
-        tournaments.add(tournament)
+        tournaments = tournaments.toMutableList()
+        tournaments.add(
+            Tournament(
+                tmpIdGenerator,
+                tournament.name,
+                tournament.participantCount,
+                tournament.date
+            )
+        )
+
+        tournamentListListener.tournamentListUpdated(tournaments)
     }
 
     fun removeTournament(tournament: Tournament) {
@@ -28,6 +46,8 @@ class TournamentService {
     }
 
     fun removeTournament(id: Long) {
+        tournaments = tournaments.toMutableList()
         tournaments.removeIf { it.id == id }
+        tournamentListListener.tournamentListUpdated(tournaments)
     }
 }
