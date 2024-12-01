@@ -26,7 +26,7 @@ __Bonus:__
 - [x] Both Fragments Created
 - [x] ViewBinding
 - [x] Constraint Layout
-- [ ] Different ViewHolders for active/outdated tournaments
+- [x] Different ViewHolders for active/outdated tournaments
 - [x] Actual add and remove actions with list, add diffUtils
 - [ ] Survive configuration changes
 - [ ] Apply correct icons

@@ -17,8 +17,12 @@ class TournamentService(val tournamentListListener: TournamentListListener) {
 
     init {
         tournaments = (0..19).map {
+            val randomDate = if (Random.nextInt(0, 5) >= 2)
+                LocalDate.now().plusDays(Random.nextInt(1, 5).toLong())
+            else
+                LocalDate.now().minusDays(Random.nextInt(1, 5).toLong())
             Tournament(
-                it.toLong(), "Tournament$it", Random.nextInt(2, 10), LocalDate.now()
+                it.toLong(), "Tournament$it", Random.nextInt(2, 10), randomDate
             )
         }.toMutableList()
     }
