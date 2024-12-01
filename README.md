@@ -28,11 +28,11 @@ __Bonus:__
 - [x] Constraint Layout
 - [x] Different ViewHolders for active/outdated tournaments
 - [x] Actual add and remove actions with list, add diffUtils
-- [ ] Survive configuration changes
+- [x] Survive configuration changes
 - [ ] Apply correct icons
 - [ ] Transform all strings to recourses
 - [x] Toolbar Back button action
-- [ ] Saving&Restoring to/from SharedPreferences
+- [x] Saving&Restoring to/from SharedPreferences
 - [ ] Second language
 - [ ] D/N themes
 - [ ] General design

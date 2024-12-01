@@ -20,15 +20,34 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val tournamentName = savedInstanceState?.getString(TOURNAMENT_NAME_BUNDLE) ?: "Tournament${arguments?.getInt(NEXT_TOURNAMENT_COUNT)}"
+        val tournamentParticipantCount = savedInstanceState?.getString(TOURNAMENT_PARTICIPANT_COUNT_BUNDLE) ?: "2"
+        val tournamentDateDay = savedInstanceState?.getInt(TOURNAMENT_DATE_DAY_BUNDLE) ?: 17
+        val tournamentDateMonth = savedInstanceState?.getInt(TOURNAMENT_DATE_MONTH_BUNDLE) ?: 2
+        val tournamentDateYear = savedInstanceState?.getInt(TOURNAMENT_DATE_YEAR_BUNDLE) ?: 2024
+
         binding = FragmentTournamentCreateBinding.inflate(inflater, container, false)
-        binding.tournamentCreateName.setText("Tournament${arguments?.getInt(NEXT_TOURNAMENT_COUNT)}")
-        binding.tournamentCreateParticipantCount.setText("2")
-        binding.tournamentCreateDate.updateDate(2025, 2, 17)
+        binding.tournamentCreateName.setText(tournamentName)
+        binding.tournamentCreateParticipantCount.setText(tournamentParticipantCount)
+        binding.tournamentCreateDate.updateDate(tournamentDateYear, tournamentDateMonth, tournamentDateDay)
         binding.tournamentItemSaveButton.setOnClickListener {
             router().createResult(createTournamentResult())
             router().navBack()
         }
         return binding.root
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(TOURNAMENT_NAME_BUNDLE, binding.tournamentCreateName.text.toString())
+        outState.putString(
+            TOURNAMENT_PARTICIPANT_COUNT_BUNDLE,
+            binding.tournamentCreateParticipantCount.text.toString()
+        )
+        outState.putInt(TOURNAMENT_DATE_DAY_BUNDLE, binding.tournamentCreateDate.dayOfMonth)
+        outState.putInt(TOURNAMENT_DATE_MONTH_BUNDLE, binding.tournamentCreateDate.month)
+        outState.putInt(TOURNAMENT_DATE_YEAR_BUNDLE, binding.tournamentCreateDate.year)
+        outState.putString(TOURNAMENT_NAME_BUNDLE, binding.tournamentCreateName.text.toString())
+        super.onSaveInstanceState(outState)
     }
 
     private fun createTournamentResult(): Tournament = Tournament(
@@ -42,6 +61,12 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
 
     companion object {
 
+        private const val TOURNAMENT_NAME_BUNDLE = "TOURNAMENT_NAME_BUNDLE"
+        private const val TOURNAMENT_DATE_DAY_BUNDLE = "TOURNAMENT_DATE_DAY_BUNDLE"
+        private const val TOURNAMENT_DATE_MONTH_BUNDLE = "TOURNAMENT_DATE_MONTH_BUNDLE"
+        private const val TOURNAMENT_DATE_YEAR_BUNDLE = "TOURNAMENT_DATE_YEAR_BUNDLE"
+        private const val TOURNAMENT_PARTICIPANT_COUNT_BUNDLE =
+            "TOURNAMENT_PARTICIPANT_COUNT_BUNDLE"
         private const val NEXT_TOURNAMENT_COUNT = "NEXT_TOURNAMENT_COUNT"
 
         fun newInstance(nextTournamentCount: Int): TournamentCreateFragment {

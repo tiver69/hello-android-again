@@ -1,7 +1,6 @@
 package com.example.helloandroidagain.fragment
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +25,7 @@ class TournamentListFragment : Fragment(), TournamentActionListener, TournamentL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         adapter = TournamentListAdapter(this)
-        tournamentService = TournamentService(this)
+        tournamentService = TournamentService(this, requireContext())
         super.onCreate(savedInstanceState)
     }
 
@@ -48,6 +47,11 @@ class TournamentListFragment : Fragment(), TournamentActionListener, TournamentL
         router().listenToCreateResult(viewLifecycleOwner, this)
 
         return binding.root
+    }
+
+    override fun onStop() {
+        tournamentService.saveTournaments()
+        super.onStop()
     }
 
     override fun onTournamentRemove(tournament: Tournament) {
