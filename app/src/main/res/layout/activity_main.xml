@@ -17,8 +17,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:title="Toolbar title" />
+        android:theme="?attr/actionBarTheme" />
 
    <androidx.fragment.app.FragmentContainerView
        android:id="@+id/fragmentContainer"

@@ -2,6 +2,9 @@ package com.example.helloandroidagain.model
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.helloandroidagain.util.convertToLocalDate
+import com.example.helloandroidagain.util.convertToString
+import com.example.helloandroidagain.util.generateRandomDate
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializationContext
@@ -13,7 +16,6 @@ import com.google.gson.JsonSerializer
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import kotlin.random.Random
 
 interface TournamentListListener {
@@ -33,26 +35,23 @@ class TournamentService(
                 src: LocalDate?,
                 typeOfSrc: Type?,
                 context: JsonSerializationContext?
-            ): JsonElement = JsonPrimitive(src?.format(DateTimeFormatter.ISO_LOCAL_DATE))
+            ): JsonElement = JsonPrimitive(src?.convertToString())
         })
         .registerTypeAdapter(LocalDate::class.java, object : JsonDeserializer<LocalDate> {
             override fun deserialize(
                 json: JsonElement?,
                 typeOfT: Type?,
                 context: JsonDeserializationContext?
-            ): LocalDate = LocalDate.parse(json?.asString, DateTimeFormatter.ISO_LOCAL_DATE)
+            ): LocalDate = json?.asString?.convertToLocalDate()!!
         })
         .create()
     private var tournaments = mutableListOf<Tournament>()
     private var tmpIdGenerator: Long = 20
-        get() {
-            return ++field
-        }
 
     init {
         restoreTournaments()
 //        if (tournaments.isEmpty())
-//            tournaments = generateTournaments().toMutableList()
+//        tournaments = generateTournaments().toMutableList()
     }
 
     fun saveTournaments() {
@@ -72,13 +71,9 @@ class TournamentService(
         tournaments = tournamentList.toMutableList()
     }
 
-    private fun generateTournaments(): List<Tournament> = (0..19).map {
-        val randomDate = if (Random.nextInt(0, 5) >= 2)
-            LocalDate.now().plusDays(Random.nextInt(1, 5).toLong())
-        else
-            LocalDate.now().minusDays(Random.nextInt(1, 5).toLong())
+    private fun generateTournaments(): List<Tournament> = (0..<tmpIdGenerator).map {
         Tournament(
-            it.toLong(), "Tournament$it", Random.nextInt(2, 10), randomDate
+            it, "Tournament$it", Random.nextInt(2, 10), generateRandomDate()
         )
     }.toMutableList()
 
@@ -90,7 +85,7 @@ class TournamentService(
         tournaments = tournaments.toMutableList()
         tournaments.add(
             Tournament(
-                tmpIdGenerator,
+                ++tmpIdGenerator,
                 tournament.name,
                 tournament.participantCount,
                 tournament.date
@@ -100,9 +95,9 @@ class TournamentService(
         tournamentListListener.tournamentListUpdated(tournaments)
     }
 
-    fun removeTournament(tournament: Tournament) {
+    fun removeTournament(tournamentPosition: Int) {
         tournaments = tournaments.toMutableList()
-        tournaments.removeIf { it.id == tournament.id }
+        tournaments.removeAt(tournamentPosition)
         tournamentListListener.tournamentListUpdated(tournaments)
     }
 

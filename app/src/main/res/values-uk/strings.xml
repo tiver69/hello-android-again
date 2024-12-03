@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Менторінг Глава Друга</string>
+    <string name="create_tournament_fragment_name">Створити Турнір</string>
+    <string name="create_tournament_name_hint">Назва</string>
+    <string name="create_tournament_participant_count_hint">Кількість учасників</string>
+    <string name="create_tournament_date_hint">Дата проведення</string>
+    <string name="create_tournament_fragment_date_picker">Оберіть дату</string>
+    <string name="general_save_button">Зберігти</string>
+</resources>

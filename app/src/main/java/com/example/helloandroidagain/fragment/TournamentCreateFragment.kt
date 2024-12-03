@@ -9,7 +9,11 @@ import com.example.helloandroidagain.R
 import com.example.helloandroidagain.databinding.FragmentTournamentCreateBinding
 import com.example.helloandroidagain.model.Tournament
 import com.example.helloandroidagain.navigation.router
-import java.time.LocalDate
+import com.example.helloandroidagain.util.convertToLocalDate
+import com.example.helloandroidagain.util.convertToLocalDateAsEpochMilli
+import com.example.helloandroidagain.util.convertToLongAsEpochMilli
+import com.example.helloandroidagain.util.convertToString
+import com.google.android.material.datepicker.MaterialDatePicker
 
 class TournamentCreateFragment : Fragment(), FragmentToolbar {
 
@@ -20,17 +24,21 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val tournamentName = savedInstanceState?.getString(TOURNAMENT_NAME_BUNDLE) ?: "Tournament${arguments?.getInt(NEXT_TOURNAMENT_COUNT)}"
-        val tournamentParticipantCount = savedInstanceState?.getString(TOURNAMENT_PARTICIPANT_COUNT_BUNDLE) ?: "2"
-        val tournamentDateDay = savedInstanceState?.getInt(TOURNAMENT_DATE_DAY_BUNDLE) ?: 17
-        val tournamentDateMonth = savedInstanceState?.getInt(TOURNAMENT_DATE_MONTH_BUNDLE) ?: 2
-        val tournamentDateYear = savedInstanceState?.getInt(TOURNAMENT_DATE_YEAR_BUNDLE) ?: 2024
+        val tournamentName = savedInstanceState?.getString(TOURNAMENT_NAME_BUNDLE) ?: "Tournament${
+            arguments?.getInt(NEXT_TOURNAMENT_COUNT)
+        }"
+        val tournamentParticipantCount =
+            savedInstanceState?.getString(TOURNAMENT_PARTICIPANT_COUNT_BUNDLE) ?: "2"
+        val tournamentDate = savedInstanceState?.getString(TOURNAMENT_DATE_BUNDLE) ?: "17.03.2025"
 
         binding = FragmentTournamentCreateBinding.inflate(inflater, container, false)
-        binding.tournamentCreateName.setText(tournamentName)
-        binding.tournamentCreateParticipantCount.setText(tournamentParticipantCount)
-        binding.tournamentCreateDate.updateDate(tournamentDateYear, tournamentDateMonth, tournamentDateDay)
-        binding.tournamentItemSaveButton.setOnClickListener {
+        binding.tournamentCreateName.editText?.setText(tournamentName)
+        binding.tournamentCreateParticipantCount.editText?.setText(tournamentParticipantCount)
+        binding.tournamentCreateDate.editText?.setText(tournamentDate)
+        binding.tournamentCreateDate.editText?.setOnClickListener {
+            createDatePicker().show(parentFragmentManager, "CREATE_TOURNAMENT_DATE")
+        }
+        binding.tournamentCreateSaveButton.setOnClickListener {
             router().createResult(createTournamentResult())
             router().navBack()
         }
@@ -38,33 +46,53 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(TOURNAMENT_NAME_BUNDLE, binding.tournamentCreateName.text.toString())
+        outState.putString(
+            TOURNAMENT_NAME_BUNDLE,
+            binding.tournamentCreateName.editText?.text.toString()
+        )
         outState.putString(
             TOURNAMENT_PARTICIPANT_COUNT_BUNDLE,
-            binding.tournamentCreateParticipantCount.text.toString()
+            binding.tournamentCreateParticipantCount.editText?.text.toString()
         )
-        outState.putInt(TOURNAMENT_DATE_DAY_BUNDLE, binding.tournamentCreateDate.dayOfMonth)
-        outState.putInt(TOURNAMENT_DATE_MONTH_BUNDLE, binding.tournamentCreateDate.month)
-        outState.putInt(TOURNAMENT_DATE_YEAR_BUNDLE, binding.tournamentCreateDate.year)
-        outState.putString(TOURNAMENT_NAME_BUNDLE, binding.tournamentCreateName.text.toString())
+        outState.putString(
+            TOURNAMENT_DATE_BUNDLE,
+            binding.tournamentCreateDate.editText?.text.toString()
+        )
+        outState.putString(
+            TOURNAMENT_NAME_BUNDLE,
+            binding.tournamentCreateName.editText?.text.toString()
+        )
         super.onSaveInstanceState(outState)
     }
 
     private fun createTournamentResult(): Tournament = Tournament(
         id = 0L,
-        name = binding.tournamentCreateName.text.toString(),
-        participantCount = Integer.valueOf(binding.tournamentCreateParticipantCount.text.toString()),
-        date = with(binding.tournamentCreateDate) {
-            LocalDate.of(year, month + 1, dayOfMonth)
-        }
+        name = binding.tournamentCreateName.editText?.text.toString(),
+        participantCount = Integer.valueOf(binding.tournamentCreateParticipantCount.editText?.text.toString()),
+        date = binding.tournamentCreateDate.editText?.text.toString().convertToLocalDate()
     )
+
+    private fun createDatePicker(): MaterialDatePicker<Long> {
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText(requireContext().getString(R.string.create_tournament_fragment_date_picker))
+            .setSelection(
+                binding.tournamentCreateDate.editText?.text.toString().convertToLocalDate()
+                    .convertToLongAsEpochMilli()
+            )
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener { pickedEpochMilli ->
+            binding.tournamentCreateDate.editText?.setText(
+                pickedEpochMilli.convertToLocalDateAsEpochMilli().convertToString()
+            )
+        }
+        return datePicker
+    }
 
     companion object {
 
         private const val TOURNAMENT_NAME_BUNDLE = "TOURNAMENT_NAME_BUNDLE"
-        private const val TOURNAMENT_DATE_DAY_BUNDLE = "TOURNAMENT_DATE_DAY_BUNDLE"
-        private const val TOURNAMENT_DATE_MONTH_BUNDLE = "TOURNAMENT_DATE_MONTH_BUNDLE"
-        private const val TOURNAMENT_DATE_YEAR_BUNDLE = "TOURNAMENT_DATE_YEAR_BUNDLE"
+        private const val TOURNAMENT_DATE_BUNDLE = "TOURNAMENT_DATE_BUNDLE"
         private const val TOURNAMENT_PARTICIPANT_COUNT_BUNDLE =
             "TOURNAMENT_PARTICIPANT_COUNT_BUNDLE"
         private const val NEXT_TOURNAMENT_COUNT = "NEXT_TOURNAMENT_COUNT"
@@ -78,7 +106,8 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         }
     }
 
-    override fun getFragmentTitle(): String = "Create Tournament"
+    override fun getFragmentTitle(): String =
+        requireContext().getString(R.string.create_tournament_fragment_name)
 
     override fun getFragmentAction(): FragmentAction {
         return FragmentAction(

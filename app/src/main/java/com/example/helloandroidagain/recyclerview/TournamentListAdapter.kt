@@ -1,26 +1,20 @@
-package com.example.helloandroidagain
+package com.example.helloandroidagain.recyclerview
 
 import android.view.LayoutInflater
-import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.example.helloandroidagain.TournamentListAdapter.TournamentViewHolder
+import com.example.helloandroidagain.recyclerview.TournamentListAdapter.TournamentViewHolder
 import com.example.helloandroidagain.databinding.ItemTournamentActiveBinding
 import com.example.helloandroidagain.databinding.ItemTournamentOutdatedBinding
 import com.example.helloandroidagain.model.Tournament
+import com.example.helloandroidagain.util.convertToString
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
-interface TournamentActionListener {
-    fun onTournamentRemove(tournament: Tournament)
-}
 typealias TournamentType = TournamentViewHolder.Companion.TournamentItemType
 
-class TournamentListAdapter(private val actionListener: TournamentActionListener) :
-    RecyclerView.Adapter<TournamentViewHolder>(), OnClickListener {
+class TournamentListAdapter : RecyclerView.Adapter<TournamentViewHolder>() {
 
     var tournaments: List<Tournament> = emptyList()
         set(newValue) {
@@ -42,7 +36,7 @@ class TournamentListAdapter(private val actionListener: TournamentActionListener
 
     override fun onBindViewHolder(holder: TournamentViewHolder, position: Int) {
         val tournament = tournaments[position]
-        holder.bindTournamentItem(tournament, this@TournamentListAdapter)
+        holder.bindTournamentItem(tournament)
     }
 
     override fun getItemCount(): Int = tournaments.size
@@ -51,14 +45,10 @@ class TournamentListAdapter(private val actionListener: TournamentActionListener
         if (tournaments[position].date.isBefore(LocalDate.now())) TournamentType.OUTDATED.viewType
         else TournamentType.ACTIVE.viewType
 
-    override fun onClick(removeButtonView: View) {
-        actionListener.onTournamentRemove(removeButtonView.tag as Tournament)
-    }
-
     sealed class TournamentViewHolder(
         val binding: ViewBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        open fun bindTournamentItem(tournament: Tournament, onClickListener: OnClickListener) {}
+        open fun bindTournamentItem(tournament: Tournament) {}
 
         companion object {
             enum class TournamentItemType(val viewType: Int) {
@@ -70,30 +60,28 @@ class TournamentListAdapter(private val actionListener: TournamentActionListener
     class TournamentActiveViewHolder(binding: ItemTournamentActiveBinding) :
         TournamentViewHolder(binding) {
 
-        override fun bindTournamentItem(tournament: Tournament, onClickListener: OnClickListener) {
+        override fun bindTournamentItem(tournament: Tournament) {
             with(binding as ItemTournamentActiveBinding) {
-                tournamentItemRemoveButton.setOnClickListener(onClickListener)
+                tournamentItemId.text = tournament.id.toString(10)
                 tournamentItemName.text = tournament.name
                 tournamentItemParticipantCount.text =
                     tournament.participantCount.toString(10)
                 tournamentItemDate.text =
-                    tournament.date.format(DateTimeFormatter.ISO_LOCAL_DATE)
-                tournamentItemRemoveButton.tag = tournament
+                    tournament.date.convertToString()
             }
         }
     }
 
     class TournamentOutdatedViewHolder(binding: ItemTournamentOutdatedBinding) :
         TournamentViewHolder(binding) {
-        override fun bindTournamentItem(tournament: Tournament, onClickListener: OnClickListener) {
+        override fun bindTournamentItem(tournament: Tournament) {
             with(binding as ItemTournamentOutdatedBinding) {
-                tournamentItemRemoveButton.setOnClickListener(onClickListener)
+                tournamentItemId.text = tournament.id.toString(10)
                 tournamentItemName.text = tournament.name
                 tournamentItemParticipantCount.text =
                     tournament.participantCount.toString(10)
                 tournamentItemDate.text =
-                    tournament.date.format(DateTimeFormatter.ISO_LOCAL_DATE)
-                tournamentItemRemoveButton.tag = tournament
+                    tournament.date.convertToString()
             }
         }
     }

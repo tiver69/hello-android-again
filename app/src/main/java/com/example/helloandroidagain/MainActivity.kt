@@ -10,7 +10,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.LifecycleOwner
 import com.example.helloandroidagain.databinding.ActivityMainBinding
 import com.example.helloandroidagain.fragment.FragmentToolbar
@@ -89,9 +88,12 @@ class MainActivity : AppCompatActivity(), Router {
         owner: LifecycleOwner,
         listener: CreateTournamentResultListener
     ) {
-        supportFragmentManager.setFragmentResultListener("CREATE_TOURNAMENT_RESULT", owner, FragmentResultListener {
-                _, bundle -> listener.tournaemntCreated(bundle.getParcelable("CREATE_TOURNAMENT_RESULT_KEY")!!)
-        })
+        supportFragmentManager.setFragmentResultListener(
+            "CREATE_TOURNAMENT_RESULT",
+            owner
+        ) { _, bundle ->
+            listener.tournaemntCreated(bundle.getParcelable("CREATE_TOURNAMENT_RESULT_KEY")!!)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -103,6 +105,7 @@ class MainActivity : AppCompatActivity(), Router {
         val fragment = currentFragment
         if (fragment is FragmentToolbar) {
             binding.toolbar.title = fragment.getFragmentTitle()
+            binding.toolbar.menu.removeItem(0)
             val toolbarAction = binding.toolbar.menu.add(fragment.getFragmentAction().actionHint)
             toolbarAction.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
             toolbarAction.icon = DrawableCompat.wrap(
@@ -116,7 +119,7 @@ class MainActivity : AppCompatActivity(), Router {
                 return@setOnMenuItemClickListener true
             }
         } else {
-            binding.toolbar.title = "Android Mentoring"
+            binding.toolbar.title = getString(R.string.app_name)
             binding.toolbar.menu.clear()
         }
 
