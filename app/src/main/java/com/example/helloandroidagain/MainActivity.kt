@@ -2,11 +2,9 @@ package com.example.helloandroidagain
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.MenuItem
+import android.view.Menu
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -101,32 +99,17 @@ class MainActivity : AppCompatActivity(), Router {
         return true
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        return super.onCreateOptionsMenu(menu)
+    }
+
     private fun updateToolbar() {
         val fragment = currentFragment
         if (fragment is FragmentToolbar) {
-            binding.toolbar.title = fragment.getFragmentTitle()
-            binding.toolbar.menu.removeItem(0)
-            val toolbarAction = binding.toolbar.menu.add(fragment.getFragmentAction().actionHint)
-            toolbarAction.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-            toolbarAction.icon = DrawableCompat.wrap(
-                ContextCompat.getDrawable(
-                    this,
-                    fragment.getFragmentAction().actionIcRes
-                )!!
-            )
-            toolbarAction.setOnMenuItemClickListener {
-                fragment.getFragmentAction().onFragmentAction.run()
-                return@setOnMenuItemClickListener true
-            }
+            binding.toolbar.title = getString(fragment.getFragmentTitle())
         } else {
             binding.toolbar.title = getString(R.string.app_name)
-            binding.toolbar.menu.clear()
         }
-
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        } else {
-            supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(supportFragmentManager.backStackEntryCount > 0)
     }
 }

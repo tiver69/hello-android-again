@@ -2,8 +2,12 @@ package com.example.helloandroidagain.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import com.example.helloandroidagain.R
 import com.example.helloandroidagain.databinding.FragmentTournamentCreateBinding
@@ -24,6 +28,7 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        requireActivity().addMenuProvider(tournamentCreateMenuProvider, viewLifecycleOwner)
         val tournamentName = savedInstanceState?.getString(TOURNAMENT_NAME_BUNDLE) ?: "Tournament${
             arguments?.getInt(NEXT_TOURNAMENT_COUNT)
         }"
@@ -89,6 +94,30 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         return datePicker
     }
 
+    override fun getFragmentTitle(): Int = R.string.create_tournament_fragment_name
+
+    private val tournamentCreateMenuProvider = object : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menu.clear()
+            menuInflater.inflate(
+                R.menu.create_tournament_toolbar_menu,
+                menu
+            )
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            return when (menuItem.itemId) {
+                R.id.tournament_create_toolbar_confirm_action -> {
+                    router().createResult(createTournamentResult())
+                    router().navBack()
+                    return true
+                }
+
+                else -> false
+            }
+        }
+    }
+
     companion object {
 
         private const val TOURNAMENT_NAME_BUNDLE = "TOURNAMENT_NAME_BUNDLE"
@@ -103,19 +132,6 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
                 putInt(NEXT_TOURNAMENT_COUNT, nextTournamentCount)
             }
             return fragment
-        }
-    }
-
-    override fun getFragmentTitle(): String =
-        requireContext().getString(R.string.create_tournament_fragment_name)
-
-    override fun getFragmentAction(): FragmentAction {
-        return FragmentAction(
-            R.drawable.ic_delete,
-            "Save"
-        ) {
-            router().createResult(createTournamentResult())
-            router().navBack()
         }
     }
 }

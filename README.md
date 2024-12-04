@@ -36,5 +36,4 @@ __Bonus:__
 - [x] Second language
 - [x] D/N themes
 - [x] General design
-- [] Toolbar improvements
-
+- [x] Toolbar improvements
