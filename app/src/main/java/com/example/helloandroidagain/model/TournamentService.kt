@@ -14,16 +14,13 @@ import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import com.google.gson.reflect.TypeToken
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import java.lang.reflect.Type
 import java.time.LocalDate
 import kotlin.random.Random
 
-interface TournamentListListener {
-    fun tournamentListUpdated(tournamentList: List<Tournament>)
-}
-
 class TournamentService(
-    private val tournamentListListener: TournamentListListener,
     context: Context
 ) {
 
@@ -45,30 +42,24 @@ class TournamentService(
             ): LocalDate = json?.asString?.convertToLocalDate()!!
         })
         .create()
-    private var tournaments = mutableListOf<Tournament>()
+    private val tournamentsSubject: BehaviorSubject<List<Tournament>> =
+        BehaviorSubject.createDefault(restoreTournaments())
     private var tmpIdGenerator: Long = 20
 
-    init {
-        restoreTournaments()
-//        if (tournaments.isEmpty())
-//        tournaments = generateTournaments().toMutableList()
-    }
-
     fun saveTournaments() {
-        val json = gson.toJson(tournaments)
+        val json = gson.toJson(tournamentsSubject.value)
         sharedPreferences.edit()
             .putString(TOURNAMENT_LIST, json)
             .putLong(TMP_ID_GENERATOR, tmpIdGenerator)
             .apply()
     }
 
-    private fun restoreTournaments() {
+    private fun restoreTournaments(): List<Tournament> {
         tmpIdGenerator = sharedPreferences.getLong(TMP_ID_GENERATOR, 20)
         val json = sharedPreferences.getString(TOURNAMENT_LIST, null)
-        val tournamentList: List<Tournament> = if (json != null) gson.fromJson(
+        return if (json != null) gson.fromJson(
             json, object : TypeToken<List<Tournament>>() {}.type
         ) else emptyList()
-        tournaments = tournamentList.toMutableList()
     }
 
     private fun generateTournaments(): List<Tournament> = (0..<tmpIdGenerator).map {
@@ -77,28 +68,29 @@ class TournamentService(
         )
     }.toMutableList()
 
-    fun getTournaments(): List<Tournament> {
-        return tournaments
+    fun getTournaments(): Observable<List<Tournament>> {
+        return tournamentsSubject.hide()
     }
 
     fun addTournament(tournament: Tournament) {
-        tournaments = tournaments.toMutableList()
-        tournaments.add(
-            Tournament(
-                ++tmpIdGenerator,
-                tournament.name,
-                tournament.participantCount,
-                tournament.date
+        val updatedTournaments = tournamentsSubject.value.orEmpty().toMutableList().apply {
+            add(
+                Tournament(
+                    ++tmpIdGenerator,
+                    tournament.name,
+                    tournament.participantCount,
+                    tournament.date
+                )
             )
-        )
-
-        tournamentListListener.tournamentListUpdated(tournaments)
+        }
+        tournamentsSubject.onNext(updatedTournaments.toList())
     }
 
     fun removeTournament(tournamentPosition: Int) {
-        tournaments = tournaments.toMutableList()
-        tournaments.removeAt(tournamentPosition)
-        tournamentListListener.tournamentListUpdated(tournaments)
+        val updatedTournaments = tournamentsSubject.value.orEmpty().toMutableList().apply {
+            removeAt(tournamentPosition)
+        }
+        tournamentsSubject.onNext(updatedTournaments.toList())
     }
 
     companion object {

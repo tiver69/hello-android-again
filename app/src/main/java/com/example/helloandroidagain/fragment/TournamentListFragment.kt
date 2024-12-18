@@ -14,21 +14,24 @@ import com.example.helloandroidagain.recyclerview.TournamentSwipeListener
 import com.example.helloandroidagain.recyclerview.TournamentListAdapter
 import com.example.helloandroidagain.databinding.FragmentTournamentListBinding
 import com.example.helloandroidagain.model.Tournament
-import com.example.helloandroidagain.model.TournamentListListener
 import com.example.helloandroidagain.model.TournamentService
 import com.example.helloandroidagain.navigation.CreateTournamentResultListener
 import com.example.helloandroidagain.navigation.router
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
-class TournamentListFragment : Fragment(), TournamentSwipeListener, TournamentListListener,
-    CreateTournamentResultListener {
+class TournamentListFragment : Fragment(), TournamentSwipeListener, CreateTournamentResultListener {
 
     private lateinit var binding: FragmentTournamentListBinding
     private lateinit var adapter: TournamentListAdapter
     private lateinit var tournamentService: TournamentService
+    private lateinit var tournamentsDisposable: Disposable
+    private var tournamentListSize: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         adapter = TournamentListAdapter()
-        tournamentService = TournamentService(this, requireContext())
+        tournamentService = TournamentService(requireContext())
         super.onCreate(savedInstanceState)
     }
 
@@ -40,7 +43,6 @@ class TournamentListFragment : Fragment(), TournamentSwipeListener, TournamentLi
         binding = FragmentTournamentListBinding.inflate(inflater, container, false)
         val layoutManager = LinearLayoutManager(container?.context)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(
                 context,
@@ -48,11 +50,17 @@ class TournamentListFragment : Fragment(), TournamentSwipeListener, TournamentLi
             )
         )
         ItemTouchHelper(ItemLeftSwipeHelper(this)).attachToRecyclerView(binding.recyclerView)
-        adapter.tournaments = tournamentService.getTournaments()
+        tournamentsDisposable = tournamentService.getTournaments()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { tournaments ->
+                binding.recyclerView.adapter = adapter
+                adapter.tournaments = tournaments
+                tournamentListSize = tournaments.size
+            }
+
         binding.addTournamentFab.setOnClickListener {
-            router().navToCreateTournament(
-                tournamentService.getTournaments().size + 1
-            )
+            router().navToCreateTournament(tournamentListSize + 1)
         }
         router().listenToCreateResult(viewLifecycleOwner, this)
 
@@ -60,6 +68,7 @@ class TournamentListFragment : Fragment(), TournamentSwipeListener, TournamentLi
     }
 
     override fun onStop() {
+        tournamentsDisposable.dispose()
         tournamentService.saveTournaments()
         super.onStop()
     }
@@ -67,10 +76,6 @@ class TournamentListFragment : Fragment(), TournamentSwipeListener, TournamentLi
     override fun onRemoveSwipe(tournamentPosition: Int) {
         tournamentService.removeTournament(tournamentPosition)
         Log.d("TournamentListFragment", "On click pressed on $tournamentPosition")
-    }
-
-    override fun tournamentListUpdated(tournamentList: List<Tournament>) {
-        adapter.tournaments = tournamentList
     }
 
     override fun tournaemntCreated(tournament: Tournament) {
