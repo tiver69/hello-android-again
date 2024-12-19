@@ -18,9 +18,16 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
     buildTypes {
+        debug {
+            buildConfigField("String", "UNSPLASH_CLIENT_ID", "\"${project.properties["UNSPLASH_CLIENT_ID"]}\"")
+        }
         release {
             isMinifyEnabled = false
+            buildConfigField("String", "UNSPLASH_CLIENT_ID", "\"${project.properties["UNSPLASH_CLIENT_ID"]}\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -51,6 +58,9 @@ dependencies {
     implementation(libs.google.gson)
     implementation(libs.rx.java)
     implementation(libs.rx.android)
+    implementation(libs.bumptech.glide)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.adapter.rxjava3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

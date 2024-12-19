@@ -6,18 +6,17 @@ Extend App from [HomeTask #1](https://github.com/tiver69/hello-android-again/tre
 * __Common__. Clicking to image on any screen should open it in Chrome Tab.
 
 __To be used:__
-* Unsplash API Endpoints & RxJava: search, get by id
+* Unsplash API Endpoints & RxJava & Retrofit: search / get by id
 * SQLite DB for image caching
 * Observable for tournaments in service
 * Chrome tab
-* Glide/Picaso 
+* Glide/Picaso
 
----
 ## Checklist:
 
 - [x] TournamentService.tournaments to Observable
-- [ ] Load random image from */search/photos?query=tennis* for initial Logo in Add Tournament screen
-- [ ] Save image information for each tournament to be able to show small image in list and support opening in ChromeTab
+- [x] Load random image from */search/photos?query=tennis* for initial Logo in Add Tournament screen
+- [x] Save image information for each tournament to be able to show small image in list and support opening in ChromeTab
 - [ ] Load small image for each tournament in list
 - [ ] Cache and restore images
 - [ ] Open Chrome Tab on any image click

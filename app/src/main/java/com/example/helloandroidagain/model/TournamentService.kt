@@ -64,7 +64,11 @@ class TournamentService(
 
     private fun generateTournaments(): List<Tournament> = (0..<tmpIdGenerator).map {
         Tournament(
-            it, "Tournament$it", Random.nextInt(2, 10), generateRandomDate()
+            it,
+            "Tournament$it",
+            Random.nextInt(2, 10),
+            generateRandomDate(),
+            TournamentLogo.default()
         )
     }.toMutableList()
 
@@ -79,7 +83,8 @@ class TournamentService(
                     ++tmpIdGenerator,
                     tournament.name,
                     tournament.participantCount,
-                    tournament.date
+                    tournament.date,
+                    tournament.logo
                 )
             )
         }
