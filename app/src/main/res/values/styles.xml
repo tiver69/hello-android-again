@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="PrimaryToolbarTheme" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+        <item name="android:background">@color/md_theme_primary</item>
+        <item name="titleTextColor">@color/md_theme_onPrimary</item>
+        <item name="navigationIconTint">@color/md_theme_onPrimary</item>
+    </style>
+</resources>

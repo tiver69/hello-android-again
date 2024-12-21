@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Hello Android Again</string>
+    <string name="create_tournament_fragment_name">Create Tournament</string>
+    <string name="create_tournament_name_hint">Name</string>
+    <string name="create_tournament_participant_count_hint">Participant Count</string>
+    <string name="create_tournament_date_hint">Date</string>
+    <string name="create_tournament_fragment_date_picker">Select Date</string>
+    <string name="general_save_button">Save</string>
 </resources>
