@@ -8,19 +8,17 @@
     android:paddingEnd="@dimen/padding_medium"
     android:paddingBottom="@dimen/padding_small">
 
-    <TextView
-        android:id="@+id/tournament_item_id"
+    <ImageView
+        android:id="@+id/tournament_item_logo"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="@drawable/item_tournament_id_background"
         android:gravity="center"
-        android:text="2"
-        android:textColor="@color/md_theme_onPrimary"
-        android:textSize="@dimen/font_medium"
+        android:contentDescription="@string/tournament_create_logo"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tournament_item_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/tournament_item_name"
@@ -31,7 +29,7 @@
         android:textSize="@dimen/font_large"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/tournament_item_date"
-        app:layout_constraintStart_toEndOf="@id/tournament_item_id"
+        app:layout_constraintStart_toEndOf="@id/tournament_item_logo"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -42,7 +40,7 @@
         android:text="12.12.2024"
         android:textSize="@dimen/font_medium"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tournament_item_id"
+        app:layout_constraintStart_toEndOf="@id/tournament_item_logo"
         app:layout_constraintTop_toBottomOf="@id/tournament_item_name" />
 
     <TextView

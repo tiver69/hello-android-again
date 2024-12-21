@@ -58,7 +58,7 @@ class TournamentListFragment : Fragment(), TournamentSwipeListener, CreateTourna
             }
 
         binding.addTournamentFab.setOnClickListener {
-            router().navToCreateTournament(binding.recyclerView.adapter?.itemCount ?: 1)
+            router().navToCreateTournament((binding.recyclerView.adapter?.itemCount ?: 0) + 1)
         }
         router().listenToCreateResult(viewLifecycleOwner, this)
 

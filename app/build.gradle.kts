@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.browser)
     implementation(libs.google.gson)
     implementation(libs.rx.java)
     implementation(libs.rx.android)

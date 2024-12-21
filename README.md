@@ -17,9 +17,9 @@ __To be used:__
 - [x] TournamentService.tournaments to Observable
 - [x] Load random image from */search/photos?query=tennis* for initial Logo in Add Tournament screen
 - [x] Save image information for each tournament to be able to show small image in list and support opening in ChromeTab
-- [ ] Load small image for each tournament in list
+- [x] Load small image for each tournament in list
 - [ ] Cache and restore images
-- [ ] Open Chrome Tab on any image click
+- [x] Open Chrome Tab on any image click
 
 ---
 
