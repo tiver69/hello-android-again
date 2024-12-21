@@ -27,7 +27,6 @@ class TournamentListFragment : Fragment(), TournamentSwipeListener, CreateTourna
     private lateinit var adapter: TournamentListAdapter
     private lateinit var tournamentService: TournamentService
     private lateinit var tournamentsDisposable: Disposable
-    private var tournamentListSize: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         adapter = TournamentListAdapter()
@@ -56,11 +55,10 @@ class TournamentListFragment : Fragment(), TournamentSwipeListener, CreateTourna
             .subscribe { tournaments ->
                 binding.recyclerView.adapter = adapter
                 adapter.tournaments = tournaments
-                tournamentListSize = tournaments.size
             }
 
         binding.addTournamentFab.setOnClickListener {
-            router().navToCreateTournament(tournamentListSize + 1)
+            router().navToCreateTournament(binding.recyclerView.adapter?.itemCount ?: 1)
         }
         router().listenToCreateResult(viewLifecycleOwner, this)
 

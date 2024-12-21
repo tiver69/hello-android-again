@@ -2,6 +2,7 @@ package com.example.helloandroidagain.fragment
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -32,6 +33,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.parcelize.Parcelize
 
 class TournamentCreateFragment : Fragment(), FragmentToolbar {
 
@@ -47,25 +49,25 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         savedInstanceState: Bundle?
     ): View {
         requireActivity().addMenuProvider(tournamentCreateMenuProvider, viewLifecycleOwner)
-        val tournamentName = savedInstanceState?.getString(TOURNAMENT_NAME_BUNDLE) ?: "Tournament${
+        val state: TournamentCreateFragmentState? =
+            savedInstanceState?.getParcelable(TOURNAMENT_CRATE_STATE_BUNDLE)
+        preloadedLogosPosition = state?.tournamentLogoPreloadPosition ?: 0
+        tournamentLogosPage = state?.tournamentLogoPage ?: 1
+        binding = FragmentTournamentCreateBinding.inflate(inflater, container, false)
+
+        val tournamentName = state?.tournamentName ?: "Tournament${
             arguments?.getInt(NEXT_TOURNAMENT_COUNT)
         }"
-        val tournamentParticipantCount =
-            savedInstanceState?.getString(TOURNAMENT_PARTICIPANT_COUNT_BUNDLE) ?: "2"
-        val tournamentDate = savedInstanceState?.getString(TOURNAMENT_DATE_BUNDLE) ?: "17.03.2025"
-        preloadedLogosPosition = savedInstanceState?.getInt(TOURNAMENT_LOGO_PRELOAD_POSITION) ?: 0
-        tournamentLogosPage = savedInstanceState?.getInt(TOURNAMENT_LOGO_PAGE) ?: 1
-
-        binding = FragmentTournamentCreateBinding.inflate(inflater, container, false)
         binding.tournamentCreateName.editText?.setText(tournamentName)
-        binding.tournamentCreateParticipantCount.editText?.setText(tournamentParticipantCount)
-        binding.tournamentCreateDate.editText?.setText(tournamentDate)
+        binding.tournamentCreateParticipantCount.editText?.setText(state?.tournamentParticipantCount ?: "2")
+        binding.tournamentCreateDate.editText?.setText(state?.tournamentDate ?: "17.03.2025")
         binding.tournamentCreateDate.editText?.setOnClickListener {
             createDatePicker().show(parentFragmentManager, "CREATE_TOURNAMENT_DATE")
         }
         binding.tournamentCreateRegenerateImageButton.setOnClickListener {
-            if (preloadedLogos.isEmpty()) reloadTournamentLogos(tournamentLogosPage)
-            else if (preloadedLogosPosition < TOURNAMENT_LOGO_PER_PAGE) {
+            if (preloadedLogos.isEmpty()) {
+                reloadTournamentLogos(tournamentLogosPage)
+            } else if (preloadedLogosPosition < TOURNAMENT_LOGO_PER_PAGE) {
                 loadLogoFromPreloaded(preloadedLogosPosition++)
             } else {
                 preloadedLogosPosition = 0
@@ -81,24 +83,14 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(
-            TOURNAMENT_NAME_BUNDLE,
-            binding.tournamentCreateName.editText?.text.toString()
+        val state = TournamentCreateFragmentState(
+            tournamentName = binding.tournamentCreateName.editText?.text.toString(),
+            tournamentParticipantCount = binding.tournamentCreateParticipantCount.editText?.text.toString(),
+            tournamentDate = binding.tournamentCreateDate.editText?.text.toString(),
+            tournamentLogoPage = tournamentLogosPage - 1,
+            tournamentLogoPreloadPosition = preloadedLogosPosition - 1
         )
-        outState.putString(
-            TOURNAMENT_PARTICIPANT_COUNT_BUNDLE,
-            binding.tournamentCreateParticipantCount.editText?.text.toString()
-        )
-        outState.putString(
-            TOURNAMENT_DATE_BUNDLE,
-            binding.tournamentCreateDate.editText?.text.toString()
-        )
-        outState.putString(
-            TOURNAMENT_NAME_BUNDLE,
-            binding.tournamentCreateName.editText?.text.toString()
-        )
-        outState.putInt(TOURNAMENT_LOGO_PRELOAD_POSITION, preloadedLogosPosition)
-        outState.putInt(TOURNAMENT_LOGO_PAGE, tournamentLogosPage)
+        outState.putParcelable(TOURNAMENT_CRATE_STATE_BUNDLE, state)
         super.onSaveInstanceState(outState)
     }
 
@@ -108,7 +100,7 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         participantCount = Integer.valueOf(binding.tournamentCreateParticipantCount.editText?.text.toString()),
         date = binding.tournamentCreateDate.editText?.text.toString().convertToLocalDate(),
         logo = if (preloadedLogos.isNotEmpty()) preloadedLogos[preloadedLogosPosition - 1]
-                else TournamentLogo.default()
+        else TournamentLogo.default()
     )
 
     private fun createDatePicker(): MaterialDatePicker<Long> {
@@ -211,14 +203,17 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         }
     }
 
-    companion object {
+    @Parcelize
+    data class TournamentCreateFragmentState(
+        val tournamentName: String,
+        val tournamentDate: String,
+        val tournamentParticipantCount: String,
+        val tournamentLogoPreloadPosition: Int,
+        val tournamentLogoPage: Int,
+    ) : Parcelable
 
-        private const val TOURNAMENT_NAME_BUNDLE = "TOURNAMENT_NAME_BUNDLE"
-        private const val TOURNAMENT_DATE_BUNDLE = "TOURNAMENT_DATE_BUNDLE"
-        private const val TOURNAMENT_PARTICIPANT_COUNT_BUNDLE =
-            "TOURNAMENT_PARTICIPANT_COUNT_BUNDLE"
-        private const val TOURNAMENT_LOGO_PRELOAD_POSITION = "TOURNAMENT_LOGO_PRELOAD_POSITION"
-        private const val TOURNAMENT_LOGO_PAGE = "TOURNAMENT_LOGO_PAGE"
+    companion object {
+        private const val TOURNAMENT_CRATE_STATE_BUNDLE = "TOURNAMENT_CRATE_STATE_BUNDLE"
         private const val NEXT_TOURNAMENT_COUNT = "NEXT_TOURNAMENT_COUNT"
 
         fun newInstance(nextTournamentCount: Int): TournamentCreateFragment {

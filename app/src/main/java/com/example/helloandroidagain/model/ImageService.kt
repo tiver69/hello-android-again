@@ -1,8 +1,8 @@
 package com.example.helloandroidagain.model
 
 import com.example.helloandroidagain.BuildConfig
-import com.example.helloandroidagain.model.TournamentLogo.Companion.JSON_RESULT_PATH
-import com.example.helloandroidagain.model.TournamentLogo.Companion.fromJsonObject
+import com.example.helloandroidagain.model.mapper.JSON_RESULT_PATH
+import com.example.helloandroidagain.model.mapper.mapJsonObjectToTournamentLogo
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.reactivex.rxjava3.core.Single
@@ -62,7 +62,7 @@ class TournamentLogoConverter(private val gson: Gson) :
         val jsonObject = gson.fromJson(value.string(), JsonObject::class.java)
         val result = mutableListOf<TournamentLogo>()
         jsonObject.getAsJsonArray(JSON_RESULT_PATH).forEach { jsonLogo ->
-            result.add(fromJsonObject(jsonLogo.asJsonObject))
+            result.add(mapJsonObjectToTournamentLogo(jsonLogo.asJsonObject))
         }
         return result.toList()
     }
