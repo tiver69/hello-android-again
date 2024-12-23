@@ -1,4 +1,4 @@
-package com.example.helloandroidagain.recyclerview
+package com.example.helloandroidagain.component.recyclerview
 
 import android.net.Uri
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import com.example.helloandroidagain.R
 import com.example.helloandroidagain.databinding.ItemTournamentActiveBinding
 import com.example.helloandroidagain.databinding.ItemTournamentOutdatedBinding
 import com.example.helloandroidagain.model.Tournament
-import com.example.helloandroidagain.recyclerview.TournamentListAdapter.TournamentViewHolder
+import com.example.helloandroidagain.component.recyclerview.TournamentListAdapter.TournamentViewHolder
 import com.example.helloandroidagain.util.convertToString
 import java.time.LocalDate
 
@@ -52,9 +52,8 @@ class TournamentListAdapter : RecyclerView.Adapter<TournamentViewHolder>() {
         if (tournaments[position].date.isBefore(LocalDate.now())) TournamentType.OUTDATED.viewType
         else TournamentType.ACTIVE.viewType
 
-    sealed class TournamentViewHolder(
-        val binding: ViewBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
+    sealed class TournamentViewHolder(val binding: ViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         open fun bindTournamentItem(tournament: Tournament) {}
 
         fun openItemLogoInBrowser(url: String) {
@@ -72,6 +71,7 @@ class TournamentListAdapter : RecyclerView.Adapter<TournamentViewHolder>() {
 
         fun loadItemLogo(url: String, into: ImageView) {
             Glide.with(itemView.context)
+                .asBitmap()
                 .load(url)
                 .error(R.drawable.ic_image_placeholder)
                 .skipMemoryCache(true)

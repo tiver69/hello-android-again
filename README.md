@@ -18,7 +18,7 @@ __To be used:__
 - [x] Load random image from */search/photos?query=tennis* for initial Logo in Add Tournament screen
 - [x] Save image information for each tournament to be able to show small image in list and support opening in ChromeTab
 - [x] Load small image for each tournament in list
-- [ ] Cache and restore images
+- [x] Cache and restore images
 - [x] Open Chrome Tab on any image click
 
 ---

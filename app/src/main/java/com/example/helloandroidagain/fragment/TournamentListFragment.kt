@@ -9,12 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.helloandroidagain.recyclerview.ItemLeftSwipeHelper
-import com.example.helloandroidagain.recyclerview.TournamentSwipeListener
-import com.example.helloandroidagain.recyclerview.TournamentListAdapter
+import com.example.helloandroidagain.component.recyclerview.ItemLeftSwipeHelper
+import com.example.helloandroidagain.component.recyclerview.TournamentSwipeListener
+import com.example.helloandroidagain.component.recyclerview.TournamentListAdapter
 import com.example.helloandroidagain.databinding.FragmentTournamentListBinding
 import com.example.helloandroidagain.model.Tournament
-import com.example.helloandroidagain.model.TournamentService
+import com.example.helloandroidagain.service.TournamentService
 import com.example.helloandroidagain.navigation.CreateTournamentResultListener
 import com.example.helloandroidagain.navigation.router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers

@@ -1,6 +1,7 @@
-package com.example.helloandroidagain.model
+package com.example.helloandroidagain.service
 
 import com.example.helloandroidagain.BuildConfig
+import com.example.helloandroidagain.model.TournamentLogo
 import com.example.helloandroidagain.model.mapper.JSON_RESULT_PATH
 import com.example.helloandroidagain.model.mapper.mapJsonObjectToTournamentLogo
 import com.google.gson.Gson
@@ -19,7 +20,7 @@ import java.lang.reflect.Type
 
 const val TOURNAMENT_LOGO_PER_PAGE = 5
 
-interface ImageService {
+interface ImageRemoteService {
     @GET("/search/photos?query=tennis&per_page=$TOURNAMENT_LOGO_PER_PAGE&orientation=landscape")
     fun searchLogo(@Query("page") page: Int): Single<List<TournamentLogo>>
 }

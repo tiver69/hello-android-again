@@ -16,12 +16,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.example.helloandroidagain.R
+import com.example.helloandroidagain.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
 import com.example.helloandroidagain.databinding.FragmentTournamentCreateBinding
-import com.example.helloandroidagain.model.ImageService
-import com.example.helloandroidagain.model.RetrofitInstance
-import com.example.helloandroidagain.model.TOURNAMENT_LOGO_PER_PAGE
+import com.example.helloandroidagain.service.ImageRemoteService
+import com.example.helloandroidagain.service.RetrofitInstance
+import com.example.helloandroidagain.service.TOURNAMENT_LOGO_PER_PAGE
 import com.example.helloandroidagain.model.Tournament
 import com.example.helloandroidagain.model.TournamentLogo
 import com.example.helloandroidagain.navigation.router
@@ -122,7 +124,7 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
 
     private fun reloadTournamentLogos(page: Int) {
         tournamentsDisposable =
-            RetrofitInstance.retrofit.create(ImageService::class.java).searchLogo(page)
+            RetrofitInstance.retrofit.create(ImageRemoteService::class.java).searchLogo(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -150,6 +152,7 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
     private fun loadLogoFromPreloaded(preloadedLogosPosition: Int) {
         Glide.with(requireContext())
             .load(preloadedLogos[preloadedLogosPosition].regularUrl)
+            .apply(RequestOptions().set(SKIP_CUSTOM_CACHE, true))
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,

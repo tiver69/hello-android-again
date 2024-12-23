@@ -1,7 +1,9 @@
-package com.example.helloandroidagain.model
+package com.example.helloandroidagain.service
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.helloandroidagain.model.Tournament
+import com.example.helloandroidagain.model.TournamentLogo
 import com.example.helloandroidagain.util.convertToLocalDate
 import com.example.helloandroidagain.util.convertToString
 import com.example.helloandroidagain.util.generateRandomDate

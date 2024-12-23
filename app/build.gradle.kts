@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -59,9 +60,10 @@ dependencies {
     implementation(libs.google.gson)
     implementation(libs.rx.java)
     implementation(libs.rx.android)
-    implementation(libs.bumptech.glide)
     implementation(libs.retrofit)
     implementation(libs.retrofit.adapter.rxjava3)
+    implementation(libs.bumptech.glide)
+    kapt(libs.bumptech.glide.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
