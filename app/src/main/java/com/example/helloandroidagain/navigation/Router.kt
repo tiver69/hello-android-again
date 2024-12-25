@@ -18,5 +18,5 @@ interface Router {
 }
 
 interface CreateTournamentResultListener {
-    fun tournaemntCreated(tournament: Tournament)
+    fun tournamentCreated(tournament: Tournament)
 }

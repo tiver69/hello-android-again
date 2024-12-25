@@ -1,3 +1,8 @@
+# [HomeTask #3 MVP](https://github.com/tiver69/hello-android-again/tree/hometask_3_mvp)
+Change App from [HomeTask #2](https://github.com/tiver69/hello-android-again/tree/hometask_2?tab=readme-ov-file#hometask-2) to follow MVP architecture
+
+---
+
 # [HomeTask #2](https://github.com/tiver69/hello-android-again/tree/hometask_2)
 
 Extend App from [HomeTask #1](https://github.com/tiver69/hello-android-again/tree/hometask_2?tab=readme-ov-file#hometask-1) with following functionality:
