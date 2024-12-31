@@ -1,16 +1,14 @@
 package com.example.helloandroidagain.fragment.tournament.create
 
 import com.example.helloandroidagain.model.TournamentLogo
-import com.example.helloandroidagain.service.ImageRemoteService
-import com.example.helloandroidagain.service.RetrofitInstance
 import com.example.helloandroidagain.service.TOURNAMENT_LOGO_PER_PAGE
+import com.example.helloandroidagain.usecase.FetchTournamentLogoPageUseCase
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class TournamentCreatePresenter : TournamentCreateContract.Presenter {
-    private val imageRemoteService =
-        RetrofitInstance.retrofit.create(ImageRemoteService::class.java)
+    private val fetchTournamentLogoPageUseCase = FetchTournamentLogoPageUseCase()
     private var view: TournamentCreateContract.View? = null
     private lateinit var preloadedLogos: List<TournamentLogo>
     private val disposables = CompositeDisposable()
@@ -52,7 +50,7 @@ class TournamentCreatePresenter : TournamentCreateContract.Presenter {
 
     private fun fetchTournamentLogoPage(page: Int) {
         val logoDisposable =
-            imageRemoteService.searchLogo(page)
+            fetchTournamentLogoPageUseCase.execute(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

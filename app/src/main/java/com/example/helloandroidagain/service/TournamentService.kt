@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.helloandroidagain.model.Tournament
 import com.example.helloandroidagain.model.TournamentLogo
+import com.example.helloandroidagain.repository.TournamentRepository
 import com.example.helloandroidagain.util.convertToLocalDate
 import com.example.helloandroidagain.util.convertToString
 import com.example.helloandroidagain.util.generateRandomDate
@@ -24,7 +25,7 @@ import kotlin.random.Random
 
 class TournamentService(
     context: Context
-) {
+) : TournamentRepository {
 
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences(TOURNAMENT_LIST_PREF, Context.MODE_PRIVATE)
@@ -48,7 +49,7 @@ class TournamentService(
         BehaviorSubject.createDefault(restoreTournaments())
     private var tmpIdGenerator: Long = 20
 
-    fun saveTournaments() {
+    override fun saveTournaments() {
         val json = gson.toJson(tournamentsSubject.value)
         sharedPreferences.edit()
             .putString(TOURNAMENT_LIST, json)
@@ -74,11 +75,11 @@ class TournamentService(
         )
     }.toMutableList()
 
-    fun getTournaments(): Observable<List<Tournament>> {
+    override fun getTournaments(): Observable<List<Tournament>> {
         return tournamentsSubject.hide()
     }
 
-    fun addTournament(tournament: Tournament) {
+    override fun addTournament(tournament: Tournament) {
         val updatedTournaments = tournamentsSubject.value.orEmpty() +
                 Tournament(
                     ++tmpIdGenerator,
@@ -90,7 +91,7 @@ class TournamentService(
         tournamentsSubject.onNext(updatedTournaments.toList())
     }
 
-    fun removeTournament(tournamentPosition: Int) {
+    override fun removeTournament(tournamentPosition: Int) {
         val updatedTournaments = tournamentsSubject.value.orEmpty().filterIndexed { index, _ ->
             index != tournamentPosition
         }

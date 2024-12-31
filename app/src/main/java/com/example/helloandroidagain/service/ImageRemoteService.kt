@@ -25,7 +25,7 @@ interface ImageRemoteService {
     fun searchLogo(@Query("page") page: Int): Single<List<TournamentLogo>>
 }
 
-object RetrofitInstance {
+object ImageRetrofitInstance {
     private const val BASE_URL = "https://api.unsplash.com/"
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
