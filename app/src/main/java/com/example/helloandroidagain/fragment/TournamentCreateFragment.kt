@@ -150,7 +150,7 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
     override fun getFragmentTitle(): Int = R.string.create_tournament_fragment_name
 
     private fun loadLogoFromPreloaded(preloadedLogosPosition: Int) {
-        Glide.with(requireContext())
+        Glide.with(requireContext().applicationContext)
             .load(preloadedLogos[preloadedLogosPosition].regularUrl)
             .apply(RequestOptions().set(SKIP_CUSTOM_CACHE, true))
             .listener(object : RequestListener<Drawable> {

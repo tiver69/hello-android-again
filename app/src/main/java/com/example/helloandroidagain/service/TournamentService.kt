@@ -79,8 +79,7 @@ class TournamentService(
     }
 
     fun addTournament(tournament: Tournament) {
-        val updatedTournaments = tournamentsSubject.value.orEmpty().toMutableList().apply {
-            add(
+        val updatedTournaments = tournamentsSubject.value.orEmpty() +
                 Tournament(
                     ++tmpIdGenerator,
                     tournament.name,
@@ -88,16 +87,14 @@ class TournamentService(
                     tournament.date,
                     tournament.logo
                 )
-            )
-        }
         tournamentsSubject.onNext(updatedTournaments.toList())
     }
 
     fun removeTournament(tournamentPosition: Int) {
-        val updatedTournaments = tournamentsSubject.value.orEmpty().toMutableList().apply {
-            removeAt(tournamentPosition)
+        val updatedTournaments = tournamentsSubject.value.orEmpty().filterIndexed { index, _ ->
+            index != tournamentPosition
         }
-        tournamentsSubject.onNext(updatedTournaments.toList())
+        tournamentsSubject.onNext(updatedTournaments)
     }
 
     companion object {

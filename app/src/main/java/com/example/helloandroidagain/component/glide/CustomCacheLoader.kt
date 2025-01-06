@@ -19,6 +19,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.signature.ObjectKey
 import com.example.helloandroidagain.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
 import com.example.helloandroidagain.service.ImageCacheService
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class CustomCacheLoader(private val context: Context) : ModelLoader<String, Bitmap> {
     private val imageCacheService = ImageCacheService(context)
@@ -29,8 +30,7 @@ class CustomCacheLoader(private val context: Context) : ModelLoader<String, Bitm
         height: Int,
         options: Options
     ): ModelLoader.LoadData<Bitmap>? {
-        val shouldSkipCustomCache = options.get(SKIP_CUSTOM_CACHE) ?: false
-        return if (shouldSkipCustomCache) {
+        return if (options.get(SKIP_CUSTOM_CACHE) == true) {
             null
         } else {
             ModelLoader.LoadData(
@@ -57,41 +57,63 @@ class CustomCacheLoader(private val context: Context) : ModelLoader<String, Bitm
         private val context: Context,
         private val imageCacheService: ImageCacheService
     ) : DataFetcher<Bitmap> {
+        private val cacheServiceDisposable = CompositeDisposable()
 
         override fun loadData(
             priority: Priority,
             callback: DataFetcher.DataCallback<in Bitmap>
         ) {
-            val cachedImage = imageCacheService.loadImage(url)
-            if (cachedImage != null) {
-                callback.onDataReady(cachedImage)
-            } else {
-                Glide.with(context)
-                    .asBitmap()
-                    .load(url)
-                    .apply(RequestOptions().set(SKIP_CUSTOM_CACHE, true))
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .circleCrop()
-                    .into(object : CustomTarget<Bitmap>() {
-                        override fun onResourceReady(
-                            resource: Bitmap,
-                            transition: Transition<in Bitmap>?
-                        ) {
-                            imageCacheService.saveImage(url, resource)
-                            callback.onDataReady(resource)
-                        }
+            val loadDisposable =
+                imageCacheService.loadImage(url).subscribe(
+                    { result -> callback.onDataReady(result) },
+                    { _ ->
+                        loadImageToCache(callback)
+                    },
+                    {
+                        loadImageToCache(callback)
+                    }
+                )
+            cacheServiceDisposable.add(loadDisposable)
+        }
 
-                        override fun onLoadCleared(placeholder: Drawable?) {
-                            // No action required
-                        }
-                    })
-                callback.onLoadFailed(Exception("Failed to load image from custom cache"))
-            }
+        private fun loadImageToCache(callback: DataFetcher.DataCallback<in Bitmap>) {
+            Glide.with(context)
+                .asBitmap()
+                .load(url)
+                .apply(RequestOptions().set(SKIP_CUSTOM_CACHE, true))
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .circleCrop()
+                .into(object : CustomTarget<Bitmap>() {
+                    override fun onResourceReady(
+                        resource: Bitmap,
+                        transition: Transition<in Bitmap>?
+                    ) {
+                        val saveDisposable =
+                            imageCacheService.saveImage(url, resource).subscribe(
+                                { callback.onDataReady(resource) },
+                                { _ ->
+                                    callback.onLoadFailed(Exception("Failed to load image from custom cache"))
+                                }
+                            )
+                        cacheServiceDisposable.add(saveDisposable)
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                        // No action required
+                    }
+
+                    override fun onLoadFailed(errorDrawable: Drawable?) {
+                        callback.onLoadFailed(Exception("Failed to load image from custom cache"))
+                    }
+                })
         }
 
         override fun cleanup() {}
-        override fun cancel() {}
+        override fun cancel() {
+            cacheServiceDisposable.clear()
+        }
+
         override fun getDataClass() = Bitmap::class.java
         override fun getDataSource() = DataSource.LOCAL
 

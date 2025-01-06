@@ -10,5 +10,5 @@ data class Tournament(
     val name: String,
     val participantCount: Int,
     val date: LocalDate,
-    val logo: TournamentLogo
+    val logo: TournamentLogo,
 ) : Parcelable

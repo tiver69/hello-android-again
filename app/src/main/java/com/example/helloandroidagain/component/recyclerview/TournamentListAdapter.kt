@@ -57,16 +57,15 @@ class TournamentListAdapter : RecyclerView.Adapter<TournamentViewHolder>() {
         open fun bindTournamentItem(tournament: Tournament) {}
 
         fun openItemLogoInBrowser(url: String) {
-            itemView.setOnClickListener {
-                val customTabsIntent = CustomTabsIntent.Builder()
-                    .setShowTitle(true)
-                    .setDefaultColorSchemeParams(
-                        CustomTabColorSchemeParams.Builder()
-                            .setToolbarColor(itemView.context.getColor(R.color.md_theme_primary))
-                            .build()
-                    ).build()
-                customTabsIntent.launchUrl(itemView.context, Uri.parse(url))
-            }
+            val customTabsIntent = CustomTabsIntent.Builder()
+                .setShowTitle(true)
+                .setDefaultColorSchemeParams(
+                    CustomTabColorSchemeParams.Builder()
+                        .setToolbarColor(itemView.context.getColor(R.color.md_theme_primary))
+                        .setNavigationBarColor(itemView.context.getColor(R.color.md_theme_primary))
+                        .build()
+                ).build()
+            customTabsIntent.launchUrl(itemView.context, Uri.parse(url))
         }
 
         fun loadItemLogo(url: String, into: ImageView) {
@@ -92,14 +91,16 @@ class TournamentListAdapter : RecyclerView.Adapter<TournamentViewHolder>() {
 
         override fun bindTournamentItem(tournament: Tournament) {
             with(binding as ItemTournamentActiveBinding) {
-                loadItemLogo(tournament.logo.thumbUrl, binding.tournamentItemLogo)
+                loadItemLogo(tournament.logo.thumbUrl, tournamentItemLogo)
                 tournamentItemName.text = tournament.name
                 tournamentItemParticipantCount.text =
                     tournament.participantCount.toString(10)
                 tournamentItemDate.text =
                     tournament.date.convertToString()
+                tournamentItemLogo.setOnClickListener {
+                    openItemLogoInBrowser(tournament.logo.rawUrl)
+                }
             }
-            openItemLogoInBrowser(tournament.logo.rawUrl)
         }
     }
 
@@ -107,14 +108,16 @@ class TournamentListAdapter : RecyclerView.Adapter<TournamentViewHolder>() {
         TournamentViewHolder(binding) {
         override fun bindTournamentItem(tournament: Tournament) {
             with(binding as ItemTournamentOutdatedBinding) {
-                loadItemLogo(tournament.logo.thumbUrl, binding.tournamentItemLogo)
+                loadItemLogo(tournament.logo.thumbUrl, tournamentItemLogo)
                 tournamentItemName.text = tournament.name
                 tournamentItemParticipantCount.text =
                     tournament.participantCount.toString(10)
                 tournamentItemDate.text =
                     tournament.date.convertToString()
+                tournamentItemLogo.setOnClickListener {
+                    openItemLogoInBrowser(tournament.logo.rawUrl)
+                }
             }
-            openItemLogoInBrowser(tournament.logo.rawUrl)
         }
     }
 }
