@@ -63,7 +63,7 @@ class TournamentListFragment : Fragment(), TournamentSwipeListener, CreateTourna
     }
 
     override fun onDestroyView() {
-        presenter.detachView()
+        presenter.onDestroyView()
         super.onDestroyView()
     }
 

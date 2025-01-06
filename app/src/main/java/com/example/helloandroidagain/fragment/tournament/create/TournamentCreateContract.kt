@@ -4,7 +4,7 @@ import com.example.helloandroidagain.model.TournamentLogo
 
 interface TournamentCreateContract {
     interface View {
-        fun loadLogo(logo: TournamentLogo)
+        fun loadLogo(logoUrl: String)
         fun loadPlaceholderImage()
         fun showLogoErrorToast()
     }
@@ -15,8 +15,10 @@ interface TournamentCreateContract {
             preloadedLogosPosition: Int,
             tournamentLogosPage: Int
         )
-        fun getCurrentState(): Pair<Int, Int>
-        fun detachView()
+        fun getCurrentLogo(): TournamentLogo
+        fun getCurrentPreloadedPosition(): Int
+        fun getCurrentLogosPage(): Int
+        fun onDestroyView()
         fun regenerateTournamentLogo()
         fun fetchTournamentLogoPage()
     }

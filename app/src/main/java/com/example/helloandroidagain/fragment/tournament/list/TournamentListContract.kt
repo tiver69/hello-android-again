@@ -9,7 +9,7 @@ interface TournamentListContract {
 
     interface Presenter {
         fun attachView(view: View)
-        fun detachView()
+        fun onDestroyView()
         fun createTournament(tournament: Tournament)
         fun removeTournament(tournamentPosition: Int)
         fun saveTournaments()

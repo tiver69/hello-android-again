@@ -14,6 +14,7 @@ class TournamentCreatePresenter : TournamentCreateContract.Presenter {
     private var view: TournamentCreateContract.View? = null
     private lateinit var preloadedLogos: List<TournamentLogo>
     private val disposables = CompositeDisposable()
+    private var currentLogo: TournamentLogo = TournamentLogo.default()
     private var preloadedLogosPosition: Int = 0
     private var tournamentLogosPage: Int = 1
 
@@ -27,10 +28,13 @@ class TournamentCreatePresenter : TournamentCreateContract.Presenter {
         this.tournamentLogosPage = tournamentLogosPage
     }
 
-    override fun getCurrentState(): Pair<Int, Int> =
-        preloadedLogosPosition - 1 to tournamentLogosPage - 1
+    override fun getCurrentLogo(): TournamentLogo = currentLogo.copy()
 
-    override fun detachView() {
+    override fun getCurrentPreloadedPosition(): Int = preloadedLogosPosition - 1
+
+    override fun getCurrentLogosPage(): Int = tournamentLogosPage - 1
+
+    override fun onDestroyView() {
         this.view = null
         disposables.clear()
     }
@@ -39,7 +43,8 @@ class TournamentCreatePresenter : TournamentCreateContract.Presenter {
         if (preloadedLogos.isEmpty()) {
             fetchTournamentLogoPage(tournamentLogosPage)
         } else if (preloadedLogosPosition < TOURNAMENT_LOGO_PER_PAGE) {
-            view?.loadLogo(preloadedLogos[preloadedLogosPosition++])
+            currentLogo = preloadedLogos[preloadedLogosPosition++]
+            view?.loadLogo(currentLogo.regularUrl)
         } else {
             preloadedLogosPosition = 0
             fetchTournamentLogoPage(tournamentLogosPage)
@@ -59,10 +64,12 @@ class TournamentCreatePresenter : TournamentCreateContract.Presenter {
                     { logos ->
                         preloadedLogos = logos
                         tournamentLogosPage++
-                        view?.loadLogo(preloadedLogos[preloadedLogosPosition++])
+                        currentLogo = preloadedLogos[preloadedLogosPosition++]
+                        view?.loadLogo(currentLogo.regularUrl)
                     },
                     {
                         preloadedLogos = emptyList()
+                        currentLogo = TournamentLogo.default()
                         view?.loadPlaceholderImage()
                         view?.showLogoErrorToast()
                     })

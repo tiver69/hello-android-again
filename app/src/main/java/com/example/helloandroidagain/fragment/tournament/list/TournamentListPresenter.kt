@@ -17,7 +17,7 @@ class TournamentListPresenter(
         loadTournaments()
     }
 
-    override fun detachView() {
+    override fun onDestroyView() {
         disposables.clear()
         this.view = null
     }
