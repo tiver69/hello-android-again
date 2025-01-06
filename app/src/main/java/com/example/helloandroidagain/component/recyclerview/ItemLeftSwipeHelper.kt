@@ -1,4 +1,4 @@
-package com.example.helloandroidagain.recyclerview
+package com.example.helloandroidagain.component.recyclerview
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView

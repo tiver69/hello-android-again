@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -18,9 +19,16 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
     buildTypes {
+        debug {
+            buildConfigField("String", "UNSPLASH_CLIENT_ID", "\"${project.properties["UNSPLASH_CLIENT_ID"]}\"")
+        }
         release {
             isMinifyEnabled = false
+            buildConfigField("String", "UNSPLASH_CLIENT_ID", "\"${project.properties["UNSPLASH_CLIENT_ID"]}\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -48,7 +56,14 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.browser)
     implementation(libs.google.gson)
+    implementation(libs.rx.java)
+    implementation(libs.rx.android)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.adapter.rxjava3)
+    implementation(libs.bumptech.glide)
+    kapt(libs.bumptech.glide.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

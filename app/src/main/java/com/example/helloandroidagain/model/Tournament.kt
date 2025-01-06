@@ -9,5 +9,6 @@ data class Tournament(
     val id: Long,
     val name: String,
     val participantCount: Int,
-    val date: LocalDate
+    val date: LocalDate,
+    val logo: TournamentLogo,
 ) : Parcelable

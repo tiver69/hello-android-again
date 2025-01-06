@@ -7,4 +7,7 @@
     <string name="create_tournament_date_hint">Дата проведення</string>
     <string name="create_tournament_fragment_date_picker">Оберіть дату</string>
     <string name="general_save_button">Зберігти</string>
+    <string name="tournament_create_logo">Логотип турніру, що створюється</string>
+    <string name="tournament_create_regenerate_image_button">Завантажити інше зображення</string>
+    <string name="create_tournament_load_error">Помилка при завантаженні логотипу. Спробуйте наступне!</string>
 </resources>

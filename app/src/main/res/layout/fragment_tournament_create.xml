@@ -5,6 +5,21 @@
     android:layout_height="match_parent"
     android:padding="@dimen/padding_medium">
 
+    <ImageView
+        android:id="@+id/tournament_create_logo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:contentDescription="@string/tournament_create_logo"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@id/tournament_create_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintVertical_chainStyle="packed" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tournament_create_name"
         android:layout_width="0dp"
@@ -14,7 +29,7 @@
         app:layout_constraintBottom_toTopOf="@id/tournament_create_details"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tournament_create_logo"
         app:layout_constraintVertical_chainStyle="packed"
         app:startIconDrawable="@drawable/ic_tournament_name">
 
@@ -30,7 +45,7 @@
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/tournament_create_save_button"
+        app:layout_constraintBottom_toTopOf="@id/tournament_create_buttons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tournament_create_name">
@@ -70,14 +85,40 @@
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/tournament_create_save_button"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/tournament_create_buttons"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_medium"
-        android:text="@string/general_save_button"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tournament_create_details" />
+        app:layout_constraintTop_toBottomOf="@id/tournament_create_details">
+
+        <Button
+            android:id="@+id/tournament_create_regenerate_image_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_medium"
+            android:layout_weight="1"
+            android:text="@string/tournament_create_regenerate_image_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tournament_create_details" />
+
+        <Button
+            android:id="@+id/tournament_create_save_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_medium"
+            android:layout_weight="1"
+            android:text="@string/general_save_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tournament_create_details" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,29 @@
-# HomeTask #1
+# [HomeTask #2](https://github.com/tiver69/hello-android-again/tree/hometask_2)
+
+Extend App from [HomeTask #1](https://github.com/tiver69/hello-android-again/tree/hometask_2?tab=readme-ov-file#hometask-1) with following functionality:
+* __Tournaments List__. Each tournament item should be extended by displaying small image (logo of tournament). Image Id should be saved alongside with tournament data and image itself should be cached locally and restored on app launch.  
+* __Adding New Tournament__. Medium tournament logo should be added to screen with button "Load another image" that will reload next image. Chosen image should remain associated with created tournament further. 
+* __Common__. Clicking to image on any screen should open it in Chrome Tab.
+
+__To be used:__
+* Unsplash API Endpoints & RxJava & Retrofit: search / get by id
+* SQLite DB for image caching
+* Observable for tournaments in service
+* Chrome tab
+* Glide/Picaso
+
+## Checklist:
+
+- [x] TournamentService.tournaments to Observable
+- [x] Load random image from */search/photos?query=tennis* for initial Logo in Add Tournament screen
+- [x] Save image information for each tournament to be able to show small image in list and support opening in ChromeTab
+- [x] Load small image for each tournament in list
+- [x] Cache and restore images
+- [x] Open Chrome Tab on any image click
+
+---
+
+# [HomeTask #1](https://github.com/tiver69/hello-android-again/tree/hometask_1)
 
 Create an App that consists of two fragments:
 * __Tournaments List__. Each tournament should display: the tournament name, amount of participants, date, and button _Delete_. All outdated tournaments should have a grey border and a light-grey text color. Upcoming tournaments - black border and text color. _Delete_ button removes the item from the list.  FAB for adding a tournament takes the size of the tournaments list and send it to the second fragment.
@@ -17,8 +42,6 @@ __Bonus:__
 * Restore the list on the App launch.
 * Support 2 languages
 * Support day/night theme
-
----
 
 ## Checklist:
 
