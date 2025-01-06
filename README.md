@@ -1,3 +1,24 @@
+# [HomeTask #3.2 Clean Architecture](https://github.com/tiver69/hello-android-again/tree/hometask_3_clean)
+Change App from [HomeTask #2](https://github.com/tiver69/hello-android-again/tree/hometask_2?tab=readme-ov-file#hometask-2) to follow Clean Architecture:
+* __Presentation Layer:__ tournament(fragment+presenter+contract), navigation and ui-related components 
+
+  Fragment -> Presenter
+
+* __Domain Layer:__ usecases and repository interfaces
+
+  Use Case Implementation -> Repository Interface
+
+* __Data Layer:__ repository's implementation model and mappers 
+ 
+  Repository Implementation -> Local/Remote Data Sources (via entities)
+
+---
+
+# [HomeTask #3.1 MVP](https://github.com/tiver69/hello-android-again/tree/hometask_3_mvp)
+Change App from [HomeTask #2](https://github.com/tiver69/hello-android-again/tree/hometask_2?tab=readme-ov-file#hometask-2) to follow MVP architecture
+
+---
+
 # [HomeTask #2](https://github.com/tiver69/hello-android-again/tree/hometask_2)
 
 Extend App from [HomeTask #1](https://github.com/tiver69/hello-android-again/tree/hometask_2?tab=readme-ov-file#hometask-1) with following functionality:

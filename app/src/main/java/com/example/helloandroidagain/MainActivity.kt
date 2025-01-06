@@ -10,11 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.example.helloandroidagain.databinding.ActivityMainBinding
-import com.example.helloandroidagain.fragment.FragmentToolbar
-import com.example.helloandroidagain.fragment.TournamentCreateFragment
-import com.example.helloandroidagain.fragment.TournamentListFragment
-import com.example.helloandroidagain.navigation.CreateTournamentResultListener
-import com.example.helloandroidagain.navigation.Router
+import com.example.helloandroidagain.presentation.tournament.create.FragmentToolbar
+import com.example.helloandroidagain.presentation.tournament.create.TournamentCreateFragment
+import com.example.helloandroidagain.presentation.tournament.list.TournamentListFragment
+import com.example.helloandroidagain.presentation.navigation.CreateTournamentResultListener
+import com.example.helloandroidagain.presentation.navigation.Router
 
 class MainActivity : AppCompatActivity(), Router {
 
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(), Router {
             "CREATE_TOURNAMENT_RESULT",
             owner
         ) { _, bundle ->
-            listener.tournaemntCreated(bundle.getParcelable("CREATE_TOURNAMENT_RESULT_KEY")!!)
+            listener.tournamentCreated(bundle.getParcelable("CREATE_TOURNAMENT_RESULT_KEY")!!)
         }
     }
 
