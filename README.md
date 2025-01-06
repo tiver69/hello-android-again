@@ -2,15 +2,15 @@
 Change App from [HomeTask #2](https://github.com/tiver69/hello-android-again/tree/hometask_2?tab=readme-ov-file#hometask-2) to follow Clean Architecture:
 * __Presentation Layer:__ fragment.tournament package 
 
-  Fragment -> Presenter -> Use Case Interface.
+  Fragment -> Presenter
 
 * __Domain Layer:__ usecase and repository package 
 
-  Use Case Implementation -> Repository Interface.
+  Use Case Implementation -> Repository Interface
 
 * __Data Layer:__ service and model package 
  
-  Repository Implementation -> Local/Remote Data Sources (via entities).
+  Repository Implementation -> Local/Remote Data Sources (via entities)
 
 ---
 

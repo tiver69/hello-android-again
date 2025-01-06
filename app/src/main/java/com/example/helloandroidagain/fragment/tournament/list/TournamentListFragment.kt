@@ -14,7 +14,7 @@ import com.example.helloandroidagain.component.recyclerview.TournamentSwipeListe
 import com.example.helloandroidagain.component.recyclerview.TournamentListAdapter
 import com.example.helloandroidagain.databinding.FragmentTournamentListBinding
 import com.example.helloandroidagain.model.Tournament
-import com.example.helloandroidagain.service.TournamentService
+import com.example.helloandroidagain.service.TournamentRepository
 import com.example.helloandroidagain.navigation.CreateTournamentResultListener
 import com.example.helloandroidagain.navigation.router
 
@@ -28,7 +28,7 @@ class TournamentListFragment : Fragment(), TournamentSwipeListener, CreateTourna
     override fun onCreate(savedInstanceState: Bundle?) {
         adapter = TournamentListAdapter()
         presenter = TournamentListPresenter(
-            TournamentService(requireContext())
+            TournamentRepository(requireContext())
         )
         super.onCreate(savedInstanceState)
     }
@@ -63,7 +63,7 @@ class TournamentListFragment : Fragment(), TournamentSwipeListener, CreateTourna
     }
 
     override fun onDestroyView() {
-        presenter.detachView()
+        presenter.onDestroyView()
         super.onDestroyView()
     }
 

@@ -20,7 +20,7 @@ import java.lang.reflect.Type
 
 const val TOURNAMENT_LOGO_PER_PAGE = 5
 
-interface ImageRemoteService {
+interface ImageRemoteApi {
     @GET("/search/photos?query=tennis&per_page=$TOURNAMENT_LOGO_PER_PAGE&orientation=landscape")
     fun searchLogo(@Query("page") page: Int): Single<List<TournamentLogo>>
 }

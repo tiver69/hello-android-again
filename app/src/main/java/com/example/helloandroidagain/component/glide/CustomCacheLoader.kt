@@ -18,11 +18,11 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.signature.ObjectKey
 import com.example.helloandroidagain.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
-import com.example.helloandroidagain.service.ImageCacheService
+import com.example.helloandroidagain.service.ImageCacheRepository
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class CustomCacheLoader(private val context: Context) : ModelLoader<String, Bitmap> {
-    private val imageCacheService = ImageCacheService(context)
+    private val imageCacheRepository = ImageCacheRepository(context)
 
     override fun buildLoadData(
         model: String,
@@ -35,7 +35,7 @@ class CustomCacheLoader(private val context: Context) : ModelLoader<String, Bitm
         } else {
             ModelLoader.LoadData(
                 ObjectKey(model),
-                SQLiteCacheFetcher(model, context, imageCacheService)
+                SQLiteCacheFetcher(model, context, imageCacheRepository)
             )
         }
     }
@@ -55,7 +55,7 @@ class CustomCacheLoader(private val context: Context) : ModelLoader<String, Bitm
     class SQLiteCacheFetcher(
         private val url: String,
         private val context: Context,
-        private val imageCacheService: ImageCacheService
+        private val imageCacheRepository: ImageCacheRepository
     ) : DataFetcher<Bitmap> {
         private val cacheServiceDisposable = CompositeDisposable()
 
@@ -64,7 +64,7 @@ class CustomCacheLoader(private val context: Context) : ModelLoader<String, Bitm
             callback: DataFetcher.DataCallback<in Bitmap>
         ) {
             val loadDisposable =
-                imageCacheService.loadImage(url).subscribe(
+                imageCacheRepository.loadImage(url).subscribe(
                     { result -> callback.onDataReady(result) },
                     { _ ->
                         loadImageToCache(callback)
@@ -90,7 +90,7 @@ class CustomCacheLoader(private val context: Context) : ModelLoader<String, Bitm
                         transition: Transition<in Bitmap>?
                     ) {
                         val saveDisposable =
-                            imageCacheService.saveImage(url, resource).subscribe(
+                            imageCacheRepository.saveImage(url, resource).subscribe(
                                 { callback.onDataReady(resource) },
                                 { _ ->
                                     callback.onLoadFailed(Exception("Failed to load image from custom cache"))

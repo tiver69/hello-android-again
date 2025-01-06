@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.io.ByteArrayOutputStream
 
-class ImageCacheService(context: Context) {
+class ImageCacheRepository(context: Context) {
     private val databaseHelper: ImageCacheDatabaseHelper = ImageCacheDatabaseHelper(context)
 
     fun saveImage(url: String, imageData: Bitmap): Completable =

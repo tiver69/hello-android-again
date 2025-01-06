@@ -22,7 +22,6 @@ import com.example.helloandroidagain.R
 import com.example.helloandroidagain.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
 import com.example.helloandroidagain.databinding.FragmentTournamentCreateBinding
 import com.example.helloandroidagain.model.Tournament
-import com.example.helloandroidagain.model.TournamentLogo
 import com.example.helloandroidagain.navigation.router
 import com.example.helloandroidagain.util.convertToLocalDate
 import com.example.helloandroidagain.util.convertToLocalDateAsEpochMilli
@@ -35,7 +34,6 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateCo
 
     private lateinit var binding: FragmentTournamentCreateBinding
     private lateinit var presenter: TournamentCreateContract.Presenter
-    private var currentLogo: TournamentLogo = TournamentLogo.default()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,8 +58,9 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateCo
             createDatePicker().show(parentFragmentManager, "CREATE_TOURNAMENT_DATE")
         }
         presenter.attachView(
-            this, state?.tournamentLogoPreloadPosition ?: 0,
-            state?.tournamentLogoPage ?: 1
+            view = this,
+            preloadedLogosPosition = state?.tournamentLogoPreloadPosition ?: 0,
+            tournamentLogosPage = state?.tournamentLogoPage ?: 1
         )
         presenter.fetchTournamentLogoPage()
         binding.tournamentCreateRegenerateImageButton.setOnClickListener {
@@ -79,8 +78,8 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateCo
             tournamentName = binding.tournamentCreateName.editText?.text.toString(),
             tournamentParticipantCount = binding.tournamentCreateParticipantCount.editText?.text.toString(),
             tournamentDate = binding.tournamentCreateDate.editText?.text.toString(),
-            tournamentLogoPreloadPosition = presenter.getCurrentState().first,
-            tournamentLogoPage = presenter.getCurrentState().second
+            tournamentLogoPreloadPosition = presenter.getCurrentPreloadedPosition(),
+            tournamentLogoPage = presenter.getCurrentLogosPage(),
         )
         outState.putParcelable(TOURNAMENT_CRATE_STATE_BUNDLE, state)
         super.onSaveInstanceState(outState)
@@ -91,7 +90,7 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateCo
         name = binding.tournamentCreateName.editText?.text.toString(),
         participantCount = Integer.valueOf(binding.tournamentCreateParticipantCount.editText?.text.toString()),
         date = binding.tournamentCreateDate.editText?.text.toString().convertToLocalDate(),
-        logo = currentLogo
+        logo = presenter.getCurrentLogo()
     )
 
     private fun createDatePicker(): MaterialDatePicker<Long> {
@@ -112,16 +111,15 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateCo
     }
 
     override fun onDestroyView() {
-        presenter.detachView()
+        presenter.onDestroyView()
         super.onDestroyView()
     }
 
     override fun getFragmentTitle(): Int = R.string.create_tournament_fragment_name
 
-    override fun loadLogo(logo: TournamentLogo) {
-        currentLogo = logo
+    override fun loadLogo(logoUrl: String) {
         Glide.with(requireContext().applicationContext)
-            .load(logo.regularUrl)
+            .load(logoUrl)
             .apply(RequestOptions().set(SKIP_CUSTOM_CACHE, true))
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
@@ -147,7 +145,6 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateCo
     }
 
     override fun loadPlaceholderImage() {
-        currentLogo = TournamentLogo.default()
         Glide.with(requireContext())
             .load(R.drawable.ic_image_placeholder)
             .into(binding.tournamentCreateLogo)

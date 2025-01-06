@@ -23,7 +23,7 @@ import java.lang.reflect.Type
 import java.time.LocalDate
 import kotlin.random.Random
 
-class TournamentService(
+class TournamentRepository(
     context: Context
 ) : TournamentRepository {
 
