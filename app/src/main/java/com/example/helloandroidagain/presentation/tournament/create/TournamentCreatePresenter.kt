@@ -6,9 +6,12 @@ import com.example.helloandroidagain.domain.usecase.FetchTournamentLogoPageUseCa
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import javax.inject.Inject
 
-class TournamentCreatePresenter : TournamentCreateContract.Presenter {
-    private val fetchTournamentLogoPageUseCase = FetchTournamentLogoPageUseCase()
+class TournamentCreatePresenter @Inject constructor() : TournamentCreateContract.Presenter {
+
+    @Inject
+    lateinit var fetchTournamentLogoPageUseCase: FetchTournamentLogoPageUseCase
     private var view: TournamentCreateContract.View? = null
     private lateinit var preloadedLogos: List<TournamentLogo>
     private val disposables = CompositeDisposable()

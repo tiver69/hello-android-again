@@ -9,27 +9,27 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.helloandroidagain.App
 import com.example.helloandroidagain.presentation.component.recyclerview.ItemLeftSwipeHelper
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentSwipeListener
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentListAdapter
 import com.example.helloandroidagain.databinding.FragmentTournamentListBinding
 import com.example.helloandroidagain.data.model.Tournament
-import com.example.helloandroidagain.data.repository.local.TournamentRepository
 import com.example.helloandroidagain.presentation.navigation.CreateTournamentResultListener
 import com.example.helloandroidagain.presentation.navigation.router
+import javax.inject.Inject
 
-class TournamentListFragment : Fragment(), TournamentSwipeListener, CreateTournamentResultListener,
+class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipeListener, CreateTournamentResultListener,
     TournamentListContract.View {
 
     private lateinit var binding: FragmentTournamentListBinding
-    private lateinit var adapter: TournamentListAdapter
-    private lateinit var presenter: TournamentListContract.Presenter
+    @Inject
+    lateinit var adapter: TournamentListAdapter
+    @Inject
+    lateinit var presenter: TournamentListContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        adapter = TournamentListAdapter()
-        presenter = TournamentListPresenter(
-            TournamentRepository(requireContext())
-        )
+        (requireActivity().application as App).appComponent.injectTournamentListFragment(this)
         super.onCreate(savedInstanceState)
     }
 
@@ -58,7 +58,7 @@ class TournamentListFragment : Fragment(), TournamentSwipeListener, CreateTourna
     }
 
     override fun updateTournamentList(tournaments: List<Tournament>) {
-        binding.recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter //This fixes incorrect displaying old/current tournaments on start but causes removing from scrollable part of list jump to start
         adapter.tournaments = tournaments
     }
 

@@ -18,10 +18,11 @@ import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentListAdapter.TournamentViewHolder
 import com.example.helloandroidagain.util.convertToString
 import java.time.LocalDate
+import javax.inject.Inject
 
 typealias TournamentType = TournamentViewHolder.Companion.TournamentItemType
 
-class TournamentListAdapter : RecyclerView.Adapter<TournamentViewHolder>() {
+class TournamentListAdapter @Inject constructor() : RecyclerView.Adapter<TournamentViewHolder>() {
 
     var tournaments: List<Tournament> = emptyList()
         set(newValue) {
