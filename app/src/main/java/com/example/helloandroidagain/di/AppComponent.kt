@@ -9,4 +9,6 @@ import dagger.Component
 interface AppComponent {
     fun injectTournamentCreateFragment(tournamentCreateFragment: TournamentCreateFragment)
     fun injectTournamentListFragment(tournamentListFragment: TournamentListFragment)
+
+    fun glideSubcomponentFactory(): GlideComponent.Factory
 }

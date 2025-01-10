@@ -1,7 +1,6 @@
 package com.example.helloandroidagain.data.repository.local
 
 import android.content.ContentValues
-import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,9 +10,12 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.io.ByteArrayOutputStream
+import javax.inject.Inject
 
-class ImageCacheRepository(context: Context) {
-    private val databaseHelper: ImageCacheDatabaseHelper = ImageCacheDatabaseHelper(context)
+class ImageCacheRepository @Inject constructor() {
+
+    @Inject
+    lateinit var databaseHelper: ImageCacheDatabaseHelper
 
     fun saveImage(url: String, imageData: Bitmap): Completable =
         Completable.create { emitter ->

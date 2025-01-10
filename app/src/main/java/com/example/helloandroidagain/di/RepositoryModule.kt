@@ -1,6 +1,8 @@
 package com.example.helloandroidagain.di
 
+import android.content.Context
 import android.content.SharedPreferences
+import com.example.helloandroidagain.data.db.ImageCacheDatabaseHelper
 import com.example.helloandroidagain.data.repository.local.TournamentRepositoryImpl
 import com.example.helloandroidagain.data.repository.remote.ImageRemoteApi
 import com.example.helloandroidagain.data.repository.remote.ImageRetrofitInstance
@@ -22,4 +24,11 @@ class RepositoryModule {
     fun provideImageRemoteApi(): ImageRemoteApi {
         return ImageRetrofitInstance.retrofit.create(ImageRemoteApi::class.java)
     }
+
+    @AppScope
+    @Provides
+    fun provideImageCacheDatabaseHelper(context: Context): ImageCacheDatabaseHelper =
+        ImageCacheDatabaseHelper(context)
+
+
 }
