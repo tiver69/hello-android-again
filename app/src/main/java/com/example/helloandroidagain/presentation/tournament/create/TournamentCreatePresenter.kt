@@ -8,10 +8,9 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
-class TournamentCreatePresenter @Inject constructor() : TournamentCreateContract.Presenter {
-
-    @Inject
-    lateinit var fetchTournamentLogoPageUseCase: FetchTournamentLogoPageUseCase
+class TournamentCreatePresenter @Inject constructor(
+    private var fetchTournamentLogoPageUseCase: FetchTournamentLogoPageUseCase
+) : TournamentCreateContract.Presenter {
     private var view: TournamentCreateContract.View? = null
     private lateinit var preloadedLogos: List<TournamentLogo>
     private val disposables = CompositeDisposable()

@@ -6,8 +6,11 @@ import com.example.helloandroidagain.presentation.tournament.list.TournamentList
 import com.example.helloandroidagain.presentation.tournament.list.TournamentListPresenter
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.FragmentComponent
 
 @Module
+@InstallIn(FragmentComponent::class)
 abstract class PresenterModule {
     @Binds
     abstract fun bindTournamentCreatePresenter(

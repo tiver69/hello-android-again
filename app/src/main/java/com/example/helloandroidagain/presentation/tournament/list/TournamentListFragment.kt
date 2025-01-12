@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.helloandroidagain.App
 import com.example.helloandroidagain.presentation.component.recyclerview.ItemLeftSwipeHelper
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentSwipeListener
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentListAdapter
@@ -17,8 +16,10 @@ import com.example.helloandroidagain.databinding.FragmentTournamentListBinding
 import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.presentation.navigation.CreateTournamentResultListener
 import com.example.helloandroidagain.presentation.navigation.router
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipeListener, CreateTournamentResultListener,
     TournamentListContract.View {
 
@@ -27,11 +28,6 @@ class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipe
     lateinit var adapter: TournamentListAdapter
     @Inject
     lateinit var presenter: TournamentListContract.Presenter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        (requireActivity().application as App).appComponent.injectTournamentListFragment(this)
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

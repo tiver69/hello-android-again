@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.dagger.hilt)
 }
 
 android {
@@ -63,9 +64,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.adapter.rxjava3)
     implementation(libs.bumptech.glide)
-    implementation(libs.dagger)
+    implementation(libs.dagger.hilt)
     kapt(libs.bumptech.glide.compiler)
-    kapt(libs.dagger.compiler)
+    kapt(libs.dagger.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

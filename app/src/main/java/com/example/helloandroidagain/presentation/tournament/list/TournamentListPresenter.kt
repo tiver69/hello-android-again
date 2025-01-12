@@ -10,19 +10,13 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
-class TournamentListPresenter @Inject constructor() :
+class TournamentListPresenter @Inject constructor(
+    private var loadTournamentsUseCase: LoadTournamentsUseCase,
+    private var saveTournamentsUseCase: SaveTournamentsUseCase,
+    private var createTournamentsUseCase: CreateTournamentsUseCase,
+    private var removeTournamentsUseCase: RemoveTournamentsUseCase,
+) :
     TournamentListContract.Presenter {
-    @Inject
-    lateinit var loadTournamentsUseCase: LoadTournamentsUseCase
-
-    @Inject
-    lateinit var saveTournamentsUseCase: SaveTournamentsUseCase
-
-    @Inject
-    lateinit var createTournamentsUseCase: CreateTournamentsUseCase
-
-    @Inject
-    lateinit var removeTournamentsUseCase: RemoveTournamentsUseCase
     private var view: TournamentListContract.View? = null
     private val disposables = CompositeDisposable()
 

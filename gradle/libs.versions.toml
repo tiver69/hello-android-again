@@ -38,12 +38,13 @@ bumptech-glide = { module = "com.github.bumptech.glide:glide", name = "glide", v
 bumptech-glide-compiler = { module = "com.github.bumptech.glide:compiler", name = "glide", version.ref = "glide" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", name = "retrofit", version.ref = "retrofit" }
 retrofit-adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", name = "adapterRx", version.ref = "retrofit" }
-dagger = { module = "com.google.dagger:dagger", name = "dagger", version.ref = "dagger" }
-dagger-compiler = { module = "com.google.dagger:dagger-compiler", name = "dagger", version.ref = "dagger" }
+dagger-hilt = { module = "com.google.dagger:hilt-android", name = "hilt", version.ref = "dagger" }
+dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", name = "hilt", version.ref = "dagger" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt" }
+dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 

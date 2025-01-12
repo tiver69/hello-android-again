@@ -9,26 +9,28 @@ import com.example.helloandroidagain.data.repository.remote.ImageRetrofitInstanc
 import com.example.helloandroidagain.domain.repository.TournamentRepository
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 class RepositoryModule {
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideTournamentRepository(sharedPreferences: SharedPreferences): TournamentRepository {
         return TournamentRepositoryImpl(sharedPreferences)
     }
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideImageRemoteApi(): ImageRemoteApi {
         return ImageRetrofitInstance.retrofit.create(ImageRemoteApi::class.java)
     }
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideImageCacheDatabaseHelper(context: Context): ImageCacheDatabaseHelper =
         ImageCacheDatabaseHelper(context)
-
-
 }

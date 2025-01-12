@@ -18,7 +18,6 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import com.example.helloandroidagain.App
 import com.example.helloandroidagain.R
 import com.example.helloandroidagain.presentation.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
 import com.example.helloandroidagain.databinding.FragmentTournamentCreateBinding
@@ -29,9 +28,11 @@ import com.example.helloandroidagain.util.convertToLocalDateAsEpochMilli
 import com.example.helloandroidagain.util.convertToLongAsEpochMilli
 import com.example.helloandroidagain.util.convertToString
 import com.google.android.material.datepicker.MaterialDatePicker
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateContract.View {
 
     private lateinit var binding: FragmentTournamentCreateBinding
@@ -46,7 +47,6 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateCo
         val state: TournamentCreateFragmentState? =
             savedInstanceState?.getParcelable(TOURNAMENT_CRATE_STATE_BUNDLE)
         binding = FragmentTournamentCreateBinding.inflate(inflater, container, false)
-        (requireActivity().application as App).appComponent.injectTournamentCreateFragment(this)
 
         val tournamentName = state?.tournamentName ?: "Tournament${
             arguments?.getInt(NEXT_TOURNAMENT_COUNT)
