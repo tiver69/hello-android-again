@@ -1,6 +1,5 @@
 package com.example.helloandroidagain.data.repository.local
 
-import android.content.Context
 import android.content.SharedPreferences
 import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.data.model.TournamentLogo
@@ -21,14 +20,12 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import java.lang.reflect.Type
 import java.time.LocalDate
+import javax.inject.Inject
 import kotlin.random.Random
 
-class TournamentRepository(
-    context: Context
-) : TournamentRepository {
+class TournamentRepositoryImpl @Inject constructor(private val sharedPreferences: SharedPreferences) :
+    TournamentRepository {
 
-    private val sharedPreferences: SharedPreferences =
-        context.getSharedPreferences(TOURNAMENT_LIST_PREF, Context.MODE_PRIVATE)
     private val gson: Gson = GsonBuilder()
         .registerTypeAdapter(LocalDate::class.java, object : JsonSerializer<LocalDate> {
             override fun serialize(
@@ -99,7 +96,6 @@ class TournamentRepository(
     }
 
     companion object {
-        private const val TOURNAMENT_LIST_PREF = "tournament_list_pref"
         private const val TOURNAMENT_LIST = "tournament_list"
         private const val TMP_ID_GENERATOR = "tmp_id_generator"
     }

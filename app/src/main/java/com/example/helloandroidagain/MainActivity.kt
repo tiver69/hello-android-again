@@ -10,11 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.example.helloandroidagain.databinding.ActivityMainBinding
+import com.example.helloandroidagain.presentation.navigation.CreateTournamentResultListener
+import com.example.helloandroidagain.presentation.navigation.Router
 import com.example.helloandroidagain.presentation.tournament.create.FragmentToolbar
 import com.example.helloandroidagain.presentation.tournament.create.TournamentCreateFragment
 import com.example.helloandroidagain.presentation.tournament.list.TournamentListFragment
-import com.example.helloandroidagain.presentation.navigation.CreateTournamentResultListener
-import com.example.helloandroidagain.presentation.navigation.Router
 
 class MainActivity : AppCompatActivity(), Router {
 

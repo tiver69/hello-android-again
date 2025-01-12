@@ -1,3 +1,8 @@
+# [HomeTask #4](https://github.com/tiver69/hello-android-again/tree/hometask_4_dagger)
+Extend App from [HomeTask #3.2](https://github.com/tiver69/hello-android-again/tree/hometask_3_clean?tab=readme-ov-file#hometask_3_clean) with DI using Dagger2 
+
+---
+
 # [HomeTask #3.2 Clean Architecture](https://github.com/tiver69/hello-android-again/tree/hometask_3_clean)
 Change App from [HomeTask #2](https://github.com/tiver69/hello-android-again/tree/hometask_2?tab=readme-ov-file#hometask-2) to follow Clean Architecture:
 * __Presentation Layer:__ tournament(fragment+presenter+contract), navigation and ui-related components 

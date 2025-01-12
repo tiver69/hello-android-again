@@ -3,8 +3,9 @@ package com.example.helloandroidagain.data.db
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import javax.inject.Inject
 
-class ImageCacheDatabaseHelper(context: Context) :
+class ImageCacheDatabaseHelper @Inject constructor(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
