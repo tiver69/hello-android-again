@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,17 +18,20 @@ import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.presentation.navigation.CreateTournamentResultListener
 import com.example.helloandroidagain.presentation.navigation.router
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipeListener, CreateTournamentResultListener,
-    TournamentListContract.View {
+class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipeListener,
+    CreateTournamentResultListener {
 
     private lateinit var binding: FragmentTournamentListBinding
+
     @Inject
     lateinit var adapter: TournamentListAdapter
-    @Inject
-    lateinit var presenter: TournamentListContract.Presenter
+
+    private val viewModel: TournamentListViewModel by viewModels()
+    private val disposables = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +48,7 @@ class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipe
             )
         )
         ItemTouchHelper(ItemLeftSwipeHelper(this)).attachToRecyclerView(binding.recyclerView)
-        presenter.attachView(this)
+        updateTournamentList()
         binding.addTournamentFab.setOnClickListener {
             router().navToCreateTournament((binding.recyclerView.adapter?.itemCount ?: 0) + 1)
         }
@@ -53,27 +57,33 @@ class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipe
         return binding.root
     }
 
-    override fun updateTournamentList(tournaments: List<Tournament>) {
-        binding.recyclerView.adapter = adapter //This fixes incorrect displaying old/current tournaments on start but causes removing from scrollable part of list jump to start
-        adapter.tournaments = tournaments
+    private fun updateTournamentList() {
+        viewModel.tournaments.subscribe {
+            binding.recyclerView.adapter =
+                adapter //This fixes incorrect displaying old/current tournaments on start but causes removing from scrollable part of list jump to start
+            adapter.tournaments = it
+        }.also {
+            disposables.add(it)
+        }
+        viewModel.loadTournaments()
     }
 
     override fun onDestroyView() {
-        presenter.onDestroyView()
+        disposables.clear()
         super.onDestroyView()
     }
 
     override fun onStop() {
-        presenter.saveTournaments()
+        viewModel.saveTournaments()
         super.onStop()
     }
 
     override fun onRemoveSwipe(tournamentPosition: Int) {
         Log.d("TournamentListFragment", "On click pressed on $tournamentPosition")
-        presenter.removeTournament(tournamentPosition)
+        viewModel.removeTournament(tournamentPosition)
     }
 
     override fun tournamentCreated(tournament: Tournament) {
-        presenter.createTournament(tournament)
+        viewModel.createTournament(tournament)
     }
 }

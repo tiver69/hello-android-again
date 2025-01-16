@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -29,19 +30,19 @@ import com.example.helloandroidagain.util.convertToLongAsEpochMilli
 import com.example.helloandroidagain.util.convertToString
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.parcelize.Parcelize
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateContract.View {
+class TournamentCreateFragment : Fragment(), FragmentToolbar {
 
     private lateinit var binding: FragmentTournamentCreateBinding
-    @Inject lateinit var presenter: TournamentCreateContract.Presenter
+
+    private val viewModel: TournamentCreateViewModel by viewModels()
+    private val disposables = CompositeDisposable()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         requireActivity().addMenuProvider(tournamentCreateMenuProvider, viewLifecycleOwner)
         val state: TournamentCreateFragmentState? =
@@ -59,14 +60,20 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateCo
         binding.tournamentCreateDate.editText?.setOnClickListener {
             createDatePicker().show(parentFragmentManager, "CREATE_TOURNAMENT_DATE")
         }
-        presenter.attachView(
-            view = this,
-            preloadedLogosPosition = state?.tournamentLogoPreloadPosition ?: 0,
-            tournamentLogosPage = state?.tournamentLogoPage ?: 1
-        )
-        presenter.fetchTournamentLogoPage()
+        viewModel.currentLogoUrl
+            .subscribe {
+                loadLogo(it)
+            }
+            .also { disposables.add(it) }
+        viewModel.logoError
+            .subscribe {
+                loadPlaceholderImage()
+                showLogoErrorToast()
+            }
+            .also { disposables.add(it) }
+        if (savedInstanceState == null) viewModel.fetchTournamentLogoPage()
         binding.tournamentCreateRegenerateImageButton.setOnClickListener {
-            presenter.regenerateTournamentLogo()
+            viewModel.regenerateTournamentLogo()
         }
         binding.tournamentCreateSaveButton.setOnClickListener {
             router().createResult(createTournamentResult())
@@ -80,8 +87,6 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateCo
             tournamentName = binding.tournamentCreateName.editText?.text.toString(),
             tournamentParticipantCount = binding.tournamentCreateParticipantCount.editText?.text.toString(),
             tournamentDate = binding.tournamentCreateDate.editText?.text.toString(),
-            tournamentLogoPreloadPosition = presenter.getCurrentPreloadedPosition(),
-            tournamentLogoPage = presenter.getCurrentLogosPage(),
         )
         outState.putParcelable(TOURNAMENT_CRATE_STATE_BUNDLE, state)
         super.onSaveInstanceState(outState)
@@ -92,7 +97,7 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateCo
         name = binding.tournamentCreateName.editText?.text.toString(),
         participantCount = Integer.valueOf(binding.tournamentCreateParticipantCount.editText?.text.toString()),
         date = binding.tournamentCreateDate.editText?.text.toString().convertToLocalDate(),
-        logo = presenter.getCurrentLogo()
+        logo = viewModel.currentLogo
     )
 
     private fun createDatePicker(): MaterialDatePicker<Long> {
@@ -101,8 +106,7 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateCo
             .setSelection(
                 binding.tournamentCreateDate.editText?.text.toString().convertToLocalDate()
                     .convertToLongAsEpochMilli()
-            )
-            .build()
+            ).build()
 
         datePicker.addOnPositiveButtonClickListener { pickedEpochMilli ->
             binding.tournamentCreateDate.editText?.setText(
@@ -113,13 +117,13 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateCo
     }
 
     override fun onDestroyView() {
-        presenter.onDestroyView()
+        disposables.clear()
         super.onDestroyView()
     }
 
     override fun getFragmentTitle(): Int = R.string.create_tournament_fragment_name
 
-    override fun loadLogo(logoUrl: String) {
+    private fun loadLogo(logoUrl: String) {
         Glide.with(requireContext().applicationContext)
             .load(logoUrl)
             .apply(RequestOptions().set(SKIP_CUSTOM_CACHE, true))
@@ -146,13 +150,13 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateCo
             .into(binding.tournamentCreateLogo)
     }
 
-    override fun loadPlaceholderImage() {
+    private fun loadPlaceholderImage() {
         Glide.with(requireContext())
             .load(R.drawable.ic_image_placeholder)
             .into(binding.tournamentCreateLogo)
     }
 
-    override fun showLogoErrorToast() {
+    private fun showLogoErrorToast() {
         Toast.makeText(
             requireContext(),
             R.string.create_tournament_load_error,
@@ -187,8 +191,6 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar, TournamentCreateCo
         val tournamentName: String,
         val tournamentDate: String,
         val tournamentParticipantCount: String,
-        val tournamentLogoPreloadPosition: Int,
-        val tournamentLogoPage: Int,
     ) : Parcelable
 
     companion object {

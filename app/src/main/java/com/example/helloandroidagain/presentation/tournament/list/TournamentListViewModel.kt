@@ -1,50 +1,56 @@
 package com.example.helloandroidagain.presentation.tournament.list
 
+import androidx.lifecycle.ViewModel
 import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.domain.usecase.CreateTournamentsUseCase
 import com.example.helloandroidagain.domain.usecase.LoadTournamentsUseCase
 import com.example.helloandroidagain.domain.usecase.RemoveTournamentsUseCase
 import com.example.helloandroidagain.domain.usecase.SaveTournamentsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import javax.inject.Inject
 
-class TournamentListPresenter @Inject constructor(
+@HiltViewModel
+class TournamentListViewModel @Inject constructor(
     private var loadTournamentsUseCase: LoadTournamentsUseCase,
     private var saveTournamentsUseCase: SaveTournamentsUseCase,
     private var createTournamentsUseCase: CreateTournamentsUseCase,
     private var removeTournamentsUseCase: RemoveTournamentsUseCase,
-) :
-    TournamentListContract.Presenter {
-    private var view: TournamentListContract.View? = null
+) : ViewModel() {
+
+    private val _tournaments = BehaviorSubject.create<List<Tournament>>()
+    val tournaments: Observable<List<Tournament>> = _tournaments.hide()
+
     private val disposables = CompositeDisposable()
 
-    override fun attachView(view: TournamentListContract.View) {
-        this.view = view
-        val tournamentsDisposable = loadTournamentsUseCase.invoke()
+    fun loadTournaments() {
+        loadTournamentsUseCase.invoke()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { tournaments ->
-                view.updateTournamentList(tournaments)
+            .subscribe {
+                _tournaments.onNext(it)
             }
-        disposables.add(tournamentsDisposable)
+            .also { disposables.add(it) }
     }
 
-    override fun onDestroyView() {
-        disposables.clear()
-        this.view = null
-    }
-
-    override fun createTournament(tournament: Tournament) {
+    fun createTournament(tournament: Tournament) {
         createTournamentsUseCase.invoke(tournament)
     }
 
-    override fun removeTournament(tournamentPosition: Int) {
+    fun removeTournament(tournamentPosition: Int) {
         removeTournamentsUseCase.invoke(tournamentPosition)
     }
 
-    override fun saveTournaments() {
+    fun saveTournaments() {
         saveTournamentsUseCase.invoke()
+    }
+
+    override fun onCleared() {
+        disposables.clear()
+        super.onCleared()
     }
 }
