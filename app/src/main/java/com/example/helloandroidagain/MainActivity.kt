@@ -15,7 +15,9 @@ import com.example.helloandroidagain.presentation.navigation.Router
 import com.example.helloandroidagain.presentation.tournament.create.FragmentToolbar
 import com.example.helloandroidagain.presentation.tournament.create.TournamentCreateFragment
 import com.example.helloandroidagain.presentation.tournament.list.TournamentListFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), Router {
 
     private lateinit var binding: ActivityMainBinding

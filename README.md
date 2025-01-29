@@ -1,3 +1,12 @@
+# [HomeTask #5](https://github.com/tiver69/hello-android-again/tree/hometask_5)
+Update App from [HomeTask #4](https://github.com/tiver69/hello-android-again/tree/hometask_4_dagger?tab=readme-ov-file#hometask_3_clean) to Hilt DI and MVVM Architecture
+
+## Checklist:
+
+- [x] Hilt DI
+- [x] MVVM
+---
+
 # [HomeTask #4](https://github.com/tiver69/hello-android-again/tree/hometask_4_dagger)
 Extend App from [HomeTask #3.2](https://github.com/tiver69/hello-android-again/tree/hometask_3_clean?tab=readme-ov-file#hometask_3_clean) with DI using Dagger2 
 

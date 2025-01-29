@@ -19,7 +19,8 @@ import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.signature.ObjectKey
 import com.example.helloandroidagain.presentation.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
 import com.example.helloandroidagain.data.repository.local.ImageCacheRepository
-import com.example.helloandroidagain.di.GlideComponent
+import com.example.helloandroidagain.di.GlideEntryPoint
+import dagger.hilt.EntryPoints
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -47,11 +48,13 @@ class CustomCacheLoader @Inject constructor(
 
     override fun handles(model: String): Boolean = true
 
-    class Factory(private val glideComponent: GlideComponent) :
-        ModelLoaderFactory<String, Bitmap> {
+    class Factory(private val context: Context) : ModelLoaderFactory<String, Bitmap> {
 
-        override fun build(multiFactory: MultiModelLoaderFactory): ModelLoader<String, Bitmap> =
-            glideComponent.getCustomCacheLoader()
+        override fun build(multiFactory: MultiModelLoaderFactory): ModelLoader<String, Bitmap> {
+            val entryPoint =
+                EntryPoints.get(context.applicationContext, GlideEntryPoint::class.java)
+            return entryPoint.getCustomCacheLoader()
+        }
 
         override fun teardown() {
         }
