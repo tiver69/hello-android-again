@@ -28,7 +28,7 @@ class TournamentCreateViewModel @Inject constructor(
     val currentLogoUrl: Observable<String> = _currentLogoUrl.hide()
 
     private val _logoError = PublishSubject.create<Unit>()
-    val logoError: Observable<Unit> get() = _logoError
+    val logoError: Observable<Unit> = _logoError.hide()
     private val disposables = CompositeDisposable()
 
     override fun onCleared() {
