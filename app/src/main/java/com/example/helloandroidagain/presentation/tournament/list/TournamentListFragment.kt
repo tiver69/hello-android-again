@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +19,7 @@ import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.presentation.navigation.CreateTournamentResultListener
 import com.example.helloandroidagain.presentation.navigation.router
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,7 +32,6 @@ class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipe
     lateinit var adapter: TournamentListAdapter
 
     private val viewModel: TournamentListViewModel by viewModels()
-    private val disposables = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +41,7 @@ class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipe
         binding = FragmentTournamentListBinding.inflate(inflater, container, false)
         val layoutManager = LinearLayoutManager(container?.context)
         binding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(
                 context,
@@ -58,19 +59,11 @@ class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipe
     }
 
     private fun updateTournamentList() {
-        viewModel.tournaments.subscribe {
-            binding.recyclerView.adapter =
-                adapter //This fixes incorrect displaying old/current tournaments on start but causes removing from scrollable part of list jump to start
-            adapter.tournaments = it
-        }.also {
-            disposables.add(it)
+        lifecycleScope.launch {
+            viewModel.tournamentsFlow.collect {
+                adapter.tournaments = it
+            }
         }
-        viewModel.loadTournaments()
-    }
-
-    override fun onDestroyView() {
-        disposables.clear()
-        super.onDestroyView()
     }
 
     override fun onStop() {

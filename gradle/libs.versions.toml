@@ -15,6 +15,7 @@ browser = "1.8.0"
 gson = "2.10.1"
 rxJava = "3.1.5"
 rxAndroid = "3.0.2"
+coroutines = "1.8.1"
 glide = "4.15.1"
 retrofit = "2.9.0"
 dagger = "2.52"
@@ -34,6 +35,8 @@ androidx-browser = { module = "androidx.browser:browser", name = "browser", vers
 google-gson = { module = "com.google.code.gson:gson", name = "gson", version.ref = "gson" }
 rx-java = { module = "io.reactivex.rxjava3:rxjava", name = "rxJava", version.ref = "rxJava" }
 rx-android = { module = "io.reactivex.rxjava3:rxandroid", name = "rxAndroid", version.ref = "rxAndroid" }
+coroutines = {module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", name = "coroutines", version.ref = "coroutines"}
+coroutines-android = {module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", name = "coroutines", version.ref = "coroutines"}
 bumptech-glide = { module = "com.github.bumptech.glide:glide", name = "glide", version.ref = "glide" }
 bumptech-glide-compiler = { module = "com.github.bumptech.glide:compiler", name = "glide", version.ref = "glide" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", name = "retrofit", version.ref = "retrofit" }

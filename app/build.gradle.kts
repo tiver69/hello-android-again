@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.google.gson)
     implementation(libs.rx.java)
     implementation(libs.rx.android)
+    implementation(libs.coroutines)
+    implementation(libs.coroutines.android)
     implementation(libs.retrofit)
     implementation(libs.retrofit.adapter.rxjava3)
     implementation(libs.bumptech.glide)

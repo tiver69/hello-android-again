@@ -1,5 +1,10 @@
+# [HomeTask #6](https://github.com/tiver69/hello-android-again/tree/hometask_6_coroutines)
+Update App from [HomeTask #5](https://github.com/tiver69/hello-android-again/tree/hometask_5?tab=readme-ov-file#hometask-5) to use Coroutines instead of RxJava
+
+---
+ 
 # [HomeTask #5](https://github.com/tiver69/hello-android-again/tree/hometask_5)
-Update App from [HomeTask #4](https://github.com/tiver69/hello-android-again/tree/hometask_4_dagger?tab=readme-ov-file#hometask_3_clean) to Hilt DI and MVVM Architecture
+Update App from [HomeTask #4](https://github.com/tiver69/hello-android-again/tree/hometask_4_dagger?tab=readme-ov-file#hometask-4) to Hilt DI and MVVM Architecture
 
 ## Checklist:
 
