@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -30,7 +31,7 @@ import com.example.helloandroidagain.util.convertToLongAsEpochMilli
 import com.example.helloandroidagain.util.convertToString
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
@@ -39,7 +40,6 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
     private lateinit var binding: FragmentTournamentCreateBinding
 
     private val viewModel: TournamentCreateViewModel by viewModels()
-    private val disposables = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -60,17 +60,15 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         binding.tournamentCreateDate.editText?.setOnClickListener {
             createDatePicker().show(parentFragmentManager, "CREATE_TOURNAMENT_DATE")
         }
-        viewModel.currentLogoUrl
-            .subscribe {
-                loadLogo(it)
+        lifecycleScope.launch {
+            viewModel.currentLogoUrl.collect { result ->
+                result.onSuccess { loadLogo(it) }
+                result.onFailure {
+                    loadPlaceholderImage()
+                    showLogoErrorToast()
+                }
             }
-            .also { disposables.add(it) }
-        viewModel.logoError
-            .subscribe {
-                loadPlaceholderImage()
-                showLogoErrorToast()
-            }
-            .also { disposables.add(it) }
+        }
         if (savedInstanceState == null) viewModel.fetchTournamentLogoPage()
         binding.tournamentCreateRegenerateImageButton.setOnClickListener {
             viewModel.regenerateTournamentLogo()
@@ -114,11 +112,6 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
             )
         }
         return datePicker
-    }
-
-    override fun onDestroyView() {
-        disposables.clear()
-        super.onDestroyView()
     }
 
     override fun getFragmentTitle(): Int = R.string.create_tournament_fragment_name
