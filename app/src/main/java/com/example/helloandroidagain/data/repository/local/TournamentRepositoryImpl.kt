@@ -16,9 +16,11 @@ import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.withContext
 import java.lang.reflect.Type
 import java.time.LocalDate
 import javax.inject.Inject
@@ -48,7 +50,7 @@ class TournamentRepositoryImpl @Inject constructor(private val sharedPreferences
         MutableStateFlow(restoreTournaments())
     private var tmpIdGenerator: Long = 20
 
-    override fun saveTournaments() {
+    override suspend fun saveTournaments() = withContext(Dispatchers.IO) {
         val json = gson.toJson(_tournamentsFlow.value)
         sharedPreferences.edit()
             .putString(TOURNAMENT_LIST, json)

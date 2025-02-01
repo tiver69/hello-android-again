@@ -7,5 +7,5 @@ interface TournamentRepository {
     fun getTournaments(): StateFlow<List<Tournament>>
     fun addTournament(tournament: Tournament)
     fun removeTournament(tournamentPosition: Int)
-    fun saveTournaments()
+    suspend fun saveTournaments()
 }

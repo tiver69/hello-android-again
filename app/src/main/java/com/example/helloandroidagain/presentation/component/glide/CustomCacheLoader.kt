@@ -1,6 +1,7 @@
 package com.example.helloandroidagain.presentation.component.glide
 
 import android.content.Context
+import android.database.sqlite.SQLiteException
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import com.bumptech.glide.Glide
@@ -24,6 +25,7 @@ import dagger.hilt.EntryPoints
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.lang.IllegalStateException
 import javax.inject.Inject
 
 class CustomCacheLoader @Inject constructor(
@@ -75,13 +77,12 @@ class CustomCacheLoader @Inject constructor(
         ) {
             CoroutineScope(cacheServiceJob).launch {
                 try {
-                    val result = imageCacheRepository.loadImage(url)
-                    if (result != null) {
-                        callback.onDataReady(result)
-                    } else {
-                        loadImageToCache(callback)
-                    }
-                } catch (exc: Exception) {
+                    imageCacheRepository.loadImage(url)?.let {
+                        callback.onDataReady(it)
+                    } ?: loadImageToCache(callback)
+                } catch (exc: IllegalStateException) {
+                    callback.onLoadFailed(Exception("Failed to load image from custom cache"))
+                } catch (exc: SQLiteException) {
                     loadImageToCache(callback)
                 }
             }
@@ -104,8 +105,8 @@ class CustomCacheLoader @Inject constructor(
                             try {
                                 imageCacheRepository.saveImage(url, resource)
                                 callback.onDataReady(resource)
-                            } catch (exc: Exception) {
-                                callback.onLoadFailed(Exception("Failed to load image from custom cache"))
+                            } catch (exc: SQLiteException) {
+                                callback.onLoadFailed(Exception("Failed to save image to custom cache"))
                             }
                         }
                     }
@@ -115,7 +116,7 @@ class CustomCacheLoader @Inject constructor(
                     }
 
                     override fun onLoadFailed(errorDrawable: Drawable?) {
-                        callback.onLoadFailed(Exception("Failed to load image from custom cache"))
+                        callback.onLoadFailed(Exception("Failed to save image to custom cache"))
                     }
                 })
         }

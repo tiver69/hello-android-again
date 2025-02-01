@@ -7,10 +7,10 @@ import com.example.helloandroidagain.data.model.TournamentLogo
 import com.example.helloandroidagain.data.repository.remote.TOURNAMENT_LOGO_PER_PAGE
 import com.example.helloandroidagain.domain.usecase.FetchTournamentLogoPageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,22 +18,18 @@ class TournamentCreateViewModel @Inject constructor(
     private var fetchTournamentLogoPageUseCase: FetchTournamentLogoPageUseCase
 ) : ViewModel() {
     private var preloadedLogos: List<TournamentLogo> = emptyList()
-    var currentLogo: TournamentLogo = TournamentLogo.default()
-        private set
-        get() = field.copy()
     private var preloadedLogosPosition: Int = 0
     private var tournamentLogosPage: Int = 1
 
-    private val _currentLogoUrl: MutableStateFlow<Result<String>> =
-        MutableStateFlow(Result.success(currentLogo.regularUrl))
-    val currentLogoUrl = _currentLogoUrl.asStateFlow()
+    private val _currentLogo: MutableStateFlow<TournamentLogo?> =
+        MutableStateFlow(TournamentLogo.default())
+    val currentLogo = _currentLogo.asStateFlow()
 
     fun regenerateTournamentLogo() {
         if (preloadedLogos.isEmpty()) {
             fetchTournamentLogoPage(tournamentLogosPage)
         } else if (preloadedLogosPosition < TOURNAMENT_LOGO_PER_PAGE) {
-            currentLogo = preloadedLogos[preloadedLogosPosition++]
-            _currentLogoUrl.value = Result.success(currentLogo.regularUrl)
+            _currentLogo.value = preloadedLogos[preloadedLogosPosition++]
         } else {
             preloadedLogosPosition = 0
             fetchTournamentLogoPage(tournamentLogosPage)
@@ -45,16 +41,14 @@ class TournamentCreateViewModel @Inject constructor(
     }
 
     private fun fetchTournamentLogoPage(page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
                 preloadedLogos = fetchTournamentLogoPageUseCase.invoke(page)
                 tournamentLogosPage++
-                currentLogo = preloadedLogos[preloadedLogosPosition++]
-                _currentLogoUrl.value = Result.success(currentLogo.regularUrl)
-            } catch (e: Exception) {
+                _currentLogo.value = preloadedLogos[preloadedLogosPosition++]
+            } catch (e: IOException) {
                 preloadedLogos = emptyList()
-                currentLogo = TournamentLogo.default()
-                _currentLogoUrl.value = Result.failure(e)
+                _currentLogo.value = null
                 Log.e("TournamentCreateVM", "Error while loading new logo page", e)
             }
         }

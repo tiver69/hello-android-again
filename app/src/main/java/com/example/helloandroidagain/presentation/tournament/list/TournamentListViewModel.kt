@@ -1,6 +1,7 @@
 package com.example.helloandroidagain.presentation.tournament.list
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.domain.usecase.CreateTournamentsUseCase
 import com.example.helloandroidagain.domain.usecase.LoadTournamentsUseCase
@@ -8,6 +9,7 @@ import com.example.helloandroidagain.domain.usecase.RemoveTournamentsUseCase
 import com.example.helloandroidagain.domain.usecase.SaveTournamentsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,6 +31,8 @@ class TournamentListViewModel @Inject constructor(
     }
 
     fun saveTournaments() {
-        saveTournamentsUseCase.invoke()
+        viewModelScope.launch {
+            saveTournamentsUseCase.invoke()
+        }
     }
 }

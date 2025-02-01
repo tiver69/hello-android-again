@@ -24,6 +24,7 @@ import com.example.helloandroidagain.R
 import com.example.helloandroidagain.presentation.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
 import com.example.helloandroidagain.databinding.FragmentTournamentCreateBinding
 import com.example.helloandroidagain.data.model.Tournament
+import com.example.helloandroidagain.data.model.TournamentLogo
 import com.example.helloandroidagain.presentation.navigation.router
 import com.example.helloandroidagain.util.convertToLocalDate
 import com.example.helloandroidagain.util.convertToLocalDateAsEpochMilli
@@ -61,9 +62,10 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
             createDatePicker().show(parentFragmentManager, "CREATE_TOURNAMENT_DATE")
         }
         lifecycleScope.launch {
-            viewModel.currentLogoUrl.collect { result ->
-                result.onSuccess { loadLogo(it) }
-                result.onFailure {
+            viewModel.currentLogo.collect { selectedLogo ->
+                selectedLogo?.let {
+                    loadLogo(it.regularUrl)
+                } ?: run {
                     loadPlaceholderImage()
                     showLogoErrorToast()
                 }
@@ -95,7 +97,7 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         name = binding.tournamentCreateName.editText?.text.toString(),
         participantCount = Integer.valueOf(binding.tournamentCreateParticipantCount.editText?.text.toString()),
         date = binding.tournamentCreateDate.editText?.text.toString().convertToLocalDate(),
-        logo = viewModel.currentLogo
+        logo = viewModel.currentLogo.value ?: TournamentLogo.default()
     )
 
     private fun createDatePicker(): MaterialDatePicker<Long> {
