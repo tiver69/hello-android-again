@@ -11,21 +11,22 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.helloandroidagain.R
-import com.example.helloandroidagain.databinding.ActivityMainBinding
+import com.example.helloandroidagain.databinding.LocationActivityBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class LocationActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainViewModel by viewModels()
+    private lateinit var binding: LocationActivityBinding
+    private val viewModel: LocationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = LocationActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         locationPermissionRequest.launch(
@@ -36,25 +37,28 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stopService(Intent(this, LocationService::class.java))
+    }
+
     private val locationPermissionRequest =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             when {
-                permissions.getOrDefault(
-                    android.Manifest.permission.ACCESS_FINE_LOCATION,
-                    false
-                ) -> {
-                    showToastWithPermission("Fine")
-                    checkLocationServiceAvailability()
-                    observeLocation()
-                }
-
                 permissions.getOrDefault(
                     android.Manifest.permission.ACCESS_COARSE_LOCATION,
                     false
                 ) -> {
                     showToastWithPermission("Coarse")
-                    checkLocationServiceAvailability()
-                    observeLocation()
+                    launchLocationTracking()
+                }
+
+                permissions.getOrDefault(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    false
+                ) -> {
+                    showToastWithPermission("Fine")
+                    launchLocationTracking()
                 }
 
                 else -> {
@@ -62,6 +66,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+    private fun launchLocationTracking() {
+        checkLocationServiceAvailability()
+        observeLocation()
+        ContextCompat.startForegroundService(
+            this,
+            Intent(this, LocationService::class.java)
+        )
+    }
 
     private fun observeLocation() {
         lifecycleScope.launch {

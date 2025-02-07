@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class LocationViewModel @Inject constructor(
     private val getLiveLocationUseCase: GetLiveLocationUseCase
 ) : ViewModel() {
 

@@ -1,6 +1,7 @@
 package com.example.helloandroidagain.di
 
 import android.app.Application
+import android.app.NotificationManager
 import android.content.Context
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -23,4 +24,8 @@ class AppModule {
     fun provideFusedLocationProvider(context: Context): FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
 
+    @Singleton
+    @Provides
+    fun provideNotificationManager(context: Context): NotificationManager =
+        context.getSystemService(NotificationManager::class.java)
 }
