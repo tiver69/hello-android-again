@@ -17,12 +17,16 @@ import com.example.helloandroidagain.R
 import com.example.helloandroidagain.databinding.LocationActivityBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LocationActivity : AppCompatActivity() {
 
     private lateinit var binding: LocationActivityBinding
     private val viewModel: LocationViewModel by viewModels()
+
+    @Inject
+    lateinit var locationWorkManagerHelper: LocationWorkManagerHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +78,7 @@ class LocationActivity : AppCompatActivity() {
             this,
             Intent(this, LocationService::class.java)
         )
+        locationWorkManagerHelper.scheduleDailyWork()
     }
 
     private fun observeLocation() {

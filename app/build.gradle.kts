@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.work)
     implementation(libs.google.location)
     implementation(libs.coroutines)
     implementation(libs.coroutines.android)

@@ -28,7 +28,7 @@ class LocationService : Service() {
     lateinit var notificationManager: NotificationManager
 
     private val notificationId = 1017
-    private val channelId = "location_channel"
+    private val channelId = "persistent_channel"
     private val serviceScope = CoroutineScope(Job())
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -48,7 +48,7 @@ class LocationService : Service() {
     private fun createNotification(text: String): Notification {
         val serviceChannel = NotificationChannel(
             channelId,
-            getString(R.string.notification_channel_name),
+            getString(R.string.persistent_channel_name),
             NotificationManager.IMPORTANCE_LOW
         )
         notificationManager.createNotificationChannel(serviceChannel)

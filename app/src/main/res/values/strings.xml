@@ -9,5 +9,7 @@
     <string name="cancel">Cancel</string>
     <string name="permission_granted_format">%1$s Permission Granted</string>
     <string name="persistent_notification_title">Real-Time Location</string>
-    <string name="notification_channel_name">Location Updates</string>
+    <string name="push_notification_title">Daily Location</string>
+    <string name="persistent_channel_name">Real-Time Location Updates</string>
+    <string name="push_channel_name">Daily Location Updates</string>
 </resources>

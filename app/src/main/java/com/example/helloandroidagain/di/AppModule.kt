@@ -3,6 +3,7 @@ package com.example.helloandroidagain.di
 import android.app.Application
 import android.app.NotificationManager
 import android.content.Context
+import androidx.work.WorkManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Module
@@ -28,4 +29,8 @@ class AppModule {
     @Provides
     fun provideNotificationManager(context: Context): NotificationManager =
         context.getSystemService(NotificationManager::class.java)
+
+    @Singleton
+    @Provides
+    fun provideWorkManager(context: Context): WorkManager = WorkManager.getInstance(context)
 }
