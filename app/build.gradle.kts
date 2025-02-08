@@ -52,8 +52,10 @@ dependencies {
     implementation(libs.coroutines)
     implementation(libs.coroutines.android)
     implementation(libs.dagger.hilt)
+    implementation(libs.androidx.hilt.work)
     testImplementation(libs.junit)
     kapt(libs.dagger.hilt.compiler)
+    kapt(libs.androidx.hilt.compiler)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

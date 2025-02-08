@@ -6,21 +6,22 @@ import android.app.NotificationManager
 import android.content.Context
 import android.location.Location
 import androidx.core.app.NotificationCompat
+import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.helloandroidagain.R
 import com.example.helloandroidagain.data.LocationRepository
-import com.google.android.gms.location.LocationServices
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
-class LocationWorker(
-    private val context: Context,
-    params: WorkerParameters
+@HiltWorker
+class LocationWorker @AssistedInject constructor(
+    @Assisted private val context: Context,
+    @Assisted params: WorkerParameters,
+    private val locationRepository: LocationRepository,
+    private val notificationManager: NotificationManager
 ) : CoroutineWorker(context, params) {
 
-    private val locationRepository =
-        LocationRepository(LocationServices.getFusedLocationProviderClient(context))
-    private val notificationManager =
-        context.getSystemService(NotificationManager::class.java)
     private val notificationId = 1018
     private val channelId = "push_channel"
 
