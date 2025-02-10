@@ -2,11 +2,11 @@ package com.example.helloandroidagain.domain
 
 import android.location.Location
 import com.example.helloandroidagain.data.LocationRepository
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 class GetLiveLocationUseCase @Inject constructor(
     private val locationRepository: LocationRepository
 ) {
-    fun invoke(): Flow<Location?> = locationRepository.getLocationFlow()
+    fun invoke(): StateFlow<Location?> = locationRepository.locationStateFlow
 }

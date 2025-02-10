@@ -10,14 +10,21 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.Priority
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class LocationRepository @Inject constructor(
     private val fusedLocationProvider: FusedLocationProviderClient
 ) {
@@ -25,8 +32,11 @@ class LocationRepository @Inject constructor(
         .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
         .build()
 
+    val locationStateFlow: StateFlow<Location?> =
+        getLocationFlow().stateIn(CoroutineScope(Job()), SharingStarted.WhileSubscribed(), null)
+
     @SuppressLint("MissingPermission")
-    fun getLocationFlow(): Flow<Location?> = callbackFlow {
+    private fun getLocationFlow(): Flow<Location?> = callbackFlow {
         val locationCallback = object : LocationCallback() {
             override fun onLocationAvailability(status: LocationAvailability) {
                 if (!status.isLocationAvailable) {

@@ -17,6 +17,6 @@ __To be used:__
 
 - [x] Live coordinates are displayed on screen when app is launched 
 - [x] Live coordinates are displayed at persistent notification
-- [ ] Every day at 11:11pm push-notification should be sent with current device coordinates
+- [x] Push-notification should be sent with current device coordinates every 24h
 - [x] Design
 

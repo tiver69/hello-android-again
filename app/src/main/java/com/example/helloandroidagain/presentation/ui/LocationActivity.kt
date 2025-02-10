@@ -1,4 +1,4 @@
-package com.example.helloandroidagain.presentation
+package com.example.helloandroidagain.presentation.ui
 
 import android.content.Context
 import android.content.Intent
@@ -15,6 +15,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.helloandroidagain.R
 import com.example.helloandroidagain.databinding.LocationActivityBinding
+import com.example.helloandroidagain.presentation.LocationService
+import com.example.helloandroidagain.presentation.LocationWorkManagerHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -104,8 +106,8 @@ class LocationActivity : AppCompatActivity() {
 
     private fun showSettingsDialog() {
         AlertDialog.Builder(this)
-            .setTitle(getString(R.string.settings_dialog_title))
-            .setMessage(getString(R.string.settings_dialog_text))
+            .setTitle(getString(R.string.permission_required_title))
+            .setMessage(getString(R.string.permission_required_text))
             .setPositiveButton(getString(R.string.settings_dialog_positive)) { _, _ -> openAppSettings() }
             .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
             .show()

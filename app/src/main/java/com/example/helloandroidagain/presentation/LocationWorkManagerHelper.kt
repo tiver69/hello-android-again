@@ -8,23 +8,34 @@ import androidx.work.WorkManager
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class LocationWorkManagerHelper @Inject constructor(private val workManager: WorkManager) {
+class LocationWorkManagerHelper @Inject constructor(
+    private val workManager: WorkManager
+) {
 
-    private val workName = "DailyLocationWork"
+    companion object {
+        private const val LOCATION_WORK_NAME = "DailyLocationWork"
+    }
 
     fun scheduleDailyWork() {
-        val workRequest = PeriodicWorkRequestBuilder<LocationWorker>(15, TimeUnit.MINUTES)
+        val workRequest = PeriodicWorkRequestBuilder<LocationWorker>(24, TimeUnit.HOURS)
             .setConstraints(Constraints.Builder().setRequiresBatteryNotLow(true).build())
             .build()
 
         workManager.enqueueUniquePeriodicWork(
-            workName,
-            ExistingPeriodicWorkPolicy.REPLACE,
+            LOCATION_WORK_NAME,
+            ExistingPeriodicWorkPolicy.KEEP,
             workRequest
         )
     }
 
     fun enqueueTestWork() {
         workManager.enqueue(OneTimeWorkRequestBuilder<LocationWorker>().build())
+    }
+
+    fun delayTestWorkChain() {
+        workManager
+            .beginWith(OneTimeWorkRequestBuilder<LocationWorker>().setInitialDelay(1, TimeUnit.MINUTES).build())
+            .then(OneTimeWorkRequestBuilder<LocationWorker>().setInitialDelay(1, TimeUnit.MINUTES).build())
+            .enqueue()
     }
 }
