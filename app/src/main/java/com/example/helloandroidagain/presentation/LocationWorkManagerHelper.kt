@@ -11,10 +11,7 @@ import javax.inject.Inject
 class LocationWorkManagerHelper @Inject constructor(
     private val workManager: WorkManager
 ) {
-
-    companion object {
-        private const val LOCATION_WORK_NAME = "DailyLocationWork"
-    }
+    private val locationWorkName = "DailyLocationWork"
 
     fun scheduleDailyWork() {
         val workRequest = PeriodicWorkRequestBuilder<LocationWorker>(24, TimeUnit.HOURS)
@@ -22,7 +19,7 @@ class LocationWorkManagerHelper @Inject constructor(
             .build()
 
         workManager.enqueueUniquePeriodicWork(
-            LOCATION_WORK_NAME,
+            locationWorkName,
             ExistingPeriodicWorkPolicy.KEEP,
             workRequest
         )

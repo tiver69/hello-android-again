@@ -2,8 +2,10 @@ package com.example.helloandroidagain.presentation.ui
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
@@ -41,6 +43,15 @@ class LocationActivity : AppCompatActivity() {
                 android.Manifest.permission.ACCESS_COARSE_LOCATION
             )
         )
+        if (checkSelfPermission(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                showSettingsDialog(R.string.background_permission_required_text)
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                backgroundLocationPermissionRequest.launch(
+                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                )
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -52,14 +63,6 @@ class LocationActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             when {
                 permissions.getOrDefault(
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                    false
-                ) -> {
-                    showToastWithPermission("Coarse")
-                    launchLocationTracking()
-                }
-
-                permissions.getOrDefault(
                     android.Manifest.permission.ACCESS_FINE_LOCATION,
                     false
                 ) -> {
@@ -67,11 +70,25 @@ class LocationActivity : AppCompatActivity() {
                     launchLocationTracking()
                 }
 
+                permissions.getOrDefault(
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                    false
+                ) -> {
+                    showSettingsDialog(R.string.permission_welcomed_text)
+                    showToastWithPermission("Coarse")
+                    launchLocationTracking()
+                }
+
                 else -> {
-                    showSettingsDialog()
+                    showSettingsDialog(R.string.permission_required_text)
                 }
             }
         }
+
+
+    private val backgroundLocationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { _ -> }
 
     private fun launchLocationTracking() {
         checkLocationServiceAvailability()
@@ -104,10 +121,10 @@ class LocationActivity : AppCompatActivity() {
         }
     }
 
-    private fun showSettingsDialog() {
+    private fun showSettingsDialog(messageId: Int) {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.permission_required_title))
-            .setMessage(getString(R.string.permission_required_text))
+            .setMessage(getString(messageId))
             .setPositiveButton(getString(R.string.settings_dialog_positive)) { _, _ -> openAppSettings() }
             .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
             .show()
