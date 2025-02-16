@@ -1,0 +1,36 @@
+package com.example.helloandroidagain.di
+
+import android.app.Application
+import android.app.NotificationManager
+import android.content.Context
+import androidx.work.WorkManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+class AppModule {
+
+    @Provides
+    @Singleton
+    fun getAppContext(application: Application): Context = application.applicationContext
+
+    @Singleton
+    @Provides
+    fun provideFusedLocationProvider(context: Context): FusedLocationProviderClient =
+        LocationServices.getFusedLocationProviderClient(context)
+
+    @Singleton
+    @Provides
+    fun provideNotificationManager(context: Context): NotificationManager =
+        context.getSystemService(NotificationManager::class.java)
+
+    @Singleton
+    @Provides
+    fun provideWorkManager(context: Context): WorkManager = WorkManager.getInstance(context)
+}

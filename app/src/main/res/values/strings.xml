@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Hello Android Again</string>
+    <string name="waiting_for_location">Waiting for location</string>
+    <string name="waiting_for_location_service">Enable location service to see coordinates</string>
+    <string name="location_format">Lat: %1$f, Lng: %2$f</string>
+    <string name="permission_required_title">Permission Required</string>
+    <string name="background_permission_required_text">Background permission is permanently denied. Please enable it in settings.</string>
+    <string name="permission_required_text">Location permission is permanently denied. Please enable it in settings.</string>
+    <string name="permission_welcomed_text">To see mo accurate data consider enabling coarse location it in settings.</string>
+    <string name="settings_dialog_positive">Go to Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="permission_granted_format">%1$s Permission Granted</string>
+    <string name="persistent_notification_title">Real-Time Location</string>
+    <string name="push_notification_title">Daily Location</string>
+    <string name="push_summary_notification_title">Latest Daily Locations</string>
+    <string name="persistent_channel_name">Real-Time Location Updates</string>
+    <string name="push_channel_name">Daily Location Updates</string>
 </resources>
