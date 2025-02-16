@@ -16,8 +16,11 @@ import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import com.google.gson.reflect.TypeToken
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.withContext
 import java.lang.reflect.Type
 import java.time.LocalDate
 import javax.inject.Inject
@@ -42,12 +45,13 @@ class TournamentRepositoryImpl @Inject constructor(private val sharedPreferences
             ): LocalDate = json?.asString?.convertToLocalDate()!!
         })
         .create()
-    private val tournamentsSubject: BehaviorSubject<List<Tournament>> =
-        BehaviorSubject.createDefault(restoreTournaments())
+
+    private val _tournamentsFlow: MutableStateFlow<List<Tournament>> =
+        MutableStateFlow(restoreTournaments())
     private var tmpIdGenerator: Long = 20
 
-    override fun saveTournaments() {
-        val json = gson.toJson(tournamentsSubject.value)
+    override suspend fun saveTournaments() = withContext(Dispatchers.IO) {
+        val json = gson.toJson(_tournamentsFlow.value)
         sharedPreferences.edit()
             .putString(TOURNAMENT_LIST, json)
             .putLong(TMP_ID_GENERATOR, tmpIdGenerator)
@@ -72,27 +76,24 @@ class TournamentRepositoryImpl @Inject constructor(private val sharedPreferences
         )
     }.toMutableList()
 
-    override fun getTournaments(): Observable<List<Tournament>> {
-        return tournamentsSubject.hide()
-    }
+    override fun getTournaments(): StateFlow<List<Tournament>> = _tournamentsFlow.asStateFlow()
 
     override fun addTournament(tournament: Tournament) {
-        val updatedTournaments = tournamentsSubject.value.orEmpty() +
-                Tournament(
-                    ++tmpIdGenerator,
-                    tournament.name,
-                    tournament.participantCount,
-                    tournament.date,
-                    tournament.logo
-                )
-        tournamentsSubject.onNext(updatedTournaments.toList())
+        val updatedTournamentsFlow = _tournamentsFlow.value + Tournament(
+            ++tmpIdGenerator,
+            tournament.name,
+            tournament.participantCount,
+            tournament.date,
+            tournament.logo
+        )
+        _tournamentsFlow.value = updatedTournamentsFlow
     }
 
     override fun removeTournament(tournamentPosition: Int) {
-        val updatedTournaments = tournamentsSubject.value.orEmpty().filterIndexed { index, _ ->
+        val updatedTournamentsFlow = _tournamentsFlow.value.filterIndexed { index, _ ->
             index != tournamentPosition
         }
-        tournamentsSubject.onNext(updatedTournaments)
+        _tournamentsFlow.value = updatedTournamentsFlow
     }
 
     companion object {

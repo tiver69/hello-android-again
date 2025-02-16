@@ -1,6 +1,7 @@
 package com.example.helloandroidagain.presentation.component.glide
 
 import android.content.Context
+import android.database.sqlite.SQLiteException
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import com.bumptech.glide.Glide
@@ -17,11 +18,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.signature.ObjectKey
-import com.example.helloandroidagain.presentation.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
 import com.example.helloandroidagain.data.repository.local.ImageCacheRepository
 import com.example.helloandroidagain.di.GlideEntryPoint
+import com.example.helloandroidagain.presentation.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
 import dagger.hilt.EntryPoints
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import java.lang.IllegalStateException
 import javax.inject.Inject
 
 class CustomCacheLoader @Inject constructor(
@@ -65,23 +69,23 @@ class CustomCacheLoader @Inject constructor(
         private val context: Context,
         private val imageCacheRepository: ImageCacheRepository
     ) : DataFetcher<Bitmap> {
-        private val cacheServiceDisposable = CompositeDisposable()
+        private var cacheServiceJob = Job()
 
         override fun loadData(
             priority: Priority,
             callback: DataFetcher.DataCallback<in Bitmap>
         ) {
-            val loadDisposable =
-                imageCacheRepository.loadImage(url).subscribe(
-                    { result -> callback.onDataReady(result) },
-                    { _ ->
-                        loadImageToCache(callback)
-                    },
-                    {
-                        loadImageToCache(callback)
-                    }
-                )
-            cacheServiceDisposable.add(loadDisposable)
+            CoroutineScope(cacheServiceJob).launch {
+                try {
+                    imageCacheRepository.loadImage(url)?.let {
+                        callback.onDataReady(it)
+                    } ?: loadImageToCache(callback)
+                } catch (exc: IllegalStateException) {
+                    callback.onLoadFailed(Exception("Failed to load image from custom cache"))
+                } catch (exc: SQLiteException) {
+                    loadImageToCache(callback)
+                }
+            }
         }
 
         private fun loadImageToCache(callback: DataFetcher.DataCallback<in Bitmap>) {
@@ -97,14 +101,14 @@ class CustomCacheLoader @Inject constructor(
                         resource: Bitmap,
                         transition: Transition<in Bitmap>?
                     ) {
-                        val saveDisposable =
-                            imageCacheRepository.saveImage(url, resource).subscribe(
-                                { callback.onDataReady(resource) },
-                                { _ ->
-                                    callback.onLoadFailed(Exception("Failed to load image from custom cache"))
-                                }
-                            )
-                        cacheServiceDisposable.add(saveDisposable)
+                        CoroutineScope(cacheServiceJob).launch {
+                            try {
+                                imageCacheRepository.saveImage(url, resource)
+                                callback.onDataReady(resource)
+                            } catch (exc: SQLiteException) {
+                                callback.onLoadFailed(Exception("Failed to save image to custom cache"))
+                            }
+                        }
                     }
 
                     override fun onLoadCleared(placeholder: Drawable?) {
@@ -112,14 +116,14 @@ class CustomCacheLoader @Inject constructor(
                     }
 
                     override fun onLoadFailed(errorDrawable: Drawable?) {
-                        callback.onLoadFailed(Exception("Failed to load image from custom cache"))
+                        callback.onLoadFailed(Exception("Failed to save image to custom cache"))
                     }
                 })
         }
 
         override fun cleanup() {}
         override fun cancel() {
-            cacheServiceDisposable.clear()
+            cacheServiceJob.cancel()
         }
 
         override fun getDataClass() = Bitmap::class.java

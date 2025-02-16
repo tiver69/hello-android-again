@@ -4,5 +4,5 @@ import com.example.helloandroidagain.domain.repository.TournamentRepository
 import javax.inject.Inject
 
 class SaveTournamentsUseCase @Inject constructor(private val repository: TournamentRepository) {
-    fun invoke() = repository.saveTournaments()
+    suspend fun invoke() = repository.saveTournaments()
 }

@@ -1,17 +1,15 @@
 package com.example.helloandroidagain.presentation.tournament.list
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.domain.usecase.CreateTournamentsUseCase
 import com.example.helloandroidagain.domain.usecase.LoadTournamentsUseCase
 import com.example.helloandroidagain.domain.usecase.RemoveTournamentsUseCase
 import com.example.helloandroidagain.domain.usecase.SaveTournamentsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,20 +20,7 @@ class TournamentListViewModel @Inject constructor(
     private var removeTournamentsUseCase: RemoveTournamentsUseCase,
 ) : ViewModel() {
 
-    private val _tournaments = BehaviorSubject.create<List<Tournament>>()
-    val tournaments: Observable<List<Tournament>> = _tournaments.hide()
-
-    private val disposables = CompositeDisposable()
-
-    fun loadTournaments() {
-        loadTournamentsUseCase.invoke()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                _tournaments.onNext(it)
-            }
-            .also { disposables.add(it) }
-    }
+    val tournamentsFlow: StateFlow<List<Tournament>> = loadTournamentsUseCase.invoke()
 
     fun createTournament(tournament: Tournament) {
         createTournamentsUseCase.invoke(tournament)
@@ -46,11 +31,8 @@ class TournamentListViewModel @Inject constructor(
     }
 
     fun saveTournaments() {
-        saveTournamentsUseCase.invoke()
-    }
-
-    override fun onCleared() {
-        disposables.clear()
-        super.onCleared()
+        viewModelScope.launch {
+            saveTournamentsUseCase.invoke()
+        }
     }
 }
