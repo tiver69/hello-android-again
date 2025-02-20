@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "533194012155",
+    "project_id": "hello-android-again",
+    "storage_bucket": "hello-android-again.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533194012155:android:fd775564c24d0be17a075e",
+        "android_client_info": {
+          "package_name": "com.example.classic.helloandroidagain"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2o3cPMvtxhtpRbK4tnN1w0EFl2MXp-FU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

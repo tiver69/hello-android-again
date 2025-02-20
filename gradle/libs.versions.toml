@@ -19,6 +19,9 @@ coroutines = "1.8.1"
 glide = "4.15.1"
 retrofit = "2.9.0"
 dagger = "2.52"
+googleServices = "4.4.2"
+firebase = "32.7.1"
+firebaseCrashlytics = "3.0.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,6 +46,9 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 retrofit-adapter-rxjava3 = { group = "com.squareup.retrofit2", name = "adapter-rxjava3", version.ref = "retrofit" }
 dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger" }
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "dagger" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -50,4 +56,6 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
 

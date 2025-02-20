@@ -24,10 +24,9 @@ interface ImageRemoteApi {
 }
 
 object ImageRetrofitInstance {
-    private const val BASE_URL = "https://api.unsplash.com/"
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.UNSPLASH_BASE_URL)
             .client(
                 OkHttpClient.Builder()
                     .addInterceptor(authInterceptor)

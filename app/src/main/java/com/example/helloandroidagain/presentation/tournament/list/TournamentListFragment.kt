@@ -18,6 +18,10 @@ import com.example.helloandroidagain.presentation.component.recyclerview.Tournam
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentSwipeListener
 import com.example.helloandroidagain.presentation.navigation.CreateTournamentResultListener
 import com.example.helloandroidagain.presentation.navigation.router
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.logEvent
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,6 +31,7 @@ class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipe
     CreateTournamentResultListener {
 
     private lateinit var binding: FragmentTournamentListBinding
+    private lateinit var analytics: FirebaseAnalytics
 
     @Inject
     lateinit var adapter: TournamentListAdapter
@@ -39,6 +44,7 @@ class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipe
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTournamentListBinding.inflate(inflater, container, false)
+        analytics = Firebase.analytics
         val layoutManager = LinearLayoutManager(container?.context)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
@@ -72,11 +78,17 @@ class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipe
     }
 
     override fun onRemoveSwipe(tournamentPosition: Int) {
-        Log.d("TournamentListFragment", "On click pressed on $tournamentPosition")
+        Log.d("TournamentListFragment", "On remove swipe at $tournamentPosition")
+        analytics.logEvent("remove_tournament") {
+            param(FirebaseAnalytics.Param.ITEM_ID, tournamentPosition.toDouble())
+        }
         viewModel.removeTournament(tournamentPosition)
     }
 
     override fun tournamentCreated(tournament: Tournament) {
+        analytics.logEvent("create_tournament") {
+            param(FirebaseAnalytics.Param.ITEM_NAME, tournament.name)
+        }
         viewModel.createTournament(tournament)
     }
 }

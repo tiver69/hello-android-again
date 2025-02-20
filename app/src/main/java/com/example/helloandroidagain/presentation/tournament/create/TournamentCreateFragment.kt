@@ -31,6 +31,10 @@ import com.example.helloandroidagain.util.convertToLocalDateAsEpochMilli
 import com.example.helloandroidagain.util.convertToLongAsEpochMilli
 import com.example.helloandroidagain.util.convertToString
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.logEvent
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
@@ -39,6 +43,7 @@ import kotlinx.parcelize.Parcelize
 class TournamentCreateFragment : Fragment(), FragmentToolbar {
 
     private lateinit var binding: FragmentTournamentCreateBinding
+    private lateinit var analytics: FirebaseAnalytics
 
     private val viewModel: TournamentCreateViewModel by viewModels()
 
@@ -49,6 +54,7 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         val state: TournamentCreateFragmentState? =
             savedInstanceState?.getParcelable(TOURNAMENT_CRATE_STATE_BUNDLE)
         binding = FragmentTournamentCreateBinding.inflate(inflater, container, false)
+        analytics = Firebase.analytics
 
         val tournamentName = state?.tournamentName ?: "Tournament${
             arguments?.getInt(NEXT_TOURNAMENT_COUNT)
@@ -130,6 +136,11 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
                     isFirstResource: Boolean
                 ): Boolean {
                     showLogoErrorToast()
+                    analytics.logEvent("unsplash_remote") {
+                        param(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
+                        param(FirebaseAnalytics.Param.ITEM_ID, logoUrl)
+                        param(FirebaseAnalytics.Param.SUCCESS, "FALSE")
+                    }
                     return false
                 }
 

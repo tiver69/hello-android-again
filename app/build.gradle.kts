@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.dagger.hilt)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -18,22 +20,40 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "UNSPLASH_CLIENT_ID", "\"${project.properties["UNSPLASH_CLIENT_ID"]}\"")
     }
 
     buildFeatures {
         buildConfig = true
     }
+
+    flavorDimensionList.add("enviroment")
+    productFlavors {
+        create("stage") {
+            dimension = "enviroment"
+            resValue("string", "app_name", "Hello Android Stage")
+            buildConfigField("String", "UNSPLASH_BASE_URL", "\"https://api.unsplash.com/\"") // some test endpoint can be used
+        }
+        create("prod") {
+            dimension = "enviroment"
+            buildConfigField("String", "UNSPLASH_BASE_URL", "\"https://api.unsplash.com/\"")
+        }
+    }
+
     buildTypes {
         debug {
-            buildConfigField("String", "UNSPLASH_CLIENT_ID", "\"${project.properties["UNSPLASH_CLIENT_ID"]}\"")
+            isMinifyEnabled = false
         }
         release {
-            isMinifyEnabled = false
-            buildConfigField("String", "UNSPLASH_CLIENT_ID", "\"${project.properties["UNSPLASH_CLIENT_ID"]}\"")
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            firebaseCrashlytics {
+                mappingFileUploadEnabled = true
+            }
         }
     }
     lint {
@@ -46,7 +66,7 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    viewBinding{
+    viewBinding {
         enable = true
     }
 }
@@ -70,6 +90,9 @@ dependencies {
     implementation(libs.retrofit.adapter.rxjava3)
     implementation(libs.bumptech.glide)
     implementation(libs.dagger.hilt)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
     kapt(libs.bumptech.glide.compiler)
     kapt(libs.dagger.hilt.compiler)
     testImplementation(libs.junit)

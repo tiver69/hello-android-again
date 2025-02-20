@@ -4,10 +4,10 @@ Update App with some CI/CD features
 ## Checklist:
 
 - [ ] Git Hooks
-- [ ] Flavours
+- [x] Flavours
 - [ ] Sign with release keys
 - [ ] Enable Proguard with obfuscation
-- [ ] Integrate with Firebase Analytics, Crashlytics
+- [x] Integrate with Firebase Analytics, Crashlytics
 - [ ] Git CD with build and Firebase Distribution
 
 ---
