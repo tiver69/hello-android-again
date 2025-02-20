@@ -3,7 +3,7 @@ Update App with some CI/CD features
 
 ## Checklist:
 
-- [ ] Git Hooks
+- [x] Git Hooks
 - [x] Flavours
 - [x] Sign with release keys
 - [x] Enable Proguard with obfuscation

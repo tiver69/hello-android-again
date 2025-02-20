@@ -1,3 +1,4 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -9,6 +10,7 @@ plugins {
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.gradle.klint)
 }
 
 val keystoreProperties = Properties()
@@ -30,7 +32,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "UNSPLASH_CLIENT_ID", "\"${project.properties["UNSPLASH_CLIENT_ID"]}\"")
+        buildConfigField(
+            "String",
+            "UNSPLASH_CLIENT_ID",
+            "\"${project.properties["UNSPLASH_CLIENT_ID"]}\""
+        )
     }
     signingConfigs {
         create("release") {
@@ -89,6 +95,24 @@ android {
     }
 }
 
+ktlint {
+    android = true
+    disabledRules.addAll(
+        "final-newline",
+        "no-wildcard-imports",
+        "max-line-length",
+        "import-ordering",
+        "trailing-comma-on-declaration-site",
+        "trailing-comma-on-call-site",
+    )
+    tasks.matching {
+        it.name in listOf("ktlintAndroidTestSourceSetCheck", "ktlintTestSourceSetCheck")
+    }.configureEach { enabled = false }
+    reporters {
+        reporter(ReporterType.PLAIN)
+    }
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -116,4 +140,15 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+tasks.register<Copy>("applyGitHooks") {
+    description = "Copy git hooks from the scripts to the .git/hooks folder."
+    group = "git hooks"
+    outputs.upToDateWhen { false }
+    from("$rootDir/scripts/pre-commit")
+    into("$rootDir/.git/hooks/")
+}
+tasks.build {
+    dependsOn("applyGitHooks")
 }
