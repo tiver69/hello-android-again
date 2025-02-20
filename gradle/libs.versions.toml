@@ -29,20 +29,20 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
-androidx-fragment = { module = "androidx.navigation:navigation-fragment-ktx", name = "fragment", version.ref = "navigation" }
-androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", name = "recuclerview", version.ref = "recyclerview" }
-androidx-browser = { module = "androidx.browser:browser", name = "browser", version.ref = "browser" }
-google-gson = { module = "com.google.code.gson:gson", name = "gson", version.ref = "gson" }
+androidx-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
+google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 #rx-java = { module = "io.reactivex.rxjava3:rxjava", name = "rxJava", version.ref = "rxJava" }
 #rx-android = { module = "io.reactivex.rxjava3:rxandroid", name = "rxAndroid", version.ref = "rxAndroid" }
-coroutines = {module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", name = "coroutines", version.ref = "coroutines"}
-coroutines-android = {module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", name = "coroutines", version.ref = "coroutines"}
-bumptech-glide = { module = "com.github.bumptech.glide:glide", name = "glide", version.ref = "glide" }
-bumptech-glide-compiler = { module = "com.github.bumptech.glide:compiler", name = "glide", version.ref = "glide" }
-retrofit = { module = "com.squareup.retrofit2:retrofit", name = "retrofit", version.ref = "retrofit" }
-retrofit-adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", name = "adapterRx", version.ref = "retrofit" }
-dagger-hilt = { module = "com.google.dagger:hilt-android", name = "hilt", version.ref = "dagger" }
-dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", name = "hilt", version.ref = "dagger" }
+coroutines = {group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines"}
+coroutines-android = {group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines"}
+bumptech-glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+bumptech-glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-adapter-rxjava3 = { group = "com.squareup.retrofit2", name = "adapter-rxjava3", version.ref = "retrofit" }
+dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger" }
+dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "dagger" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

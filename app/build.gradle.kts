@@ -36,6 +36,9 @@ android {
             )
         }
     }
+    lint {
+        lintConfig = file("$rootDir/android_glide_lint.xml")
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
