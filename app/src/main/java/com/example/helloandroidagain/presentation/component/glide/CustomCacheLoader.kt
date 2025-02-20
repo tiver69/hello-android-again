@@ -106,7 +106,9 @@ class CustomCacheLoader @Inject constructor(
                                 imageCacheRepository.saveImage(url, resource)
                                 callback.onDataReady(resource)
                             } catch (exc: SQLiteException) {
-                                callback.onLoadFailed(Exception("Failed to save image to custom cache"))
+                                callback.onLoadFailed(
+                                    Exception("Failed to save image to custom cache")
+                                )
                             }
                         }
                     }
@@ -133,6 +135,5 @@ class CustomCacheLoader @Inject constructor(
             val SKIP_CUSTOM_CACHE: Option<Boolean> =
                 Option.memory("skip_custom_cache")
         }
-
     }
 }

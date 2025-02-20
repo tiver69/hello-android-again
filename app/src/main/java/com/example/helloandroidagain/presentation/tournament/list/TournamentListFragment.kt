@@ -27,7 +27,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipeListener,
+class TournamentListFragment @Inject constructor() :
+    Fragment(),
+    TournamentSwipeListener,
     CreateTournamentResultListener {
 
     private lateinit var binding: FragmentTournamentListBinding

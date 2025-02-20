@@ -48,7 +48,9 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
     private val viewModel: TournamentCreateViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         requireActivity().addMenuProvider(tournamentCreateMenuProvider, viewLifecycleOwner)
         val state: TournamentCreateFragmentState? =
@@ -56,9 +58,8 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         binding = FragmentTournamentCreateBinding.inflate(inflater, container, false)
         analytics = Firebase.analytics
 
-        val tournamentName = state?.tournamentName ?: "Tournament${
-            arguments?.getInt(NEXT_TOURNAMENT_COUNT)
-        }"
+        val tournamentName =
+            state?.tournamentName ?: "Tournament${arguments?.getInt(NEXT_TOURNAMENT_COUNT)}"
         binding.tournamentCreateName.editText?.setText(tournamentName)
         binding.tournamentCreateParticipantCount.editText?.setText(
             state?.tournamentParticipantCount ?: "2"
@@ -101,14 +102,18 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
     private fun createTournamentResult(): Tournament = Tournament(
         id = 0L,
         name = binding.tournamentCreateName.editText?.text.toString(),
-        participantCount = Integer.valueOf(binding.tournamentCreateParticipantCount.editText?.text.toString()),
+        participantCount = Integer.valueOf(
+            binding.tournamentCreateParticipantCount.editText?.text.toString()
+        ),
         date = binding.tournamentCreateDate.editText?.text.toString().convertToLocalDate(),
         logo = viewModel.currentLogo.value ?: TournamentLogo.default()
     )
 
     private fun createDatePicker(): MaterialDatePicker<Long> {
         val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText(requireContext().getString(R.string.create_tournament_fragment_date_picker))
+            .setTitleText(
+                requireContext().getString(R.string.create_tournament_fragment_date_picker)
+            )
             .setSelection(
                 binding.tournamentCreateDate.editText?.text.toString().convertToLocalDate()
                     .convertToLongAsEpochMilli()
@@ -196,7 +201,7 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
     data class TournamentCreateFragmentState(
         val tournamentName: String,
         val tournamentDate: String,
-        val tournamentParticipantCount: String,
+        val tournamentParticipantCount: String
     ) : Parcelable
 
     companion object {

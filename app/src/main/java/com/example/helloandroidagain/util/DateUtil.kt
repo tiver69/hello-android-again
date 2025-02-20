@@ -23,9 +23,9 @@ fun Long.convertToLocalDateAsEpochMilli(): LocalDate = Instant.ofEpochMilli(this
 fun LocalDate.convertToLongAsEpochMilli(): Long =
     LocalDateTime.of(this, LocalTime.NOON).atZone(ZoneOffset.UTC).toInstant().toEpochMilli()
 
-
 fun generateRandomDate(): LocalDate =
-    if (Random.nextInt(0, 5) >= 2)
+    if (Random.nextInt(0, 5) >= 2) {
         LocalDate.now().plusDays(Random.nextInt(1, 5).toLong())
-    else
+    } else {
         LocalDate.now().minusDays(Random.nextInt(1, 5).toLong())
+    }

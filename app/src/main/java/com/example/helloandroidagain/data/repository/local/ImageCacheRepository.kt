@@ -55,7 +55,9 @@ class ImageCacheRepository @Inject constructor() {
                 cursor.use {
                     if (it.moveToFirst()) {
                         val byteArray =
-                            it.getBlob(it.getColumnIndexOrThrow(ImageCacheDatabaseHelper.COLUMN_IMAGE))
+                            it.getBlob(
+                                it.getColumnIndexOrThrow(ImageCacheDatabaseHelper.COLUMN_IMAGE)
+                            )
                         Log.i(TAG, "Loading from cache $url")
                         BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
                     } else {
