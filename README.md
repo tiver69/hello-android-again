@@ -5,8 +5,8 @@ Update App with some CI/CD features
 
 - [ ] Git Hooks
 - [x] Flavours
-- [ ] Sign with release keys
-- [ ] Enable Proguard with obfuscation
+- [x] Sign with release keys
+- [x] Enable Proguard with obfuscation
 - [x] Integrate with Firebase Analytics, Crashlytics
 - [ ] Git CD with build and Firebase Distribution
 
