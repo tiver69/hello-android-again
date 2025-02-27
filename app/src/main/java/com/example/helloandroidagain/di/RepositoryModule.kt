@@ -2,7 +2,8 @@ package com.example.helloandroidagain.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.helloandroidagain.data.db.ImageCacheDatabaseHelper
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.helloandroidagain.data.db.LogoDao
 import com.example.helloandroidagain.data.db.TournamentDao
 import com.example.helloandroidagain.data.db.StorageDatabase
@@ -39,11 +40,6 @@ class RepositoryModule {
         return ImageRetrofitInstance.retrofit.create(ImageRemoteApi::class.java)
     }
 
-    @Singleton
-    @Provides
-    fun provideImageCacheDatabaseHelper(context: Context): ImageCacheDatabaseHelper =
-        ImageCacheDatabaseHelper(context)
-
     @Provides
     @Singleton
     fun provideStorageDatabase(context: Context): StorageDatabase =
@@ -51,7 +47,11 @@ class RepositoryModule {
             context,
             StorageDatabase::class.java,
             STORAGE_DB
-        ).build()
+        ).addMigrations(object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE logo ADD COLUMN thumbImage BLOB DEFAULT NULL")
+            }
+        }).build()
 
     @Provides
     fun provideTournamentDao(database: StorageDatabase): TournamentDao =

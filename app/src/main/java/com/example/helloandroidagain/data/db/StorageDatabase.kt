@@ -12,7 +12,7 @@ import java.time.LocalDate
 
 @Database(
     entities = [TournamentEntity::class, LogoEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(LocalDateConverter::class)

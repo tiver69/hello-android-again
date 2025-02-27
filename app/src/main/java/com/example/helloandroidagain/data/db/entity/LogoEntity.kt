@@ -10,4 +10,5 @@ data class LogoEntity(
     val rawUrl: String,
     val regularUrl: String,
     val thumbUrl: String,
+    val thumbImage: ByteArray? = null,
 )
