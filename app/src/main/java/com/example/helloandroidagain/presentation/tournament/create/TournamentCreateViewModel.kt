@@ -6,9 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.helloandroidagain.data.model.TournamentLogo
 import com.example.helloandroidagain.data.repository.remote.TOURNAMENT_LOGO_PER_PAGE
 import com.example.helloandroidagain.domain.usecase.FetchTournamentLogoPageUseCase
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.logEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,10 +17,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TournamentCreateViewModel @Inject constructor(
-    private var fetchTournamentLogoPageUseCase: FetchTournamentLogoPageUseCase
+    private var fetchTournamentLogoPageUseCase: FetchTournamentLogoPageUseCase,
+    private var analytics: FirebaseAnalytics
 ) : ViewModel() {
 
-    private val analytics: FirebaseAnalytics = Firebase.analytics
     private var preloadedLogos: List<TournamentLogo> = emptyList()
     private var preloadedLogosPosition: Int = 0
     private var tournamentLogosPage: Int = 1

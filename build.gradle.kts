@@ -6,5 +6,5 @@ plugins {
     alias (libs.plugins.dagger.hilt) apply false
     alias (libs.plugins.google.services) apply false
     alias (libs.plugins.firebase.crashlytics) apply false
-    alias (libs.plugins.gradle.klint) apply false
+    alias (libs.plugins.gradle.ktlint) apply false
 }

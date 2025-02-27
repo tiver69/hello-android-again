@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
-    alias(libs.plugins.gradle.klint)
+    alias(libs.plugins.gradle.ktlint)
 }
 
 val keystoreProperties = Properties()
@@ -60,6 +60,7 @@ android {
         }
         create("prod") {
             dimension = "enviroment"
+            resValue("string", "app_name", "Hello Android Prod")
             buildConfigField("String", "UNSPLASH_BASE_URL", "\"https://api.unsplash.com/\"")
         }
     }

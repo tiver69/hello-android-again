@@ -32,18 +32,19 @@ import com.example.helloandroidagain.util.convertToLongAsEpochMilli
 import com.example.helloandroidagain.util.convertToString
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.logEvent
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TournamentCreateFragment : Fragment(), FragmentToolbar {
 
+    @Inject
+    lateinit var analytics: FirebaseAnalytics
+
     private lateinit var binding: FragmentTournamentCreateBinding
-    private lateinit var analytics: FirebaseAnalytics
 
     private val viewModel: TournamentCreateViewModel by viewModels()
 
@@ -56,7 +57,6 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         val state: TournamentCreateFragmentState? =
             savedInstanceState?.getParcelable(TOURNAMENT_CRATE_STATE_BUNDLE)
         binding = FragmentTournamentCreateBinding.inflate(inflater, container, false)
-        analytics = Firebase.analytics
 
         val tournamentName =
             state?.tournamentName ?: "Tournament${arguments?.getInt(NEXT_TOURNAMENT_COUNT)}"
