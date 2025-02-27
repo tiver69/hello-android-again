@@ -26,6 +26,9 @@ class TournamentListAdapter @Inject constructor() : RecyclerView.Adapter<Tournam
 
     var tournaments: List<Tournament> = emptyList()
         set(newValue) {
+            if (field.isEmpty()) {
+                notifyDataSetChanged() // the only way I managed ItemViewType to work correctly
+            }
             val diffResult = DiffUtil.calculateDiff(TournamentListDiffCallback(field, newValue))
             field = newValue
             diffResult.dispatchUpdatesTo(this)
