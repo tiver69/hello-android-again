@@ -30,20 +30,26 @@ class TournamentRepositoryImpl @Inject constructor(private val sharedPreferences
     TournamentRepository {
 
     private val gson: Gson = GsonBuilder()
-        .registerTypeAdapter(LocalDate::class.java, object : JsonSerializer<LocalDate> {
-            override fun serialize(
-                src: LocalDate?,
-                typeOfSrc: Type?,
-                context: JsonSerializationContext?
-            ): JsonElement = JsonPrimitive(src?.convertToString())
-        })
-        .registerTypeAdapter(LocalDate::class.java, object : JsonDeserializer<LocalDate> {
-            override fun deserialize(
-                json: JsonElement?,
-                typeOfT: Type?,
-                context: JsonDeserializationContext?
-            ): LocalDate = json?.asString?.convertToLocalDate()!!
-        })
+        .registerTypeAdapter(
+            LocalDate::class.java,
+            object : JsonSerializer<LocalDate> {
+                override fun serialize(
+                    src: LocalDate?,
+                    typeOfSrc: Type?,
+                    context: JsonSerializationContext?
+                ): JsonElement = JsonPrimitive(src?.convertToString())
+            }
+        )
+        .registerTypeAdapter(
+            LocalDate::class.java,
+            object : JsonDeserializer<LocalDate> {
+                override fun deserialize(
+                    json: JsonElement?,
+                    typeOfT: Type?,
+                    context: JsonDeserializationContext?
+                ): LocalDate = json?.asString?.convertToLocalDate()!!
+            }
+        )
         .create()
 
     private val _tournamentsFlow: MutableStateFlow<List<Tournament>> =
@@ -61,12 +67,14 @@ class TournamentRepositoryImpl @Inject constructor(private val sharedPreferences
     private fun restoreTournaments(): List<Tournament> {
         tmpIdGenerator = sharedPreferences.getLong(TMP_ID_GENERATOR, 20)
         val json = sharedPreferences.getString(TOURNAMENT_LIST, null)
-        return if (json != null) gson.fromJson(
-            json, object : TypeToken<List<Tournament>>() {}.type
-        ) else emptyList()
+        return if (json != null) {
+            gson.fromJson(json, object : TypeToken<List<Tournament>>() {}.type)
+        } else {
+            emptyList()
+        }
     }
 
-    private fun generateTournaments(): List<Tournament> = (0..<tmpIdGenerator).map {
+    private fun generateTournaments(): List<Tournament> = (0..tmpIdGenerator).map {
         Tournament(
             it,
             "Tournament$it",

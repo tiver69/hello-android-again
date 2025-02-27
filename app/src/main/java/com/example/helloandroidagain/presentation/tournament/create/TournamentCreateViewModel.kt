@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.helloandroidagain.data.model.TournamentLogo
 import com.example.helloandroidagain.data.repository.remote.TOURNAMENT_LOGO_PER_PAGE
 import com.example.helloandroidagain.domain.usecase.FetchTournamentLogoPageUseCase
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.logEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,8 +17,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TournamentCreateViewModel @Inject constructor(
-    private var fetchTournamentLogoPageUseCase: FetchTournamentLogoPageUseCase
+    private var fetchTournamentLogoPageUseCase: FetchTournamentLogoPageUseCase,
+    private var analytics: FirebaseAnalytics
 ) : ViewModel() {
+
     private var preloadedLogos: List<TournamentLogo> = emptyList()
     private var preloadedLogosPosition: Int = 0
     private var tournamentLogosPage: Int = 1
@@ -49,6 +53,11 @@ class TournamentCreateViewModel @Inject constructor(
             } catch (e: IOException) {
                 preloadedLogos = emptyList()
                 _currentLogo.value = null
+                analytics.logEvent("unsplash_remote") {
+                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "page")
+                    param(FirebaseAnalytics.Param.ITEM_ID, page.toDouble())
+                    param(FirebaseAnalytics.Param.SUCCESS, "FALSE")
+                }
                 Log.e("TournamentCreateVM", "Error while loading new logo page", e)
             }
         }

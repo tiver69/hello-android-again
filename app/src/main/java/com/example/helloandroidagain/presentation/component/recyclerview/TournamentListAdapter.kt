@@ -50,8 +50,11 @@ class TournamentListAdapter @Inject constructor() : RecyclerView.Adapter<Tournam
     override fun getItemCount(): Int = tournaments.size
 
     override fun getItemViewType(position: Int): Int =
-        if (tournaments[position].date.isBefore(LocalDate.now())) TournamentType.OUTDATED.viewType
-        else TournamentType.ACTIVE.viewType
+        if (tournaments[position].date.isBefore(LocalDate.now())) {
+            TournamentType.OUTDATED.viewType
+        } else {
+            TournamentType.ACTIVE.viewType
+        }
 
     sealed class TournamentViewHolder(val binding: ViewBinding) :
         RecyclerView.ViewHolder(binding.root) {

@@ -18,18 +18,25 @@ import com.example.helloandroidagain.presentation.component.recyclerview.Tournam
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentSwipeListener
 import com.example.helloandroidagain.presentation.navigation.CreateTournamentResultListener
 import com.example.helloandroidagain.presentation.navigation.router
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipeListener,
+class TournamentListFragment @Inject constructor() :
+    Fragment(),
+    TournamentSwipeListener,
     CreateTournamentResultListener {
 
-    private lateinit var binding: FragmentTournamentListBinding
+    @Inject
+    lateinit var analytics: FirebaseAnalytics
 
     @Inject
     lateinit var adapter: TournamentListAdapter
+
+    private lateinit var binding: FragmentTournamentListBinding
 
     private val viewModel: TournamentListViewModel by viewModels()
 
@@ -72,11 +79,17 @@ class TournamentListFragment @Inject constructor() : Fragment(), TournamentSwipe
     }
 
     override fun onRemoveSwipe(tournamentPosition: Int) {
-        Log.d("TournamentListFragment", "On click pressed on $tournamentPosition")
+        Log.d("TournamentListFragment", "On remove swipe at $tournamentPosition")
+        analytics.logEvent("remove_tournament") {
+            param(FirebaseAnalytics.Param.ITEM_ID, tournamentPosition.toDouble())
+        }
         viewModel.removeTournament(tournamentPosition)
     }
 
     override fun tournamentCreated(tournament: Tournament) {
+        analytics.logEvent("create_tournament") {
+            param(FirebaseAnalytics.Param.ITEM_NAME, tournament.name)
+        }
         viewModel.createTournament(tournament)
     }
 }

@@ -1,4 +1,18 @@
-# [HomeTask #6](https://github.com/tiver69/hello-android-again/tree/hometask_6_coroutines)
+# [HomeTask #8](https://github.com/tiver69/hello-android-again/tree/hometask_8)
+Update App with some CI/CD features
+
+## Checklist:
+
+- [x] Git Hooks
+- [x] Flavours
+- [x] Sign with release keys
+- [x] Enable Proguard with obfuscation
+- [x] Integrate with Firebase Analytics, Crashlytics
+- [ ] Git CD with build and Firebase Distribution
+
+---
+
+ # [HomeTask #6](https://github.com/tiver69/hello-android-again/tree/hometask_6_coroutines)
 Update App from [HomeTask #5](https://github.com/tiver69/hello-android-again/tree/hometask_5?tab=readme-ov-file#hometask-5) to use Coroutines instead of RxJava
 
 ---

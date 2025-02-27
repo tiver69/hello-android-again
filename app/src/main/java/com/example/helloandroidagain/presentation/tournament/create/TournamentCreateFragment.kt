@@ -31,28 +31,35 @@ import com.example.helloandroidagain.util.convertToLocalDateAsEpochMilli
 import com.example.helloandroidagain.util.convertToLongAsEpochMilli
 import com.example.helloandroidagain.util.convertToString
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TournamentCreateFragment : Fragment(), FragmentToolbar {
+
+    @Inject
+    lateinit var analytics: FirebaseAnalytics
 
     private lateinit var binding: FragmentTournamentCreateBinding
 
     private val viewModel: TournamentCreateViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         requireActivity().addMenuProvider(tournamentCreateMenuProvider, viewLifecycleOwner)
         val state: TournamentCreateFragmentState? =
             savedInstanceState?.getParcelable(TOURNAMENT_CRATE_STATE_BUNDLE)
         binding = FragmentTournamentCreateBinding.inflate(inflater, container, false)
 
-        val tournamentName = state?.tournamentName ?: "Tournament${
-            arguments?.getInt(NEXT_TOURNAMENT_COUNT)
-        }"
+        val tournamentName =
+            state?.tournamentName ?: "Tournament${arguments?.getInt(NEXT_TOURNAMENT_COUNT)}"
         binding.tournamentCreateName.editText?.setText(tournamentName)
         binding.tournamentCreateParticipantCount.editText?.setText(
             state?.tournamentParticipantCount ?: "2"
@@ -95,14 +102,18 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
     private fun createTournamentResult(): Tournament = Tournament(
         id = 0L,
         name = binding.tournamentCreateName.editText?.text.toString(),
-        participantCount = Integer.valueOf(binding.tournamentCreateParticipantCount.editText?.text.toString()),
+        participantCount = Integer.valueOf(
+            binding.tournamentCreateParticipantCount.editText?.text.toString()
+        ),
         date = binding.tournamentCreateDate.editText?.text.toString().convertToLocalDate(),
         logo = viewModel.currentLogo.value ?: TournamentLogo.default()
     )
 
     private fun createDatePicker(): MaterialDatePicker<Long> {
         val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText(requireContext().getString(R.string.create_tournament_fragment_date_picker))
+            .setTitleText(
+                requireContext().getString(R.string.create_tournament_fragment_date_picker)
+            )
             .setSelection(
                 binding.tournamentCreateDate.editText?.text.toString().convertToLocalDate()
                     .convertToLongAsEpochMilli()
@@ -130,6 +141,11 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
                     isFirstResource: Boolean
                 ): Boolean {
                     showLogoErrorToast()
+                    analytics.logEvent("unsplash_remote") {
+                        param(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
+                        param(FirebaseAnalytics.Param.ITEM_ID, logoUrl)
+                        param(FirebaseAnalytics.Param.SUCCESS, "FALSE")
+                    }
                     return false
                 }
 
@@ -185,7 +201,7 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
     data class TournamentCreateFragmentState(
         val tournamentName: String,
         val tournamentDate: String,
-        val tournamentParticipantCount: String,
+        val tournamentParticipantCount: String
     ) : Parcelable
 
     companion object {
