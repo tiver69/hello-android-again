@@ -23,6 +23,7 @@ googleServices = "4.4.2"
 firebase = "32.7.1"
 firebaseCrashlytics = "3.0.3"
 ktlint = "11.6.0"
+room = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,6 +37,9 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
+androidx-room = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 #rx-java = { module = "io.reactivex.rxjava3:rxjava", name = "rxJava", version.ref = "rxJava" }
 #rx-android = { module = "io.reactivex.rxjava3:rxandroid", name = "rxAndroid", version.ref = "rxAndroid" }

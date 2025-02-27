@@ -71,7 +71,7 @@ android {
             applicationIdSuffix = ".debug"
         }
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -125,6 +125,8 @@ dependencies {
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.browser)
+    implementation(libs.androidx.room)
+    implementation(libs.androidx.room.ktx)
     implementation(libs.google.gson)
 //    implementation(libs.rx.java)
 //    implementation(libs.rx.android)
@@ -139,6 +141,7 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     kapt(libs.bumptech.glide.compiler)
     kapt(libs.dagger.hilt.compiler)
+    kapt(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
