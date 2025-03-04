@@ -26,13 +26,10 @@ class ImageCacheRepository @Inject constructor() {
 
     suspend fun loadImage(url: String): Bitmap? = withContext(Dispatchers.IO) {
         try {
-            logoDao.getCachedLogoByThumbUrl(url)?.let { byteArray ->
-                Log.i(TAG, "Loading from cache $url")
-                BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-            } ?: run {
-                Log.i(TAG, "Was not cached $url")
-                null
-            }
+            val byteArray = logoDao.getCachedLogoByThumbUrl(url)
+            byteArray?.let { Log.i(TAG, "Loading from cache $url") }
+                ?: Log.i(TAG, "Was not cached $url")
+            byteArray?.let { BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size) }
         } catch (e: Exception) {
             Log.e(TAG, "Error while loading from cache $url", e)
             throw e

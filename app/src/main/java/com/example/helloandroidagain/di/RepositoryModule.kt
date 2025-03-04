@@ -29,7 +29,9 @@ class RepositoryModule {
     @Provides
     fun provideTournamentRepository(
         tournamentDao: TournamentDao,
-    ): TournamentRepository = TournamentRepositoryImpl(tournamentDao)
+        logoDao: LogoDao,
+        storageDatabase: StorageDatabase
+    ): TournamentRepository = TournamentRepositoryImpl(tournamentDao, logoDao, storageDatabase)
 
     @Singleton
     @Provides
