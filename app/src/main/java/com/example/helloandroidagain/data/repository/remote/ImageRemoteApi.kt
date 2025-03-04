@@ -2,8 +2,8 @@ package com.example.helloandroidagain.data.repository.remote
 
 import com.example.helloandroidagain.BuildConfig
 import com.example.helloandroidagain.data.model.TournamentLogo
-import com.example.helloandroidagain.data.mapper.TournamentLogoMapper.Companion.JSON_RESULT_PATH
-import com.example.helloandroidagain.data.mapper.TournamentLogoMapper.Companion.mapJsonObjectToTournamentLogo
+import com.example.helloandroidagain.data.mapper.LogoMapper.Companion.JSON_RESULT_PATH
+import com.example.helloandroidagain.data.mapper.LogoMapper.Companion.mapJsonObjectToDomain
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import okhttp3.Interceptor
@@ -59,7 +59,7 @@ class TournamentLogoConverter(private val gson: Gson) :
         val jsonObject = gson.fromJson(value.string(), JsonObject::class.java)
         val result = mutableListOf<TournamentLogo>()
         jsonObject.getAsJsonArray(JSON_RESULT_PATH).forEach { jsonLogo ->
-            result.add(mapJsonObjectToTournamentLogo(jsonLogo.asJsonObject))
+            result.add(mapJsonObjectToDomain(jsonLogo.asJsonObject))
         }
         return result.toList()
     }

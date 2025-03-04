@@ -1,8 +1,12 @@
 package com.example.helloandroidagain.di
 
 import android.content.Context
-import android.content.SharedPreferences
-import com.example.helloandroidagain.data.db.ImageCacheDatabaseHelper
+import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.helloandroidagain.data.db.LogoDao
+import com.example.helloandroidagain.data.db.TournamentDao
+import com.example.helloandroidagain.data.db.StorageDatabase
 import com.example.helloandroidagain.data.repository.local.TournamentRepositoryImpl
 import com.example.helloandroidagain.data.repository.remote.ImageRemoteApi
 import com.example.helloandroidagain.data.repository.remote.ImageRetrofitInstance
@@ -17,11 +21,17 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class RepositoryModule {
 
+    companion object {
+        private const val STORAGE_DB = "application_storage_db"
+    }
+
     @Singleton
     @Provides
-    fun provideTournamentRepository(sharedPreferences: SharedPreferences): TournamentRepository {
-        return TournamentRepositoryImpl(sharedPreferences)
-    }
+    fun provideTournamentRepository(
+        tournamentDao: TournamentDao,
+        logoDao: LogoDao,
+        storageDatabase: StorageDatabase
+    ): TournamentRepository = TournamentRepositoryImpl(tournamentDao, logoDao, storageDatabase)
 
     @Singleton
     @Provides
@@ -29,8 +39,24 @@ class RepositoryModule {
         return ImageRetrofitInstance.retrofit.create(ImageRemoteApi::class.java)
     }
 
-    @Singleton
     @Provides
-    fun provideImageCacheDatabaseHelper(context: Context): ImageCacheDatabaseHelper =
-        ImageCacheDatabaseHelper(context)
+    @Singleton
+    fun provideStorageDatabase(context: Context): StorageDatabase =
+        Room.databaseBuilder(
+            context,
+            StorageDatabase::class.java,
+            STORAGE_DB
+        ).addMigrations(object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE logo ADD COLUMN thumbImage BLOB DEFAULT NULL")
+            }
+        }).build()
+
+    @Provides
+    fun provideTournamentDao(database: StorageDatabase): TournamentDao =
+        database.tournamentDao()
+
+    @Provides
+    fun provideLogoDao(database: StorageDatabase): LogoDao =
+        database.logoDao()
 }

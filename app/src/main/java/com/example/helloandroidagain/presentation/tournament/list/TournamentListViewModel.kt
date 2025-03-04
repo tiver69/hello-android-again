@@ -6,33 +6,38 @@ import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.domain.usecase.CreateTournamentsUseCase
 import com.example.helloandroidagain.domain.usecase.LoadTournamentsUseCase
 import com.example.helloandroidagain.domain.usecase.RemoveTournamentsUseCase
-import com.example.helloandroidagain.domain.usecase.SaveTournamentsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TournamentListViewModel @Inject constructor(
     private var loadTournamentsUseCase: LoadTournamentsUseCase,
-    private var saveTournamentsUseCase: SaveTournamentsUseCase,
     private var createTournamentsUseCase: CreateTournamentsUseCase,
     private var removeTournamentsUseCase: RemoveTournamentsUseCase,
 ) : ViewModel() {
 
-    val tournamentsFlow: StateFlow<List<Tournament>> = loadTournamentsUseCase.invoke()
+    lateinit var tournamentsFlow: StateFlow<List<Tournament>>
+
+    fun restoreTournaments() {
+        viewModelScope.launch {
+            tournamentsFlow = loadTournamentsUseCase.invoke()
+                .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+        }
+    }
 
     fun createTournament(tournament: Tournament) {
-        createTournamentsUseCase.invoke(tournament)
+        viewModelScope.launch {
+            createTournamentsUseCase.invoke(tournament)
+        }
     }
 
     fun removeTournament(tournamentPosition: Int) {
-        removeTournamentsUseCase.invoke(tournamentPosition)
-    }
-
-    fun saveTournaments() {
         viewModelScope.launch {
-            saveTournamentsUseCase.invoke()
+            removeTournamentsUseCase.invoke(tournamentsFlow.value[tournamentPosition].id)
         }
     }
 }

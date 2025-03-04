@@ -1,3 +1,8 @@
+# [HomeTask #9](https://github.com/tiver69/hello-android-again/tree/hometask_9)
+Update App from [HomeTask #8](https://github.com/tiver69/hello-android-again/tree/hometask_8?tab=readme-ov-file#hometask-8) to use Room instead of SharedPreferences to store tournaments
+
+---
+
 # [HomeTask #8](https://github.com/tiver69/hello-android-again/tree/hometask_8)
 Update App with some CI/CD features
 

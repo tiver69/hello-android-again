@@ -46,6 +46,7 @@ class TournamentListFragment @Inject constructor() :
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTournamentListBinding.inflate(inflater, container, false)
+        viewModel.restoreTournaments()
         val layoutManager = LinearLayoutManager(container?.context)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
@@ -71,11 +72,6 @@ class TournamentListFragment @Inject constructor() :
                 adapter.tournaments = it
             }
         }
-    }
-
-    override fun onStop() {
-        viewModel.saveTournaments()
-        super.onStop()
     }
 
     override fun onRemoveSwipe(tournamentPosition: Int) {
