@@ -10,10 +10,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -25,7 +28,6 @@ import com.example.helloandroidagain.presentation.component.glide.CustomCacheLoa
 import com.example.helloandroidagain.databinding.FragmentTournamentCreateBinding
 import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.data.model.TournamentLogo
-import com.example.helloandroidagain.presentation.navigation.router
 import com.example.helloandroidagain.util.convertToLocalDate
 import com.example.helloandroidagain.util.convertToLocalDateAsEpochMilli
 import com.example.helloandroidagain.util.convertToLongAsEpochMilli
@@ -39,12 +41,14 @@ import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TournamentCreateFragment : Fragment(), FragmentToolbar {
+class TournamentCreateFragment : Fragment() {
 
     @Inject
     lateinit var analytics: FirebaseAnalytics
 
     private lateinit var binding: FragmentTournamentCreateBinding
+
+    private val args: TournamentCreateFragmentArgs by navArgs()
 
     private val viewModel: TournamentCreateViewModel by viewModels()
 
@@ -59,7 +63,7 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         binding = FragmentTournamentCreateBinding.inflate(inflater, container, false)
 
         val tournamentName =
-            state?.tournamentName ?: "Tournament${arguments?.getInt(NEXT_TOURNAMENT_COUNT)}"
+            state?.tournamentName ?: "Tournament${args.nextTournamentCount}"
         binding.tournamentCreateName.editText?.setText(tournamentName)
         binding.tournamentCreateParticipantCount.editText?.setText(
             state?.tournamentParticipantCount ?: "2"
@@ -83,8 +87,7 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
             viewModel.regenerateTournamentLogo()
         }
         binding.tournamentCreateSaveButton.setOnClickListener {
-            router().createResult(createTournamentResult())
-            router().navBack()
+            onTournamentCreated()
         }
         return binding.root
     }
@@ -126,8 +129,6 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         }
         return datePicker
     }
-
-    override fun getFragmentTitle(): Int = R.string.create_tournament_fragment_name
 
     private fun loadLogo(logoUrl: String) {
         Glide.with(requireContext().applicationContext)
@@ -187,14 +188,21 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
         override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
             return when (menuItem.itemId) {
                 R.id.tournament_create_toolbar_confirm_action -> {
-                    router().createResult(createTournamentResult())
-                    router().navBack()
-                    return true
+                    onTournamentCreated()
+                    true
                 }
 
                 else -> false
             }
         }
+    }
+
+    private fun onTournamentCreated() {
+        parentFragmentManager.setFragmentResult(
+            CREATE_TOURNAMENT_FRAGMENT_RESULT,
+            bundleOf(CREATE_TOURNAMENT_RESULT_KEY to createTournamentResult())
+        )
+        findNavController().popBackStack()
     }
 
     @Parcelize
@@ -205,15 +213,8 @@ class TournamentCreateFragment : Fragment(), FragmentToolbar {
     ) : Parcelable
 
     companion object {
+        const val CREATE_TOURNAMENT_FRAGMENT_RESULT = "CREATE_TOURNAMENT_RESULT"
+        const val CREATE_TOURNAMENT_RESULT_KEY = "CREATE_TOURNAMENT_RESULT_KEY"
         private const val TOURNAMENT_CRATE_STATE_BUNDLE = "TOURNAMENT_CRATE_STATE_BUNDLE"
-        private const val NEXT_TOURNAMENT_COUNT = "NEXT_TOURNAMENT_COUNT"
-
-        fun newInstance(nextTournamentCount: Int): TournamentCreateFragment {
-            val fragment = TournamentCreateFragment()
-            fragment.arguments = Bundle().apply {
-                putInt(NEXT_TOURNAMENT_COUNT, nextTournamentCount)
-            }
-            return fragment
-        }
     }
 }
