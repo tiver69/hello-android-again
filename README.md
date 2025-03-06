@@ -4,7 +4,7 @@ Update App from [HomeTask #9](https://github.com/tiver69/hello-android-again/tre
 ## Checklist:
 
 - [x] Integrate JN into current project  
-- [ ] Add another Fragment to current activity with JN
+- [x] Add another Fragment to current activity with JN. Fragment should export tournament logo with overlay info to device storage 
 - [ ] Add another Activity consisted with two Fragments with JN
 
 ---

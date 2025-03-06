@@ -10,4 +10,6 @@
     <string name="tournament_create_logo">Логотип турніру, що створюється</string>
     <string name="tournament_create_regenerate_image_button">Завантажити інше зображення</string>
     <string name="create_tournament_load_error">Помилка при завантаженні логотипу. Спробуйте наступне!</string>
+    <string name="export_tournament_detail_format">Учасники: %1$d\n  %2$s</string>
+    <string name="export_tournament_save_to_gallery_button">Зберегти в галерею</string>
 </resources>

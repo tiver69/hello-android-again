@@ -24,6 +24,8 @@ typealias TournamentType = TournamentViewHolder.Companion.TournamentItemType
 
 class TournamentListAdapter @Inject constructor() : RecyclerView.Adapter<TournamentViewHolder>() {
 
+    lateinit var onItemClick: (Tournament) -> Unit
+
     var tournaments: List<Tournament> = emptyList()
         set(newValue) {
             if (field.isEmpty()) {
@@ -47,6 +49,9 @@ class TournamentListAdapter @Inject constructor() : RecyclerView.Adapter<Tournam
 
     override fun onBindViewHolder(holder: TournamentViewHolder, position: Int) {
         val tournament = tournaments[position]
+        holder.itemView.setOnClickListener {
+            onItemClick(tournament)
+        }
         holder.bindTournamentItem(tournament)
     }
 

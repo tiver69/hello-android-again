@@ -50,6 +50,12 @@ class TournamentListFragment @Inject constructor() :
         viewModel.restoreTournaments()
         val layoutManager = LinearLayoutManager(container?.context)
         binding.recyclerView.layoutManager = layoutManager
+        adapter.onItemClick = { tournament ->
+            val dir: NavDirections = TournamentListFragmentDirections.navToExportTournament(
+                tournament
+            )
+            findNavController().navigate(dir)
+        }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(
