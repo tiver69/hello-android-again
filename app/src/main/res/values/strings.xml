@@ -11,4 +11,7 @@
     <string name="create_tournament_load_error">Couldn\'t load image. Lets try another one!</string>
     <string name="export_tournament_detail_format">Participants: %1$d\n  %2$s</string>
     <string name="export_tournament_save_to_gallery_button">Save to Gallery</string>
+    <string name="auth_landing_login_button">Login</string>
+    <string name="auth_profile_logout_button">Logout</string>
+    <string name="auth_profile_manage_button">Tournaments</string>
 </resources>

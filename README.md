@@ -5,7 +5,8 @@ Update App from [HomeTask #9](https://github.com/tiver69/hello-android-again/tre
 
 - [x] Integrate JN into current project  
 - [x] Add another Fragment to current activity with JN. Fragment should export tournament logo with overlay info to device storage 
-- [ ] Add another Activity consisted with two Fragments with JN
+- [x] Add another Activity consisted with two Fragments with JN. Activity related to login and profile actions. Currently empty with navigation only
+- [x] System Back button should forbid navigating back to login fragment from profile(only explicit 'Logout' press), and back to profile from login (after explicit 'Logout' press). 
 
 ---
 

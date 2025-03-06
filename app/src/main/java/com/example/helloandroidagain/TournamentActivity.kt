@@ -4,35 +4,32 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.helloandroidagain.databinding.ActivityMainBinding
+import com.example.helloandroidagain.databinding.ActivityTournamentBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class TournamentActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityTournamentBinding
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityTournamentBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        initNavController()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        navController = findNavController(R.id.tournamentNavContainer)
         setupActionBarWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             updateToolbar(destination.id)
         }
-    }
-
-    private fun initNavController() {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragmentNavContainer) as NavHostFragment
-        navController = navHostFragment.navController
     }
 
     override fun onSupportNavigateUp(): Boolean {

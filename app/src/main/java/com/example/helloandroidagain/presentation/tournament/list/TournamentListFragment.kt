@@ -51,10 +51,11 @@ class TournamentListFragment @Inject constructor() :
         val layoutManager = LinearLayoutManager(container?.context)
         binding.recyclerView.layoutManager = layoutManager
         adapter.onItemClick = { tournament ->
-            val dir: NavDirections = TournamentListFragmentDirections.navToExportTournament(
-                tournament
-            )
-            findNavController().navigate(dir)
+            val toExportTournament: NavDirections =
+                TournamentListFragmentDirections.navToExportTournament(
+                    tournament
+                )
+            findNavController().navigate(toExportTournament)
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
@@ -66,10 +67,11 @@ class TournamentListFragment @Inject constructor() :
         ItemTouchHelper(ItemLeftSwipeHelper(this)).attachToRecyclerView(binding.recyclerView)
         subscribeToTournamentList()
         binding.addTournamentFab.setOnClickListener {
-            val dir: NavDirections = TournamentListFragmentDirections.navToCreateTournament(
-                (binding.recyclerView.adapter?.itemCount ?: 0) + 1
-            )
-            findNavController().navigate(dir)
+            val toCreateTournament: NavDirections =
+                TournamentListFragmentDirections.navToCreateTournament(
+                    (binding.recyclerView.adapter?.itemCount ?: 0) + 1
+                )
+            findNavController().navigate(toCreateTournament)
         }
         parentFragmentManager.setFragmentResultListener(
             CREATE_TOURNAMENT_FRAGMENT_RESULT,
