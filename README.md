@@ -1,3 +1,15 @@
+# [HomeTask #11](https://github.com/tiver69/hello-android-again/tree/hometask_11_tests)
+Cover App from [HomeTask #10](https://github.com/tiver69/hello-android-again/tree/hometask_10?tab=readme-ov-file#hometask-10) with different test layers
+
+## Checklist:
+
+- [ ] Unit test for ViewModel, UseCase, Repository classes using JUnit&Mockk libraries  
+- [ ] Robolectric test for Fragment classes
+- [ ] UI test for TournamentList and TournamentCreste screens using Espresso/Kakao frameworks
+- [ ] Extend Coverage
+
+---
+
 # [HomeTask #10](https://github.com/tiver69/hello-android-again/tree/hometask_10)
 Update App from [HomeTask #9](https://github.com/tiver69/hello-android-again/tree/hometask_9?tab=readme-ov-file#hometask-9) to use Jetpack Navigation (JN):
 

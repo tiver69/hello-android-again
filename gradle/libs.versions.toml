@@ -24,6 +24,7 @@ firebase = "32.7.1"
 firebaseCrashlytics = "3.0.3"
 ktlint = "11.6.0"
 room = "2.6.1"
+mockk = "1.13.17"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +47,7 @@ google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gs
 #rx-java = { module = "io.reactivex.rxjava3:rxjava", name = "rxJava", version.ref = "rxJava" }
 #rx-android = { module = "io.reactivex.rxjava3:rxandroid", name = "rxAndroid", version.ref = "rxAndroid" }
 coroutines = {group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines"}
+coroutines-test = {group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines"}
 coroutines-android = {group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines"}
 bumptech-glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 bumptech-glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
@@ -56,6 +58,7 @@ dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", ve
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk"  }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

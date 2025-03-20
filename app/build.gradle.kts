@@ -145,6 +145,9 @@ dependencies {
     kapt(libs.dagger.hilt.compiler)
     kapt(libs.androidx.room.compiler)
     testImplementation(libs.junit)
+//    testImplementation(libs.androidx.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
