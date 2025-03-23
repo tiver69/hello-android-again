@@ -96,6 +96,11 @@ android {
     viewBinding {
         enable = true
     }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 ktlint {
@@ -143,11 +148,14 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     kapt(libs.bumptech.glide.compiler)
     kapt(libs.dagger.hilt.compiler)
+    kaptTest(libs.dagger.hilt.compiler)
     kapt(libs.androidx.room.compiler)
     testImplementation(libs.junit)
-//    testImplementation(libs.androidx.junit)
+    testImplementation(libs.androidx.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.coroutines.test)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.dagger.hilt.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

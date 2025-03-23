@@ -25,11 +25,12 @@ firebaseCrashlytics = "3.0.3"
 ktlint = "11.6.0"
 room = "2.6.1"
 mockk = "1.13.17"
+robolectric = "4.14"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-junit = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -54,11 +55,13 @@ bumptech-glide-compiler = { group = "com.github.bumptech.glide", name = "compile
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-adapter-rxjava3 = { group = "com.squareup.retrofit2", name = "adapter-rxjava3", version.ref = "retrofit" }
 dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger" }
+dagger-hilt-test = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "dagger" }
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "dagger" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk"  }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric"  }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -4,17 +4,17 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import com.example.helloandroidagain.data.db.LogoDao
+import com.example.helloandroidagain.domain.repository.ImageCacheRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
-class ImageCacheRepository @Inject constructor() {
+class ImageCacheRepositoryImpl @Inject constructor(
+    private val logoDao: LogoDao
+) : ImageCacheRepository {
 
-    @Inject
-    lateinit var logoDao: LogoDao
-
-    suspend fun saveImage(url: String, imageData: Bitmap) = withContext(Dispatchers.IO) {
+    override suspend fun saveImage(url: String, imageData: Bitmap) = withContext(Dispatchers.IO) {
         try {
             logoDao.updateCacheByThumbUrl(url, getByteArrayFromBitmap(imageData))
             Log.i(TAG, "Saving to cache $url")
@@ -24,7 +24,7 @@ class ImageCacheRepository @Inject constructor() {
         }
     }
 
-    suspend fun loadImage(url: String): Bitmap? = withContext(Dispatchers.IO) {
+    override suspend fun loadImage(url: String): Bitmap? = withContext(Dispatchers.IO) {
         try {
             val byteArray = logoDao.getCachedLogoByThumbUrl(url)
             byteArray?.let { Log.i(TAG, "Loading from cache $url") }
