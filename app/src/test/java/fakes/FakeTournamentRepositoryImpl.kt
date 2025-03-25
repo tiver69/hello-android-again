@@ -14,9 +14,16 @@ class FakeTournamentRepositoryImpl : TournamentRepository {
             listOf(
                 Tournament(
                     0,
-                    "Test1",
+                    "ActiveTest",
                     10,
-                    LocalDate.now(),
+                    LocalDate.now().plusDays(1),
+                    TournamentLogo("a", "raw", "regular", "thumb")
+                ),
+                Tournament(
+                    0,
+                    "OutdatedTest",
+                    10,
+                    LocalDate.now().minusDays(1),
                     TournamentLogo("a", "raw", "regular", "thumb")
                 )
             )

@@ -5,28 +5,51 @@ import com.example.helloandroidagain.data.model.TournamentLogo
 import com.example.helloandroidagain.domain.repository.TournamentRepository
 import com.example.helloandroidagain.util.generateRandomDate
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlin.random.Random
 
 class FakeTournamentRepositoryImpl : TournamentRepository {
 
-    override fun getTournaments(): Flow<List<Tournament>> = flowOf(generateTournaments())
-
-    override suspend fun addTournament(tournament: Tournament) {
-
-    }
-
-    override suspend fun removeTournament(id: Long) {
-
-    }
-
-    private fun generateTournaments(): List<Tournament> = (0..20).map {
-        Tournament(
-            0L,
-            "Tournament$it",
+    companion object {
+        val NAV_TOURNAMENT = Tournament(
+            17L,
+            "FakeNavTournament17",
             Random.nextInt(2, 10),
             generateRandomDate(),
             TournamentLogo.default()
         )
-    }.toMutableList()
+    }
+
+    private val _tournamentsFlow: MutableStateFlow<List<Tournament>> =
+        MutableStateFlow(generateTournaments())
+
+    override fun getTournaments(): Flow<List<Tournament>> = _tournamentsFlow.asStateFlow()
+
+    override suspend fun addTournament(tournament: Tournament) {
+        val updatedTournamentsFlow = _tournamentsFlow.value + tournament
+        _tournamentsFlow.value = updatedTournamentsFlow
+    }
+
+    override suspend fun removeTournament(id: Long) {
+        val updatedTournamentsFlow = _tournamentsFlow.value.filter { tournament ->
+            tournament.id != id
+        }
+        _tournamentsFlow.value = updatedTournamentsFlow
+    }
+
+    private fun generateTournaments(): List<Tournament> {
+        val tournaments = (0..20).map {
+            Tournament(
+                it.toLong(),
+                "FakeTournament$it",
+                Random.nextInt(2, 10),
+                generateRandomDate(),
+                TournamentLogo.default()
+            )
+        }.toMutableList()
+        tournaments[17] = NAV_TOURNAMENT
+        return tournaments
+    }
 }

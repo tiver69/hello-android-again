@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.databinding.FragmentTournamentListBinding
+import com.example.helloandroidagain.presentation.component.navigation.DirectionsHelper
 import com.example.helloandroidagain.presentation.component.recyclerview.ItemLeftSwipeHelper
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentClickListener
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentListAdapter
@@ -38,6 +39,9 @@ class TournamentListFragment @Inject constructor() :
 
     @Inject
     lateinit var adapter: TournamentListAdapter
+
+    @Inject
+    lateinit var directionsHelper: DirectionsHelper
 
     private lateinit var binding: FragmentTournamentListBinding
 
@@ -64,7 +68,7 @@ class TournamentListFragment @Inject constructor() :
         subscribeToTournamentList()
         binding.addTournamentFab.setOnClickListener {
             val toCreateTournament: NavDirections =
-                TournamentListFragmentDirections.navToCreateTournament(
+                directionsHelper.toCreateTournamentDirection(
                     (binding.recyclerView.adapter?.itemCount ?: 0) + 1
                 )
             findNavController().navigate(toCreateTournament)

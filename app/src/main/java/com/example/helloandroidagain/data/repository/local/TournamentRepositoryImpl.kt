@@ -16,8 +16,7 @@ class TournamentRepositoryImpl @Inject constructor(
     private val tournamentDao: TournamentDao,
     private val logoDao: LogoDao,
     private val storageDatabase: StorageDatabase
-) :
-    TournamentRepository {
+) : TournamentRepository {
 
     override fun getTournaments(): Flow<List<Tournament>> =
         tournamentDao.getAllTournaments().map { entityList ->

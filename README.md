@@ -3,9 +3,9 @@ Cover App from [HomeTask #10](https://github.com/tiver69/hello-android-again/tre
 
 ## Checklist:
 
-- [ ] Unit test for ViewModel, UseCase, Repository classes using JUnit&Mockk libraries  
-- [ ] Robolectric test for Fragment classes
-- [ ] UI test for TournamentList and TournamentCreste screens using Espresso/Kakao frameworks
+- [x] Unit test for ViewModel, UseCase, Repository classes using JUnit&Mockk libraries  
+- [x] Robolectric test for Fragment classes
+- [x] UI test for UI interactions on screens using Espresso/Kakao frameworks
 - [ ] Extend Coverage
 
 ---
