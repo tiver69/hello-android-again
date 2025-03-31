@@ -9,4 +9,11 @@
     <string name="tournament_create_logo">Create tournament logo</string>
     <string name="tournament_create_regenerate_image_button">Load another image</string>
     <string name="create_tournament_load_error">Couldn\'t load image. Lets try another one!</string>
+    <string name="export_tournament_detail_format">Participants: %1$d\n  %2$s</string>
+    <string name="export_tournament_save_to_gallery_button">Save to Gallery</string>
+    <string name="export_tournament_success_message">Image saved!</string>
+    <string name="export_tournament_fail_message">Failed to save image</string>
+    <string name="auth_landing_login_button">Login</string>
+    <string name="auth_profile_logout_button">Logout</string>
+    <string name="auth_profile_manage_button">Tournaments</string>
 </resources>

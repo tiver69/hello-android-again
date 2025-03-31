@@ -8,16 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.databinding.FragmentTournamentListBinding
 import com.example.helloandroidagain.presentation.component.recyclerview.ItemLeftSwipeHelper
+import com.example.helloandroidagain.presentation.component.recyclerview.TournamentClickListener
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentListAdapter
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentSwipeListener
-import com.example.helloandroidagain.presentation.navigation.CreateTournamentResultListener
-import com.example.helloandroidagain.presentation.navigation.router
+import com.example.helloandroidagain.presentation.tournament.create.TournamentCreateFragment.Companion.CREATE_TOURNAMENT_FRAGMENT_RESULT
+import com.example.helloandroidagain.presentation.tournament.create.TournamentCreateFragment.Companion.CREATE_TOURNAMENT_RESULT_KEY
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.logEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +31,7 @@ import javax.inject.Inject
 class TournamentListFragment @Inject constructor() :
     Fragment(),
     TournamentSwipeListener,
-    CreateTournamentResultListener {
+    TournamentClickListener {
 
     @Inject
     lateinit var analytics: FirebaseAnalytics
@@ -57,11 +60,21 @@ class TournamentListFragment @Inject constructor() :
             )
         )
         ItemTouchHelper(ItemLeftSwipeHelper(this)).attachToRecyclerView(binding.recyclerView)
+        adapter.onClickListener = this
         subscribeToTournamentList()
         binding.addTournamentFab.setOnClickListener {
-            router().navToCreateTournament((binding.recyclerView.adapter?.itemCount ?: 0) + 1)
+            val toCreateTournament: NavDirections =
+                TournamentListFragmentDirections.navToCreateTournament(
+                    (binding.recyclerView.adapter?.itemCount ?: 0) + 1
+                )
+            findNavController().navigate(toCreateTournament)
         }
-        router().listenToCreateResult(viewLifecycleOwner, this)
+        parentFragmentManager.setFragmentResultListener(
+            CREATE_TOURNAMENT_FRAGMENT_RESULT,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            tournamentCreated(bundle.getParcelable(CREATE_TOURNAMENT_RESULT_KEY)!!)
+        }
 
         return binding.root
     }
@@ -74,6 +87,14 @@ class TournamentListFragment @Inject constructor() :
         }
     }
 
+    override fun onItemClick(tournament: Tournament) {
+        val toExportTournament: NavDirections =
+            TournamentListFragmentDirections.navToExportTournament(
+                tournament
+            )
+        findNavController().navigate(toExportTournament)
+    }
+
     override fun onRemoveSwipe(tournamentPosition: Int) {
         Log.d("TournamentListFragment", "On remove swipe at $tournamentPosition")
         analytics.logEvent("remove_tournament") {
@@ -82,7 +103,7 @@ class TournamentListFragment @Inject constructor() :
         viewModel.removeTournament(tournamentPosition)
     }
 
-    override fun tournamentCreated(tournament: Tournament) {
+    private fun tournamentCreated(tournament: Tournament) {
         analytics.logEvent("create_tournament") {
             param(FirebaseAnalytics.Param.ITEM_NAME, tournament.name)
         }

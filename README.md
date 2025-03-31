@@ -1,3 +1,15 @@
+# [HomeTask #10](https://github.com/tiver69/hello-android-again/tree/hometask_10)
+Update App from [HomeTask #9](https://github.com/tiver69/hello-android-again/tree/hometask_9?tab=readme-ov-file#hometask-9) to use Jetpack Navigation (JN):
+
+## Checklist:
+
+- [x] Integrate JN into current project  
+- [x] Add another Fragment to current activity with JN. Fragment should export tournament logo with overlay info to device storage 
+- [x] Add another Activity consisted with two Fragments with JN. Activity related to login and profile actions. Currently empty with navigation only
+- [x] System Back button should forbid navigating back to login fragment from profile(only explicit 'Logout' press), and back to profile from login (after explicit 'Logout' press). 
+
+---
+
 # [HomeTask #9](https://github.com/tiver69/hello-android-again/tree/hometask_9)
 Update App from [HomeTask #8](https://github.com/tiver69/hello-android-again/tree/hometask_8?tab=readme-ov-file#hometask-8) to use Room instead of SharedPreferences to store tournaments
 

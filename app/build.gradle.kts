@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.gradle.ktlint)
+    alias(libs.plugins.androidx.navigation.args)
 }
 
 val keystoreProperties = Properties()
@@ -123,6 +124,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.fragment)
+    implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.browser)
     implementation(libs.androidx.room)

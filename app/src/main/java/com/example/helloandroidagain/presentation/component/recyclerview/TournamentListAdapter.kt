@@ -1,20 +1,20 @@
 package com.example.helloandroidagain.presentation.component.recyclerview
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.helloandroidagain.R
+import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.databinding.ItemTournamentActiveBinding
 import com.example.helloandroidagain.databinding.ItemTournamentOutdatedBinding
-import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentListAdapter.TournamentViewHolder
 import com.example.helloandroidagain.util.convertToString
 import java.time.LocalDate
@@ -23,6 +23,8 @@ import javax.inject.Inject
 typealias TournamentType = TournamentViewHolder.Companion.TournamentItemType
 
 class TournamentListAdapter @Inject constructor() : RecyclerView.Adapter<TournamentViewHolder>() {
+
+    lateinit var onClickListener: TournamentClickListener
 
     var tournaments: List<Tournament> = emptyList()
         set(newValue) {
@@ -47,6 +49,9 @@ class TournamentListAdapter @Inject constructor() : RecyclerView.Adapter<Tournam
 
     override fun onBindViewHolder(holder: TournamentViewHolder, position: Int) {
         val tournament = tournaments[position]
+        holder.itemView.setOnClickListener {
+            onClickListener.onItemClick(tournament)
+        }
         holder.bindTournamentItem(tournament)
     }
 
@@ -72,7 +77,7 @@ class TournamentListAdapter @Inject constructor() : RecyclerView.Adapter<Tournam
                         .setNavigationBarColor(itemView.context.getColor(R.color.md_theme_primary))
                         .build()
                 ).build()
-            customTabsIntent.launchUrl(itemView.context, Uri.parse(url))
+            customTabsIntent.launchUrl(itemView.context, url.toUri())
         }
 
         fun loadItemLogo(url: String, into: ImageView) {
@@ -127,6 +132,10 @@ class TournamentListAdapter @Inject constructor() : RecyclerView.Adapter<Tournam
             }
         }
     }
+}
+
+interface TournamentClickListener {
+    fun onItemClick(tournament: Tournament)
 }
 
 class TournamentListDiffCallback(

@@ -8,3 +8,9 @@ plugins {
     alias (libs.plugins.firebase.crashlytics) apply false
     alias (libs.plugins.gradle.ktlint) apply false
 }
+
+buildscript {
+    dependencies {
+        classpath(libs.androidx.navigation.args.gradle)
+    }
+}
