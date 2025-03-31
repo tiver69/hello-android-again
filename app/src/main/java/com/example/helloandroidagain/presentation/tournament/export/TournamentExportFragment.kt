@@ -22,6 +22,7 @@ import com.example.helloandroidagain.presentation.component.glide.CustomCacheLoa
 import com.example.helloandroidagain.util.convertToString
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import androidx.core.graphics.createBitmap
 
 @AndroidEntryPoint
 class TournamentExportFragment : Fragment() {
@@ -46,7 +47,7 @@ class TournamentExportFragment : Fragment() {
                 date.convertToString()
             )
             loadItemLogo(logo.regularUrl, binding.tournamentExportImageBg)
-            subscribeToSavingStatus()
+            subscribeToSavingResult()
 
             binding.tournamentExportSaveButton.setOnClickListener {
                 val bitmap = createBitmapFromView(binding.tournamentExportFrame)
@@ -57,7 +58,7 @@ class TournamentExportFragment : Fragment() {
     }
 
     private fun createBitmapFromView(view: View): Bitmap {
-        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        val bitmap = createBitmap(view.width, view.height)
         val canvas = Canvas(bitmap)
         view.draw(canvas)
         return bitmap
@@ -73,13 +74,13 @@ class TournamentExportFragment : Fragment() {
             .into(into)
     }
 
-    private fun subscribeToSavingStatus() {
+    private fun subscribeToSavingResult() {
         lifecycleScope.launch {
-            viewModel.saveImageStatus.collect { status ->
+            viewModel.saveImageResultMessage.collect { status ->
                 status?.let {
-                    val message: String = if (status) "Image saved!" else "Failed to save image"
+                    val message: String = getString(status)
                     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                    if (status) {
+                    if (viewModel.isImageSaved) {
                         findNavController().popBackStack()
                     }
                 }

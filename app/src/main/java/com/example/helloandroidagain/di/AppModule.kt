@@ -1,6 +1,7 @@
 package com.example.helloandroidagain.di
 
 import android.app.Application
+import android.content.ContentResolver
 import android.content.Context
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -18,6 +19,10 @@ class AppModule {
     @Provides
     @Singleton
     fun getAppContext(application: Application): Context = application.applicationContext
+
+    @Provides
+    @Singleton
+    fun getContentResolver(context: Context): ContentResolver = context.contentResolver
 
     @Provides
     @Singleton

@@ -1,5 +1,6 @@
 package com.example.helloandroidagain.di
 
+import android.content.ContentResolver
 import android.content.Context
 import androidx.room.Room
 import androidx.room.migration.Migration
@@ -7,9 +8,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.helloandroidagain.data.db.LogoDao
 import com.example.helloandroidagain.data.db.TournamentDao
 import com.example.helloandroidagain.data.db.StorageDatabase
+import com.example.helloandroidagain.data.repository.local.ExportRepositoryImpl
 import com.example.helloandroidagain.data.repository.local.TournamentRepositoryImpl
 import com.example.helloandroidagain.data.repository.remote.ImageRemoteApi
 import com.example.helloandroidagain.data.repository.remote.ImageRetrofitInstance
+import com.example.helloandroidagain.domain.repository.ExportRepository
 import com.example.helloandroidagain.domain.repository.TournamentRepository
 import dagger.Module
 import dagger.Provides
@@ -38,6 +41,12 @@ class RepositoryModule {
     fun provideImageRemoteApi(): ImageRemoteApi {
         return ImageRetrofitInstance.retrofit.create(ImageRemoteApi::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun provideExportRepository(
+        contentResolver: ContentResolver
+    ): ExportRepository = ExportRepositoryImpl(contentResolver)
 
     @Provides
     @Singleton

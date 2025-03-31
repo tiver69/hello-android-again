@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.databinding.FragmentTournamentListBinding
 import com.example.helloandroidagain.presentation.component.recyclerview.ItemLeftSwipeHelper
+import com.example.helloandroidagain.presentation.component.recyclerview.TournamentClickListener
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentListAdapter
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentSwipeListener
 import com.example.helloandroidagain.presentation.tournament.create.TournamentCreateFragment.Companion.CREATE_TOURNAMENT_FRAGMENT_RESULT
@@ -29,7 +30,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class TournamentListFragment @Inject constructor() :
     Fragment(),
-    TournamentSwipeListener {
+    TournamentSwipeListener,
+    TournamentClickListener {
 
     @Inject
     lateinit var analytics: FirebaseAnalytics
@@ -50,13 +52,6 @@ class TournamentListFragment @Inject constructor() :
         viewModel.restoreTournaments()
         val layoutManager = LinearLayoutManager(container?.context)
         binding.recyclerView.layoutManager = layoutManager
-        adapter.onItemClick = { tournament ->
-            val toExportTournament: NavDirections =
-                TournamentListFragmentDirections.navToExportTournament(
-                    tournament
-                )
-            findNavController().navigate(toExportTournament)
-        }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(
@@ -65,6 +60,7 @@ class TournamentListFragment @Inject constructor() :
             )
         )
         ItemTouchHelper(ItemLeftSwipeHelper(this)).attachToRecyclerView(binding.recyclerView)
+        adapter.onClickListener = this
         subscribeToTournamentList()
         binding.addTournamentFab.setOnClickListener {
             val toCreateTournament: NavDirections =
@@ -89,6 +85,14 @@ class TournamentListFragment @Inject constructor() :
                 adapter.tournaments = it
             }
         }
+    }
+
+    override fun onItemClick(tournament: Tournament) {
+        val toExportTournament: NavDirections =
+            TournamentListFragmentDirections.navToExportTournament(
+                tournament
+            )
+        findNavController().navigate(toExportTournament)
     }
 
     override fun onRemoveSwipe(tournamentPosition: Int) {
