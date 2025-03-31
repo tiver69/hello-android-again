@@ -30,10 +30,8 @@ class FakeTournamentRepositoryImpl : TournamentRepository {
         )
 
     override suspend fun addTournament(tournament: Tournament) {
-
     }
 
     override suspend fun removeTournament(id: Long) {
-
     }
 }

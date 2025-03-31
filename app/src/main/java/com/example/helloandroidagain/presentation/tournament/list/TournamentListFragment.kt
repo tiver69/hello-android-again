@@ -93,9 +93,7 @@ class TournamentListFragment @Inject constructor() :
 
     override fun onItemClick(tournament: Tournament) {
         val toExportTournament: NavDirections =
-            TournamentListFragmentDirections.navToExportTournament(
-                tournament
-            )
+            directionsHelper.toExportTournamentDirection(tournament)
         findNavController().navigate(toExportTournament)
     }
 

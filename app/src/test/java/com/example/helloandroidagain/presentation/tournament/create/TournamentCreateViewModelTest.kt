@@ -69,11 +69,13 @@ class TournamentCreateViewModelTest {
 
     @Test
     fun viewModelShouldSwitchToFetchImagesOfSecondPage() = runTest {
-        val logosFirstPage = listOf(mockk<TournamentLogo> {},
+        val logosFirstPage = listOf(
             mockk<TournamentLogo> {},
             mockk<TournamentLogo> {},
             mockk<TournamentLogo> {},
-            mockk<TournamentLogo> {})
+            mockk<TournamentLogo> {},
+            mockk<TournamentLogo> {}
+        )
         val logosSecondPage = listOf(mockk<TournamentLogo> {})
         coEvery { fetchTournamentLogoPageUseCase.invoke(1) } returns logosFirstPage
         coEvery { fetchTournamentLogoPageUseCase.invoke(2) } returns logosSecondPage
@@ -90,7 +92,6 @@ class TournamentCreateViewModelTest {
 
         underTest.regenerateTournamentLogo()
         advanceUntilIdle()
-
 
         assertEquals(7, resultLogos.size)
         assertEquals(logosSecondPage[0], resultLogos[6])

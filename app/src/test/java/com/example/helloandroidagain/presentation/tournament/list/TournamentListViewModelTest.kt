@@ -86,7 +86,8 @@ class TournamentListViewModelTest {
                 mockk<Tournament> {},
                 mockk<Tournament> {
                     every { id } returns 17
-                })
+                }
+            )
         }
 
         underTest.removeTournament(1)
