@@ -1,7 +1,10 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.gradle.klint)
 }
 
 android {
@@ -39,6 +42,13 @@ android {
     }
 }
 
+ktlint {
+    android = true
+    reporters {
+        reporter(ReporterType.PLAIN)
+    }
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -56,4 +66,15 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+tasks.register<Copy>("applyGitHooks") {
+    description = "Copy git hooks from the scripts to the .git/hooks folder."
+    group = "git hooks"
+    outputs.upToDateWhen { false }
+    from("$rootDir/scripts/pre-commit")
+    into("$rootDir/.git/hooks/")
+}
+tasks.build {
+    dependsOn("applyGitHooks")
 }
