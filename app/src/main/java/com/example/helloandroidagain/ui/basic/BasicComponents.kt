@@ -16,6 +16,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,8 +34,9 @@ import com.example.helloandroidagain.R
 @Composable
 fun Greeting(
     name: String,
-    checkedState: List<Boolean>,
+    uiState: GreetingScreenUiState,
     checkedStateModified: (Int, Boolean) -> Unit,
+    otherTextModified: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -51,27 +53,28 @@ fun Greeting(
                 exit = shrinkVertically()
             ) {
                 Column {
-                    CheckBoxText(checkedState[0], "First important decision") { checked ->
+                    CheckBoxText(uiState.checks[0], "First important decision") { checked ->
                         checkedStateModified(0, checked)
                         Log.i(
                             "GreetingsScreen",
                             "$name, 1: ${if (checked) "Checked" else "Unchecked"}"
                         )
                     }
-                    CheckBoxText(checkedState[1], "Second important decision") { checked ->
+                    CheckBoxText(uiState.checks[1], "Second important decision") { checked ->
                         checkedStateModified(1, checked)
                         Log.i(
                             "GreetingsScreen",
                             "$name, 2: ${if (checked) "Checked" else "Unchecked"}"
                         )
                     }
-                    CheckBoxText(checkedState[2], "Third important decision") { checked ->
+                    CheckBoxText(uiState.checks[2], "Third important decision") { checked ->
                         checkedStateModified(2, checked)
                         Log.i(
                             "GreetingsScreen",
                             "$name, 3: ${if (checked) "Checked" else "Unchecked"}"
                         )
                     }
+                    OutlinedTextField(value = uiState.otherText, onValueChange = otherTextModified)
                 }
             }
         }
@@ -108,7 +111,9 @@ fun GreetingItemHeader(name: String, isExpanded: Boolean, expandedChanged: () ->
 @Composable
 fun CheckBoxText(checked: Boolean, checkText: String, onCheckedChange: (Boolean) -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth().clickable { onCheckedChange(!checked) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onCheckedChange(!checked) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(

@@ -25,16 +25,19 @@ fun GreetingsScreen() {
     val basicViewModel: BasicViewModel = viewModel()
 
     basicViewModel.initializeGreetings()
-    val greets by basicViewModel.greetingCheckedStates.collectAsState()
+    val greets by basicViewModel.uiState.collectAsState()
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
             items(greets.keys.toList()) { greetName ->
                 Greeting(
                     name = greetName,
-                    checkedState = greets[greetName]!!,
+                    uiState = greets[greetName]!!,
                     checkedStateModified = { position, checked ->
                         basicViewModel.updateCheckState(greetName, position, checked)
+                    },
+                    otherTextModified = { newText ->
+                        basicViewModel.updateOtherText(greetName, newText)
                     },
                     modifier = Modifier.padding(innerPadding)
                 )

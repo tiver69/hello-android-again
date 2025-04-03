@@ -5,24 +5,38 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+data class GreetingScreenUiState(
+    val checks: List<Boolean>,
+    val otherText: String = ""
+)
+
 class BasicViewModel : ViewModel() {
-    private val _greetingCheckedStates = MutableStateFlow(mutableMapOf<String, List<Boolean>>())
-    val greetingCheckedStates: StateFlow<Map<String, List<Boolean>>> =
-        _greetingCheckedStates.asStateFlow()
+    private val _uiState =
+        MutableStateFlow(mutableMapOf<String, GreetingScreenUiState>())
+    val uiState: StateFlow<Map<String, GreetingScreenUiState>> = _uiState.asStateFlow()
 
     fun initializeGreetings() {
-        _greetingCheckedStates.value = mutableMapOf<String, List<Boolean>>().apply {
+        _uiState.value = mutableMapOf<String, GreetingScreenUiState>().apply {
             for (name in List(100) { "Name$it" }) {
-                put(name, listOf(false, false, false))
+                put(name, GreetingScreenUiState(listOf(false, false, false)))
             }
         }
     }
 
     fun updateCheckState(name: String, position: Int, isChecked: Boolean) {
-        _greetingCheckedStates.value[name]?.let { list ->
-            val updatedList = list.toMutableList().apply { this[position] = isChecked }
-            _greetingCheckedStates.value = _greetingCheckedStates.value.toMutableMap().apply {
-                put(name, updatedList)
+        _uiState.value[name]?.let { namedUiState ->
+            val updatedChecks =
+                namedUiState.checks.toMutableList().apply { this[position] = isChecked }
+            _uiState.value = _uiState.value.toMutableMap().apply {
+                put(name, namedUiState.copy(checks = updatedChecks))
+            }
+        }
+    }
+
+    fun updateOtherText(name: String, newOtherText: String) {
+        _uiState.value[name]?.let { namedUiState ->
+            _uiState.value = _uiState.value.toMutableMap().apply {
+                put(name, namedUiState.copy(otherText = newOtherText))
             }
         }
     }
