@@ -7,6 +7,7 @@ Cover App from [HomeTask #10](https://github.com/tiver69/hello-android-again/tre
 - [x] Robolectric test for Fragment classes
 - [x] UI test for UI interactions on screens using Espresso/Kakao frameworks
 - [x] UI test with Full User Journey with Real App
+- [x] Use Espresso IdleResource for image loading to avoid delay-workarounds for UI end-to-end test
 - [ ] Extend Coverage
 
 ---

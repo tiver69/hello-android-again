@@ -140,6 +140,7 @@ dependencies {
     implementation(libs.androidx.browser)
     implementation(libs.androidx.room)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.espresso.idling.resource)
     implementation(libs.google.gson)
 //    implementation(libs.rx.java)
 //    implementation(libs.rx.android)

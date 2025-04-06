@@ -18,16 +18,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
+import com.example.helloandroidagain.BuildConfig
 import com.example.helloandroidagain.R
-import com.example.helloandroidagain.presentation.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
-import com.example.helloandroidagain.databinding.FragmentTournamentCreateBinding
 import com.example.helloandroidagain.data.model.Tournament
 import com.example.helloandroidagain.data.model.TournamentLogo
+import com.example.helloandroidagain.databinding.FragmentTournamentCreateBinding
+import com.example.helloandroidagain.presentation.component.glide.CustomActionIdleRequestListener
+import com.example.helloandroidagain.presentation.component.glide.CustomActionRequestListener
+import com.example.helloandroidagain.presentation.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
 import com.example.helloandroidagain.util.convertToLocalDate
 import com.example.helloandroidagain.util.convertToLocalDateAsEpochMilli
 import com.example.helloandroidagain.util.convertToLongAsEpochMilli
@@ -82,8 +83,12 @@ class TournamentCreateFragment : Fragment() {
                 }
             }
         }
-        if (savedInstanceState == null) viewModel.fetchTournamentLogoPage()
+        if (savedInstanceState == null) {
+            startIdleRequest()
+            viewModel.fetchTournamentLogoPage()
+        }
         binding.tournamentCreateRegenerateImageButton.setOnClickListener {
+            startIdleRequest()
             viewModel.regenerateTournamentLogo()
         }
         binding.tournamentCreateSaveButton.setOnClickListener {
@@ -133,31 +138,13 @@ class TournamentCreateFragment : Fragment() {
     private fun loadLogo(logoUrl: String) {
         Glide.with(requireContext().applicationContext)
             .load(logoUrl)
-            .apply(RequestOptions().set(SKIP_CUSTOM_CACHE, true))
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    showLogoErrorToast()
-                    analytics.logEvent("unsplash_remote") {
-                        param(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
-                        param(FirebaseAnalytics.Param.ITEM_ID, logoUrl)
-                        param(FirebaseAnalytics.Param.SUCCESS, "FALSE")
-                    }
-                    return false
-                }
-
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean = false
-            })
+            .apply(
+                RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .set(SKIP_CUSTOM_CACHE, true)
+            )
+            .listener(getGlideRequestListener(logoUrl))
             .placeholder(R.drawable.ic_image_placeholder)
             .into(binding.tournamentCreateLogo)
     }
@@ -166,6 +153,15 @@ class TournamentCreateFragment : Fragment() {
         Glide.with(requireContext())
             .load(R.drawable.ic_image_placeholder)
             .into(binding.tournamentCreateLogo)
+    }
+
+    private fun onGlideLoadFailed(logoUrl: String) {
+        showLogoErrorToast()
+        analytics.logEvent("unsplash_remote") {
+            param(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
+            param(FirebaseAnalytics.Param.ITEM_ID, logoUrl)
+            param(FirebaseAnalytics.Param.SUCCESS, "FALSE")
+        }
     }
 
     private fun showLogoErrorToast() {
@@ -204,6 +200,19 @@ class TournamentCreateFragment : Fragment() {
         )
         findNavController().popBackStack()
     }
+
+    private fun startIdleRequest() {
+        if (BuildConfig.DEBUG) {
+            CustomActionIdleRequestListener.increment()
+        }
+    }
+
+    private fun getGlideRequestListener(logoUrl: String): RequestListener<Drawable> =
+        if (BuildConfig.DEBUG) {
+            CustomActionIdleRequestListener.resetListenerWithAction { onGlideLoadFailed(logoUrl) }
+        } else {
+            CustomActionRequestListener().setUpCustomAction { onGlideLoadFailed(logoUrl) }
+        }
 
     @Parcelize
     data class TournamentCreateFragmentState(

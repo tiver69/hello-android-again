@@ -5,6 +5,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBackUnconditionally
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.pressBack
 import androidx.test.espresso.action.ViewActions.swipeLeft
@@ -18,10 +19,12 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.helloandroidagain.di.TestAppModule
 import com.example.helloandroidagain.di.TestRepositoryModule
+import com.example.helloandroidagain.presentation.component.glide.CustomActionIdleRequestListener
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentListAdapter
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import org.junit.After
 import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Rule
@@ -43,6 +46,12 @@ class UserJourneyTest {
     @Before
     fun setup() {
         hiltRule.inject()
+        IdlingRegistry.getInstance().register(CustomActionIdleRequestListener)
+    }
+
+    @After
+    fun tearDown() {
+        IdlingRegistry.getInstance().unregister(CustomActionIdleRequestListener)
     }
 
     @Test
@@ -52,21 +61,19 @@ class UserJourneyTest {
         performClickOnView(R.id.auth_landing_login_button)
         performClickOnView(R.id.auth_profile_manage_tournament_button)
 
-        //Tournament Activity Navigation
-        //Tournament List Fragment
+        // Tournament Activity Navigation
+        // Tournament List Fragment
         checkIfViewDisplayed(R.id.tournamentActivity)
         performClickOnView(R.id.add_tournament_fab)
 
-        //Tournament Create Fragment
-        Thread.sleep(1_000)
+        // Tournament Create Fragment
         val initialImage = captureImageDrawable(R.id.tournament_create_logo)
         performClickOnView(R.id.tournament_create_regenerate_image_button)
-        Thread.sleep(1_000)
         val regeneratedImage = captureImageDrawable(R.id.tournament_create_logo)
         assertNotEquals(initialImage, regeneratedImage)
         performClickOnView(R.id.tournament_create_save_button)
 
-        //Tournament List Fragment
+        // Tournament List Fragment
         val lastRecyclerViewPosition = getLastRecyclerViewItemPosition()
         onView(withId(R.id.recyclerView))
             .perform(
@@ -76,11 +83,11 @@ class UserJourneyTest {
                 )
             )
 
-        //Tournament Export Fragment
+        // Tournament Export Fragment
         checkIfViewDisplayed(R.id.tournament_export_save_button)
         onView(isRoot()).perform(pressBack())
 
-        //Tournament List Fragment
+        // Tournament List Fragment
         onView(withId(R.id.recyclerView))
             .perform(
                 RecyclerViewActions.actionOnItemAtPosition<TournamentListAdapter.TournamentViewHolder>(
