@@ -5,39 +5,58 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-data class GreetingScreenUiState(
-    val checks: List<Boolean>,
-    val otherText: String = ""
-)
-
 class BasicViewModel : ViewModel() {
-    private val _uiState =
-        MutableStateFlow(mutableMapOf<String, GreetingScreenUiState>())
-    val uiState: StateFlow<Map<String, GreetingScreenUiState>> = _uiState.asStateFlow()
+    private val _screenUiState = MutableStateFlow(GreetingScreenUiState())
+    val greetingScreenUiState: StateFlow<GreetingScreenUiState> = _screenUiState.asStateFlow()
 
     fun initializeGreetings() {
-        _uiState.value = mutableMapOf<String, GreetingScreenUiState>().apply {
-            for (name in List(100) { "Name$it" }) {
-                put(name, GreetingScreenUiState(listOf(false, false, false)))
+        _screenUiState.value = GreetingScreenUiState(
+            greetings = List(100) { i ->
+                GreetingScreenUiState.GreetingItemUiState(
+                    name = "Name${i + 1}",
+                    checks = listOf(false, false, false),
+                    updateCheckState = { name, position, isChecked ->
+                        updateCheckStateByName(name, position, isChecked)
+                    },
+                    updateOtherText = { name, newText ->
+                        updateOtherTextByName(name, newText)
+                    }
+                )
             }
-        }
+        )
     }
 
-    fun updateCheckState(name: String, position: Int, isChecked: Boolean) {
-        _uiState.value[name]?.let { namedUiState ->
+    private fun updateCheckStateByName(name: String, checkPosition: Int, isChecked: Boolean) {
+        val greetings = _screenUiState.value.greetings.toMutableList()
+        val namePosition = greetings.indexOfFirst { it.name == name }
+        greetings[namePosition].let { greetingItem ->
             val updatedChecks =
-                namedUiState.checks.toMutableList().apply { this[position] = isChecked }
-            _uiState.value = _uiState.value.toMutableMap().apply {
-                put(name, namedUiState.copy(checks = updatedChecks))
-            }
+                greetingItem.checks.toMutableList().apply { this[checkPosition] = isChecked }
+            greetings[namePosition] = greetingItem.copy(checks = updatedChecks)
         }
+
+        _screenUiState.value = _screenUiState.value.copy(greetings = greetings)
     }
 
-    fun updateOtherText(name: String, newOtherText: String) {
-        _uiState.value[name]?.let { namedUiState ->
-            _uiState.value = _uiState.value.toMutableMap().apply {
-                put(name, namedUiState.copy(otherText = newOtherText))
-            }
+    private fun updateOtherTextByName(name: String, newOtherText: String) {
+        val greetings = _screenUiState.value.greetings.toMutableList()
+        val namePosition = greetings.indexOfFirst { it.name == name }
+        greetings[namePosition].let { greetingItem ->
+            greetings[namePosition] = greetingItem.copy(otherText = newOtherText)
         }
+
+        _screenUiState.value = _screenUiState.value.copy(greetings = greetings)
+    }
+
+    data class GreetingScreenUiState(
+        val greetings: List<GreetingItemUiState> = emptyList()
+    ) {
+        data class GreetingItemUiState(
+            val name: String,
+            val checks: List<Boolean>,
+            val otherText: String = "",
+            val updateCheckState: (String, Int, Boolean) -> Unit,
+            val updateOtherText: (String, String) -> Unit
+        )
     }
 }
