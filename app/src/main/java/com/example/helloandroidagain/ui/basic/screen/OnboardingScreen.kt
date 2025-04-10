@@ -2,7 +2,9 @@ package com.example.helloandroidagain.ui.basic.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -14,18 +16,29 @@ import androidx.compose.ui.unit.dp
 import com.example.helloandroidagain.ui.theme.HelloAndroidAgainTheme
 
 @Composable
-fun OnboardingScreen(modifier: Modifier = Modifier, onContinueClicked: () -> Unit) {
+fun OnboardingScreen(
+    onListClicked: () -> Unit,
+    onConstrainedClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text("Welcome to the Basics Codelab!")
-        Button(
-            modifier = Modifier.padding(vertical = 24.dp),
-            onClick = onContinueClicked
+        Row(
+            modifier = Modifier
+                .padding(vertical = 24.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text("Continue")
+            Button(onClick = onListClicked) {
+                Text("To List")
+            }
+            Button(onClick = onConstrainedClick) {
+                Text("To Constraint")
+            }
         }
     }
 }
@@ -34,6 +47,6 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onContinueClicked: () -> Uni
 @Composable
 fun OnboardingPreview() {
     HelloAndroidAgainTheme {
-        OnboardingScreen(onContinueClicked = {})
+        OnboardingScreen(onListClicked = {}, onConstrainedClick = {})
     }
 }

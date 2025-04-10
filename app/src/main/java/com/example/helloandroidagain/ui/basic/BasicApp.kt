@@ -8,22 +8,34 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.helloandroidagain.ui.basic.screen.ConstraintScreen
 import com.example.helloandroidagain.ui.basic.screen.GreetingsScreen
 import com.example.helloandroidagain.ui.basic.screen.OnboardingScreen
 
+enum class Screen {
+    ONBOARDING, LIST, CONSTRAINT
+}
+
 @Composable
 fun BasicApp() {
-    var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
+    var currentScreen by rememberSaveable { mutableStateOf(Screen.ONBOARDING) }
 
-    if (shouldShowOnboarding) {
-        OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false })
-    } else {
-        val basicViewModel: BasicViewModel = viewModel()
-        LaunchedEffect(Unit) {
-            basicViewModel.initializeGreetings()
+    when (currentScreen) {
+        Screen.ONBOARDING -> OnboardingScreen(
+            onListClicked = { currentScreen = Screen.LIST },
+            onConstrainedClick = { currentScreen = Screen.CONSTRAINT }
+        )
+
+        Screen.LIST -> {
+            val basicViewModel: BasicViewModel = viewModel()
+            LaunchedEffect(Unit) {
+                basicViewModel.initializeGreetings()
+            }
+
+            val greetingUiState by basicViewModel.greetingScreenUiState.collectAsState()
+            GreetingsScreen(uiState = greetingUiState)
         }
 
-        val greetingUiState by basicViewModel.greetingScreenUiState.collectAsState()
-        GreetingsScreen(uiState = greetingUiState)
+        Screen.CONSTRAINT -> ConstraintScreen()
     }
 }
