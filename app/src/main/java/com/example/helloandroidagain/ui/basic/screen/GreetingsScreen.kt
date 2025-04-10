@@ -1,11 +1,9 @@
 package com.example.helloandroidagain.ui.basic.screen
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,17 +17,14 @@ fun GreetingsScreen(
     modifier: Modifier = Modifier,
     uiState: GreetingScreenUiState
 ) {
-    Scaffold(modifier = modifier.fillMaxSize()) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(vertical = 4.dp)
-        ) {
-            items(uiState.greetings) { greetingItem ->
-                GreetingItem(
-                    uiState = greetingItem
-                )
-            }
+    LazyColumn(
+        modifier = modifier
+            .padding(vertical = 4.dp)
+    ) {
+        items(uiState.greetings) { greetingItem ->
+            GreetingItem(
+                uiState = greetingItem
+            )
         }
     }
 }
