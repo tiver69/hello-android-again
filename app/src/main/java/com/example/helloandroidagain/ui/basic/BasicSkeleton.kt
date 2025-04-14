@@ -22,8 +22,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.helloandroidagain.ui.theme.HelloAndroidAgainTheme
 
-@Preview
 @Composable
 fun BasicAppScaffold() {
     Scaffold(
@@ -73,12 +73,10 @@ private fun BasicTopBar() {
 @Composable
 private fun BasicFloatingButton() {
     FloatingActionButton(onClick = {}) {
-        IconButton(onClick = {}) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "floating action"
-            )
-        }
+        Icon(
+            imageVector = Icons.Default.Favorite,
+            contentDescription = "floating action"
+        )
     }
 }
 
@@ -118,5 +116,13 @@ private fun BasicBottomBar() {
                 )
             }
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BasicAppScaffoldPreview() {
+    HelloAndroidAgainTheme {
+        BasicAppScaffold()
     }
 }

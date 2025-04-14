@@ -27,12 +27,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.helloandroidagain.R
-import com.example.helloandroidagain.ui.basic.BasicViewModel.GreetingScreenUiState.GreetingItemUiState
 import com.example.helloandroidagain.ui.theme.HelloAndroidAgainTheme
 
 @Composable
 fun GreetingItem(
-    uiState: GreetingItemUiState,
+    uiState: GreetingItemState,
     initialExpanded: Boolean = false
 ) {
     var expanded by remember { mutableStateOf(initialExpanded) }
@@ -49,26 +48,20 @@ fun GreetingItem(
                 exit = shrinkVertically()
             ) {
                 Column {
-                    CheckBoxText(uiState.checks[0], "First important decision") { checked ->
-                        uiState.updateCheckState(uiState.name, 0, checked)
-                        Log.i(
-                            "GreetingsScreen",
-                            "${uiState.name}, 1: ${if (checked) "Checked" else "Unchecked"}"
-                        )
-                    }
-                    CheckBoxText(uiState.checks[1], "Second important decision") { checked ->
-                        uiState.updateCheckState(uiState.name, 1, checked)
-                        Log.i(
-                            "GreetingsScreen",
-                            "${uiState.name}, 2: ${if (checked) "Checked" else "Unchecked"}"
-                        )
-                    }
-                    CheckBoxText(uiState.checks[2], "Third important decision") { checked ->
-                        uiState.updateCheckState(uiState.name, 2, checked)
-                        Log.i(
-                            "GreetingsScreen",
-                            "${uiState.name}, 3: ${if (checked) "Checked" else "Unchecked"}"
-                        )
+                    uiState.checks.forEachIndexed { index, check ->
+                        CheckBoxText(
+                            state = CheckBoxTextState(
+                                check,
+                                "Important decision #${index + 1}"
+                            )
+                        ) { updatedCheck ->
+                            uiState.updateCheckState(uiState.name, index, updatedCheck)
+                            Log.i(
+                                "GreetingsScreen",
+                                "${uiState.name}, 1: " +
+                                    if (updatedCheck) "Checked" else "Unchecked"
+                            )
+                        }
                     }
                     OutlinedTextField(
                         value = uiState.otherText,
@@ -109,25 +102,18 @@ private fun GreetingItemHeader(name: String, isExpanded: Boolean, expandedChange
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingItemExpandedPreview() {
-    val uiState = GreetingItemUiState(
-        name = "Preview Name",
-        checks = listOf(false, true, true),
-        otherText = "OtherText",
-        { _, _, _ -> },
-        { _, _ -> }
-    )
-    HelloAndroidAgainTheme {
-        GreetingItem(uiState, true)
-    }
-}
+data class GreetingItemState(
+    val name: String,
+    val checks: List<Boolean>,
+    val otherText: String = "",
+    val updateCheckState: (String, Int, Boolean) -> Unit,
+    val updateOtherText: (String, String) -> Unit
+)
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingItemPreview() {
-    val uiState = GreetingItemUiState(
+    val state = GreetingItemState(
         name = "Preview Name",
         checks = listOf(false, true, true),
         otherText = "OtherText",
@@ -135,6 +121,9 @@ fun GreetingItemPreview() {
         { _, _ -> }
     )
     HelloAndroidAgainTheme {
-        GreetingItem(uiState, false)
+        Column {
+            GreetingItem(state, false)
+            GreetingItem(state, true)
+        }
     }
 }

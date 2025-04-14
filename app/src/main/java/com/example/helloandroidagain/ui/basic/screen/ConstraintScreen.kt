@@ -21,8 +21,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import com.example.helloandroidagain.R
+import com.example.helloandroidagain.ui.theme.HelloAndroidAgainTheme
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ConstraintScreen(modifier: Modifier = Modifier) {
     ConstraintLayout(
@@ -33,19 +33,19 @@ fun ConstraintScreen(modifier: Modifier = Modifier) {
             painter = painterResource(R.drawable.baseline_camera),
             contentDescription = "Test Description",
             modifier = Modifier
-                .layoutId("mainImage")
+                .layoutId(MAIN_IMAGE)
                 .background(Color.Gray)
         )
 
         OutlinedTextField(
             value = "Name",
             onValueChange = {},
-            modifier = Modifier.layoutId("inputName")
+            modifier = Modifier.layoutId(INPUT_NAME)
         )
 
         Row(
             modifier = Modifier
-                .layoutId("inputRow")
+                .layoutId(INPUT_ROW)
                 .fillMaxWidth(0.8f),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -55,7 +55,7 @@ fun ConstraintScreen(modifier: Modifier = Modifier) {
 
         Row(
             modifier = Modifier
-                .layoutId("buttonRow")
+                .layoutId(BUTTON_ROW)
                 .fillMaxWidth(0.8f),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -69,13 +69,18 @@ fun ConstraintScreen(modifier: Modifier = Modifier) {
     }
 }
 
+private const val MAIN_IMAGE = "mainImage"
+private const val INPUT_NAME = "inputName"
+private const val INPUT_ROW = "inputRow"
+private const val BUTTON_ROW = "buttonRow"
+
 private fun constraints() = ConstraintSet {
-    val topGuideline = createGuidelineFromTop(0.18f)
-    val bottomGuideline = createGuidelineFromBottom(0.2f)
-    val mainImage = createRefFor("mainImage")
-    val inputName = createRefFor("inputName")
-    val inputRow = createRefFor("inputRow")
-    val buttonRow = createRefFor("buttonRow")
+    val topGuideline = createGuidelineFromTop(0.08f)
+    val bottomGuideline = createGuidelineFromBottom(0.16f)
+    val mainImage = createRefFor(MAIN_IMAGE)
+    val inputName = createRefFor(INPUT_NAME)
+    val inputRow = createRefFor(INPUT_ROW)
+    val buttonRow = createRefFor(BUTTON_ROW)
     val chain = createVerticalChain(
         mainImage,
         inputName,
@@ -114,5 +119,13 @@ private fun constraints() = ConstraintSet {
         end.linkTo(parent.end)
         top.linkTo(inputRow.bottom)
         bottom.linkTo(bottomGuideline)
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun ConstraintScreenPreview() {
+    HelloAndroidAgainTheme {
+        ConstraintScreen()
     }
 }

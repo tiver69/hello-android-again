@@ -1,7 +1,6 @@
 package com.example.helloandroidagain.ui.basic
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,11 +29,7 @@ fun BasicApp(modifier: Modifier = Modifier) {
 
         Screen.LIST -> {
             val basicViewModel: BasicViewModel = viewModel()
-            LaunchedEffect(Unit) {
-                basicViewModel.initializeGreetings()
-            }
-
-            val greetingUiState by basicViewModel.greetingScreenUiState.collectAsState()
+            val greetingUiState by basicViewModel.greetingScreenState.collectAsState()
             GreetingsScreen(uiState = greetingUiState, modifier = modifier)
         }
 

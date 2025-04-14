@@ -12,25 +12,36 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.helloandroidagain.ui.theme.HelloAndroidAgainTheme
 
 @Composable
-fun CheckBoxText(checked: Boolean, checkText: String, onCheckedChange: (Boolean) -> Unit) {
+fun CheckBoxText(
+    modifier: Modifier = Modifier,
+    state: CheckBoxTextState,
+    onCheckedChange: (Boolean) -> Unit = {}
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .clickable { onCheckedChange(!checked) },
+            .clickable { onCheckedChange(!state.checked) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(
-            checked = checked,
+            checked = state.checked,
             onCheckedChange = onCheckedChange
         )
-        Text(checkText)
+        Text(state.checkText)
     }
 }
+
+data class CheckBoxTextState(
+    val checked: Boolean,
+    val checkText: String
+)
 
 @Preview(showBackground = true)
 @Composable
 fun CheckedCheckBoxTextPreview() {
     HelloAndroidAgainTheme {
-        CheckBoxText(true, "Some important choice") {}
+        CheckBoxText(
+            state = CheckBoxTextState(true, "Some important choice")
+        )
     }
 }
