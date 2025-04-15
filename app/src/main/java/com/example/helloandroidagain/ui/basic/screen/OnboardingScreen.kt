@@ -16,11 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.example.helloandroidagain.ui.theme.HelloAndroidAgainTheme
 
 @Composable
-fun OnboardingScreen(
-    onListClicked: () -> Unit,
-    onConstrainedClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun OnboardingScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -33,10 +29,10 @@ fun OnboardingScreen(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Button(onClick = onListClicked) {
+            Button(enabled = false, onClick = { }) {
                 Text("To List")
             }
-            Button(onClick = onConstrainedClick) {
+            Button(enabled = false, onClick = {}) {
                 Text("To Constraint")
             }
         }
@@ -47,6 +43,6 @@ fun OnboardingScreen(
 @Composable
 fun OnboardingPreview() {
     HelloAndroidAgainTheme {
-        OnboardingScreen(onListClicked = {}, onConstrainedClick = {})
+        OnboardingScreen()
     }
 }
