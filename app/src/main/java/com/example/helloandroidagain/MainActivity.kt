@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.helloandroidagain.ui.basic.BasicAppScaffold
+import com.example.helloandroidagain.ui.navigation.NavigationAppScaffold
 import com.example.helloandroidagain.ui.theme.HelloAndroidAgainTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +13,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             HelloAndroidAgainTheme {
-                BasicAppScaffold()
+//                BasicAppScaffold()
+                NavigationAppScaffold()
             }
         }
     }
