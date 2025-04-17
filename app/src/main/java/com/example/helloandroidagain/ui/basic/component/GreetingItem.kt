@@ -1,0 +1,129 @@
+package com.example.helloandroidagain.ui.basic.component
+
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons.Filled
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.helloandroidagain.R
+import com.example.helloandroidagain.ui.theme.HelloAndroidAgainTheme
+
+@Composable
+fun GreetingItem(
+    uiState: GreetingItemState,
+    initialExpanded: Boolean = false
+) {
+    var expanded by remember { mutableStateOf(initialExpanded) }
+    Log.d("GreetingItem", "Recomposing: ${uiState.name}")
+    Surface(
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+    ) {
+        Column(modifier = Modifier.padding(24.dp)) {
+            GreetingItemHeader(uiState.name, expanded) { expanded = !expanded }
+            AnimatedVisibility(
+                visible = expanded,
+                enter = expandVertically(),
+                exit = shrinkVertically()
+            ) {
+                Column {
+                    uiState.checks.forEachIndexed { index, check ->
+                        CheckBoxText(
+                            state = CheckBoxTextState(
+                                check,
+                                "Important decision #${index + 1}"
+                            )
+                        ) { updatedCheck ->
+                            uiState.updateCheckState(uiState.name, index, updatedCheck)
+                            Log.i(
+                                "GreetingsScreen",
+                                "${uiState.name}, 1: " +
+                                    if (updatedCheck) "Checked" else "Unchecked"
+                            )
+                        }
+                    }
+                    OutlinedTextField(
+                        value = uiState.otherText,
+                        onValueChange = { newText ->
+                            uiState.updateOtherText(uiState.name, newText)
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun GreetingItemHeader(name: String, isExpanded: Boolean, expandedChanged: () -> Unit) {
+    Row {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = "Hello,")
+            Text(
+                text = "$name!",
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.ExtraBold
+                )
+            )
+        }
+        IconButton(onClick = expandedChanged) {
+            Icon(
+                imageVector = if (isExpanded) Filled.KeyboardArrowUp else Filled.ArrowDropDown,
+                contentDescription = if (isExpanded) {
+                    stringResource(R.string.show_less)
+                } else {
+                    stringResource(
+                        R.string.show_more
+                    )
+                }
+            )
+        }
+    }
+}
+
+data class GreetingItemState(
+    val name: String,
+    val checks: List<Boolean>,
+    val otherText: String = "",
+    val updateCheckState: (String, Int, Boolean) -> Unit,
+    val updateOtherText: (String, String) -> Unit
+)
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingItemPreview() {
+    val state = GreetingItemState(
+        name = "Preview Name",
+        checks = listOf(false, true, true),
+        otherText = "OtherText",
+        { _, _, _ -> },
+        { _, _ -> }
+    )
+    HelloAndroidAgainTheme {
+        Column {
+            GreetingItem(state, false)
+            GreetingItem(state, true)
+        }
+    }
+}
