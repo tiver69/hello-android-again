@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/authLandingFragment"
-        android:name="com.example.helloandroidagain.presentation.auth.AuthLandingFragment"
+        android:name="com.example.helloandroidagain.auth_presentation.AuthLandingFragment"
         android:label="Login">
         <action
             android:id="@+id/navToProfile"
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/authProfileFragment"
-        android:name="com.example.helloandroidagain.presentation.auth.AuthProfileFragment"
+        android:name="com.example.helloandroidagain.auth_presentation.AuthProfileFragment"
         android:label="User Profile">
         <action
             android:id="@+id/navToLanding"
@@ -28,9 +28,9 @@
             app:popUpToInclusive="true" />
     </fragment>
 
-    <activity
-        android:id="@+id/tournamentActivity"
-        android:name="com.example.helloandroidagain.TournamentActivity"
-        android:label="User Profile" />
+<!--    <activity-->
+<!--        android:id="@+id/tournamentActivity"-->
+<!--        android:name="com.example.helloandroidagain.TournamentActivity"-->
+<!--        android:label="User Profile" />-->
 
 </navigation>

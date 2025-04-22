@@ -1,8 +1,8 @@
-package com.example.helloandroidagain
+package com.example.helloandroidagain.auth_presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.helloandroidagain.databinding.ActivityAuthBinding
+import com.example.helloandroidagain.auth_presentation.databinding.ActivityAuthBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

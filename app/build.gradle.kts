@@ -153,6 +153,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
+    implementation(project(":auth:auth-presentation"))
     kapt(libs.bumptech.glide.compiler)
     kapt(libs.dagger.hilt.compiler)
     kaptTest(libs.dagger.hilt.compiler)

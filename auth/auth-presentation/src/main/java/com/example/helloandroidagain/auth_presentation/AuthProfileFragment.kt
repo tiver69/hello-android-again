@@ -1,4 +1,4 @@
-package com.example.helloandroidagain.presentation.auth
+package com.example.helloandroidagain.auth_presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.helloandroidagain.R
-import com.example.helloandroidagain.databinding.FragmentAuthProfileBinding
+import com.example.helloandroidagain.auth_presentation.databinding.FragmentAuthProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,7 +26,7 @@ class AuthProfileFragment : Fragment() {
         }
 
         binding.authProfileManageTournamentButton.setOnClickListener {
-            findNavController().navigate(R.id.tournamentActivity)
+//            findNavController().navigate(R.id.tournamentActivity)
         }
 
         return binding.root

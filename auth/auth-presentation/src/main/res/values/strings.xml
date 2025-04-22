@@ -1,0 +1,5 @@
+<resources>
+    <string name="auth_landing_login_button">Login</string>
+    <string name="auth_profile_logout_button">Logout</string>
+    <string name="auth_profile_manage_button">Tournaments</string>
+</resources>

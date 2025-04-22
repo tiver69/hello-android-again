@@ -17,6 +17,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.helloandroidagain.auth_presentation.AuthActivity
 import com.example.helloandroidagain.di.TestAppModule
 import com.example.helloandroidagain.di.TestRepositoryModule
 import com.example.helloandroidagain.presentation.component.glide.CustomActionIdleRequestListener
@@ -57,9 +58,13 @@ class UserJourneyTest {
     @Test
     fun userJourney_navigatesFromStartToEnd() {
         // Auth Activity Navigation
-        checkIfViewDisplayed(R.id.authActivity)
-        performClickOnView(R.id.auth_landing_login_button)
-        performClickOnView(R.id.auth_profile_manage_tournament_button)
+        checkIfViewDisplayed(com.example.helloandroidagain.auth_presentation.R.id.authActivity)
+        performClickOnView(
+            com.example.helloandroidagain.auth_presentation.R.id.auth_landing_login_button
+        )
+        performClickOnView(
+            com.example.helloandroidagain.auth_presentation.R.id.auth_profile_manage_tournament_button
+        )
 
         // Tournament Activity Navigation
         // Tournament List Fragment
@@ -105,9 +110,13 @@ class UserJourneyTest {
         onView(isRoot()).perform(pressBack())
 
         // Auth Activity Navigation
-        checkIfViewDisplayed(R.id.authActivity)
-        performClickOnView(R.id.auth_profile_logout_button)
-        checkIfViewDisplayed(R.id.auth_landing_login_button)
+        checkIfViewDisplayed(com.example.helloandroidagain.auth_presentation.R.id.authActivity)
+        performClickOnView(
+            com.example.helloandroidagain.auth_presentation.R.id.auth_profile_logout_button
+        )
+        checkIfViewDisplayed(
+            com.example.helloandroidagain.auth_presentation.R.id.auth_landing_login_button
+        )
 
         pressBackUnconditionally()
     }
