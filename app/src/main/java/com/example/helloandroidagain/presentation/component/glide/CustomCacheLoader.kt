@@ -18,8 +18,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.signature.ObjectKey
-import com.example.helloandroidagain.data.repository.local.ImageCacheRepository
 import com.example.helloandroidagain.di.GlideEntryPoint
+import com.example.helloandroidagain.domain.repository.ImageCacheRepository
 import com.example.helloandroidagain.presentation.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
 import dagger.hilt.EntryPoints
 import kotlinx.coroutines.CoroutineScope

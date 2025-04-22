@@ -28,9 +28,11 @@ class TournamentExportViewModel @Inject constructor(
     fun saveImageToMediaStore(tournament: Tournament, bitmap: Bitmap) {
         viewModelScope.launch(Dispatchers.IO) {
             isImageSaved = exportTournamentUseCase.invoke(tournament, bitmap)
-            _saveImageResultMessage.value = if (isImageSaved)
+            _saveImageResultMessage.value = if (isImageSaved) {
                 R.string.export_tournament_success_message
-            else R.string.export_tournament_fail_message
+            } else {
+                R.string.export_tournament_fail_message
+            }
         }
     }
 }

@@ -31,7 +31,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.helloandroidagain.runner.HiltTestRunner"
 
         buildConfigField(
             "String",
@@ -96,6 +96,17 @@ android {
     viewBinding {
         enable = true
     }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+        packaging {
+            resources.excludes.add("META-INF/*")
+            jniLibs {
+                useLegacyPackaging = true
+            }
+        }
+    }
 }
 
 ktlint {
@@ -129,6 +140,7 @@ dependencies {
     implementation(libs.androidx.browser)
     implementation(libs.androidx.room)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.espresso.idling.resource)
     implementation(libs.google.gson)
 //    implementation(libs.rx.java)
 //    implementation(libs.rx.android)
@@ -143,10 +155,21 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     kapt(libs.bumptech.glide.compiler)
     kapt(libs.dagger.hilt.compiler)
+    kaptTest(libs.dagger.hilt.compiler)
+    kaptAndroidTest(libs.dagger.hilt.compiler)
     kapt(libs.androidx.room.compiler)
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.dagger.hilt.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.contrib)
+    androidTestImplementation(libs.dagger.hilt.test)
+    androidTestImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.android)
 }
 
 tasks.register<Copy>("applyGitHooks") {

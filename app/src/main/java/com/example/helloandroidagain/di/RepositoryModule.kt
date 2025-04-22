@@ -8,10 +8,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.helloandroidagain.data.db.LogoDao
 import com.example.helloandroidagain.data.db.TournamentDao
 import com.example.helloandroidagain.data.db.StorageDatabase
+import com.example.helloandroidagain.data.repository.local.ImageCacheRepositoryImpl
 import com.example.helloandroidagain.data.repository.local.ExportRepositoryImpl
 import com.example.helloandroidagain.data.repository.local.TournamentRepositoryImpl
 import com.example.helloandroidagain.data.repository.remote.ImageRemoteApi
 import com.example.helloandroidagain.data.repository.remote.ImageRetrofitInstance
+import com.example.helloandroidagain.domain.repository.ImageCacheRepository
 import com.example.helloandroidagain.domain.repository.ExportRepository
 import com.example.helloandroidagain.domain.repository.TournamentRepository
 import dagger.Module
@@ -30,6 +32,11 @@ class RepositoryModule {
 
     @Singleton
     @Provides
+    fun provideImageCacheRepository(logoDao: LogoDao): ImageCacheRepository =
+        ImageCacheRepositoryImpl(logoDao)
+
+    @Singleton
+    @Provides
     fun provideTournamentRepository(
         tournamentDao: TournamentDao,
         logoDao: LogoDao,
@@ -38,15 +45,15 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideImageRemoteApi(): ImageRemoteApi {
-        return ImageRetrofitInstance.retrofit.create(ImageRemoteApi::class.java)
-    }
-
-    @Singleton
-    @Provides
     fun provideExportRepository(
         contentResolver: ContentResolver
     ): ExportRepository = ExportRepositoryImpl(contentResolver)
+
+    @Singleton
+    @Provides
+    fun provideImageRemoteApi(): ImageRemoteApi {
+        return ImageRetrofitInstance.retrofit.create(ImageRemoteApi::class.java)
+    }
 
     @Provides
     @Singleton
