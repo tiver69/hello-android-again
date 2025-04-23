@@ -2,10 +2,10 @@ package com.example.helloandroidagain.presentation.tournament.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.helloandroidagain.data.model.Tournament
-import com.example.helloandroidagain.domain.usecase.CreateTournamentsUseCase
-import com.example.helloandroidagain.domain.usecase.LoadTournamentsUseCase
-import com.example.helloandroidagain.domain.usecase.RemoveTournamentsUseCase
+import com.example.helloandroidagain.tournament_domain.model.Tournament
+import com.example.helloandroidagain.tournament_domain.usecase.CreateTournamentsUseCase
+import com.example.helloandroidagain.tournament_domain.usecase.LoadTournamentsUseCase
+import com.example.helloandroidagain.tournament_domain.usecase.RemoveTournamentsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

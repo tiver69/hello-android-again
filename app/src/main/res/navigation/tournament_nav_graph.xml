@@ -30,7 +30,7 @@
         android:name="com.example.helloandroidagain.presentation.tournament.export.TournamentExportFragment">
         <argument
             android:name="tournament"
-            app:argType="com.example.helloandroidagain.data.model.Tournament" />
+            app:argType="com.example.helloandroidagain.tournament_domain.model.Tournament" />
     </fragment>
 
 </navigation>

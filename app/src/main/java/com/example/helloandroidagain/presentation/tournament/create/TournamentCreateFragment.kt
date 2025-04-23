@@ -23,8 +23,8 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.example.helloandroidagain.BuildConfig
 import com.example.helloandroidagain.R
-import com.example.helloandroidagain.data.model.Tournament
-import com.example.helloandroidagain.data.model.TournamentLogo
+import com.example.helloandroidagain.tournament_domain.model.Tournament
+import com.example.helloandroidagain.tournament_domain.model.TournamentLogo
 import com.example.helloandroidagain.databinding.FragmentTournamentCreateBinding
 import com.example.helloandroidagain.presentation.component.glide.CustomActionIdleRequestListener
 import com.example.helloandroidagain.presentation.component.glide.CustomActionRequestListener

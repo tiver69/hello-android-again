@@ -1,6 +1,6 @@
 package com.example.helloandroidagain.presentation.component.navigation
 
-import com.example.helloandroidagain.data.model.Tournament
+import com.example.helloandroidagain.tournament_domain.model.Tournament
 import com.example.helloandroidagain.presentation.tournament.list.TournamentListFragmentDirections
 import javax.inject.Inject
 

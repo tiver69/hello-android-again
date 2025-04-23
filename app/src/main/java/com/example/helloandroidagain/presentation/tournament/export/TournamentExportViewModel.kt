@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.helloandroidagain.R
-import com.example.helloandroidagain.data.model.Tournament
-import com.example.helloandroidagain.domain.usecase.ExportTournamentUseCase
+import com.example.helloandroidagain.tournament_domain.model.Tournament
+import com.example.helloandroidagain.tournament_domain.usecase.ExportTournamentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

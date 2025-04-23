@@ -1,7 +1,7 @@
 package com.example.helloandroidagain.di
 
 import android.content.Context
-import com.example.helloandroidagain.domain.repository.ImageCacheRepository
+import com.example.helloandroidagain.tournament_domain.repository.ImageCacheRepository
 import com.example.helloandroidagain.presentation.component.glide.CustomCacheLoader
 import dagger.Module
 import dagger.Provides

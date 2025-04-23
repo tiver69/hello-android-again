@@ -23,3 +23,6 @@ rootProject.name = "Hello Android Again"
 include(":app")
 include(":auth")
 include(":auth:auth-presentation")
+include(":tournament")
+include(":tournament:tournament_data")
+include(":tournament:tournament_domain")

@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.helloandroidagain.data.model.Tournament
+import com.example.helloandroidagain.tournament_domain.model.Tournament
 import com.example.helloandroidagain.databinding.FragmentTournamentListBinding
 import com.example.helloandroidagain.presentation.component.navigation.DirectionsHelper
 import com.example.helloandroidagain.presentation.component.recyclerview.ItemLeftSwipeHelper
