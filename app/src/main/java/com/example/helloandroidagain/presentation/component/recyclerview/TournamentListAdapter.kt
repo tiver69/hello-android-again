@@ -12,11 +12,11 @@ import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.helloandroidagain.R
-import com.example.helloandroidagain.tournament_domain.model.Tournament
+import com.example.helloandroidagain.core.util.convertToString
 import com.example.helloandroidagain.databinding.ItemTournamentActiveBinding
 import com.example.helloandroidagain.databinding.ItemTournamentOutdatedBinding
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentListAdapter.TournamentViewHolder
-import com.example.helloandroidagain.util.convertToString
+import com.example.helloandroidagain.tournament_domain.model.Tournament
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -73,8 +73,16 @@ class TournamentListAdapter @Inject constructor() : RecyclerView.Adapter<Tournam
                 .setShowTitle(true)
                 .setDefaultColorSchemeParams(
                     CustomTabColorSchemeParams.Builder()
-                        .setToolbarColor(itemView.context.getColor(R.color.md_theme_primary))
-                        .setNavigationBarColor(itemView.context.getColor(R.color.md_theme_primary))
+                        .setToolbarColor(
+                            itemView.context.getColor(
+                                com.example.helloandroidagain.core.R.color.md_theme_primary
+                            )
+                        )
+                        .setNavigationBarColor(
+                            itemView.context.getColor(
+                                com.example.helloandroidagain.core.R.color.md_theme_primary
+                            )
+                        )
                         .build()
                 ).build()
             customTabsIntent.launchUrl(itemView.context, url.toUri())

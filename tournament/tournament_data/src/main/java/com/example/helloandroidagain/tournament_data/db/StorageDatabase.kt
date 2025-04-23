@@ -6,8 +6,8 @@ import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.example.helloandroidagain.tournament_data.db.entity.LogoEntity
 import com.example.helloandroidagain.tournament_data.db.entity.TournamentEntity
-import com.example.helloandroidagain.tournament_data.util.convertToLocalDate
-import com.example.helloandroidagain.tournament_data.util.convertToString
+import com.example.helloandroidagain.core.util.convertToLocalDate
+import com.example.helloandroidagain.core.util.convertToString
 import java.time.LocalDate
 
 @Database(

@@ -154,6 +154,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     implementation(project(":auth:auth-presentation"))
+    implementation(project(":core"))
     implementation(project(":tournament:tournament_domain"))
     implementation(project(":tournament:tournament_data"))
     kapt(libs.bumptech.glide.compiler)

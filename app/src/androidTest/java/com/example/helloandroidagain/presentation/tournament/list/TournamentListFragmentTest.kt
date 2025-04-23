@@ -23,7 +23,7 @@ import com.example.helloandroidagain.presentation.component.navigation.Direction
 import com.example.helloandroidagain.presentation.component.recyclerview.TournamentListAdapter
 import com.example.helloandroidagain.presentation.tournament.create.TournamentCreateFragment.Companion.CREATE_TOURNAMENT_FRAGMENT_RESULT
 import com.example.helloandroidagain.presentation.tournament.create.TournamentCreateFragment.Companion.CREATE_TOURNAMENT_RESULT_KEY
-import com.example.helloandroidagain.util.generateRandomDate
+import com.example.helloandroidagain.core.util.generateRandomDate
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

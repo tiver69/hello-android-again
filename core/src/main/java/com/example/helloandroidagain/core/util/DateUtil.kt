@@ -1,4 +1,4 @@
-package com.example.helloandroidagain.util
+package com.example.helloandroidagain.core.util
 
 import java.time.Instant
 import java.time.LocalDate
@@ -8,8 +8,6 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import kotlin.random.Random
-
-const val DATE_FORMAT = "dd.MM.yyyy"
 
 fun String.convertToLocalDate(): LocalDate =
     LocalDate.parse(this, DateTimeFormatter.ofPattern(DATE_FORMAT))
