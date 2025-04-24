@@ -9,9 +9,3 @@ apply(from = "$rootDir/base-module.gradle")
 android {
     namespace = "com.example.helloandroidagain.tournament_domain"
 }
-
-dependencies {
-
-    testImplementation(libs.mockk)
-    testImplementation(libs.coroutines.test)
-}

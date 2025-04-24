@@ -25,9 +25,7 @@ dependencies {
     implementation(libs.androidx.browser)
     kapt(libs.bumptech.glide.compiler)
 
-    testImplementation(libs.mockk)
+    testImplementation(libs.androidx.junit)
     testImplementation(libs.robolectric)
     testImplementation(libs.dagger.hilt.test)
-    testImplementation(libs.androidx.junit)
-    testImplementation(libs.coroutines.test)
 }

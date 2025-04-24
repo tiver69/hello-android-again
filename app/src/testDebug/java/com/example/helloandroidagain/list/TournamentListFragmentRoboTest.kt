@@ -1,4 +1,4 @@
-package com.example.helloandroidagain.presentation.tournament.list
+package com.example.helloandroidagain.list
 
 import com.example.helloandroidagain.di.AppModule
 import com.example.helloandroidagain.util.launchFragmentInHiltContainer
