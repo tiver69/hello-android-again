@@ -27,10 +27,4 @@
             app:popUpTo="@id/authProfileFragment"
             app:popUpToInclusive="true" />
     </fragment>
-
-<!--    <activity-->
-<!--        android:id="@+id/tournamentActivity"-->
-<!--        android:name="com.example.helloandroidagain.TournamentActivity"-->
-<!--        android:label="User Profile" />-->
-
 </navigation>

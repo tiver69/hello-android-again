@@ -7,10 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.helloandroidagain.auth_presentation.databinding.FragmentAuthProfileBinding
+import com.example.helloandroidagain.core.navigation.AuthNavigator
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AuthProfileFragment : Fragment() {
+
+    @Inject
+    lateinit var navigator: AuthNavigator
 
     private lateinit var binding: FragmentAuthProfileBinding
 
@@ -26,7 +31,7 @@ class AuthProfileFragment : Fragment() {
         }
 
         binding.authProfileManageTournamentButton.setOnClickListener {
-//            findNavController().navigate(R.id.tournamentActivity)
+            navigator.openTournamentActivity(requireContext())
         }
 
         return binding.root

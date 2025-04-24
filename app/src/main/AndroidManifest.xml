@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".App"
@@ -16,13 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HelloAndroidAgain"
         tools:targetApi="31">
-<!--        <activity-->
-<!--            android:name=".auth_presentation.AuthActivity"-->
-<!--            android:exported="true">-->
-
-<!--        </activity>-->
         <activity
-            android:name=".tournament_presentation.TournamentActivity"
+            android:name=".auth_presentation.AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,6 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".tournament_presentation.TournamentActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
