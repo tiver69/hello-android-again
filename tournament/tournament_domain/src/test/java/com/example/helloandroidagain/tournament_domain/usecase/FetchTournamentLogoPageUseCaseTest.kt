@@ -1,7 +1,7 @@
-package com.example.helloandroidagain.domain.usecase
+package com.example.helloandroidagain.tournament_domain.usecase
 
-import com.example.helloandroidagain.data.model.TournamentLogo
-import com.example.helloandroidagain.data.repository.remote.ImageRemoteApi
+import com.example.helloandroidagain.tournament_domain.model.TournamentLogo
+import com.example.helloandroidagain.tournament_domain.repository.ImageRemoteRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
@@ -19,7 +19,7 @@ class FetchTournamentLogoPageUseCaseTest {
     }
 
     @RelaxedMockK
-    lateinit var imageRemoteApi: ImageRemoteApi
+    lateinit var imageRemoteRepository: ImageRemoteRepository
 
     @InjectMockKs
     lateinit var underTest: FetchTournamentLogoPageUseCase
@@ -33,7 +33,7 @@ class FetchTournamentLogoPageUseCaseTest {
     fun useCaseShouldInvokeImageApi() = runTest {
         val tournamentLogo = mockk<TournamentLogo> {}
         val tournamentLogoList = listOf(tournamentLogo)
-        coEvery { imageRemoteApi.searchLogoSuspend(LOGO_PAGE) } returns tournamentLogoList
+        coEvery { imageRemoteRepository.getImagePage(LOGO_PAGE) } returns tournamentLogoList
 
         val result = underTest.invoke(LOGO_PAGE)
         assertEquals(tournamentLogoList, result)

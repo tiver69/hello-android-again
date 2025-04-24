@@ -1,7 +1,8 @@
 package com.example.helloandroidagain.presentation.tournament.create
 
-import com.example.helloandroidagain.data.model.TournamentLogo
-import com.example.helloandroidagain.domain.usecase.FetchTournamentLogoPageUseCase
+import com.example.helloandroidagain.tournament_domain.model.TournamentLogo
+import com.example.helloandroidagain.tournament_domain.usecase.FetchTournamentLogoPageUseCase
+import com.example.helloandroidagain.tournament_presentation.create.TournamentCreateViewModel
 import com.google.firebase.analytics.FirebaseAnalytics
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery

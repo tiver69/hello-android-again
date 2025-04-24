@@ -24,4 +24,10 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.androidx.browser)
     kapt(libs.bumptech.glide.compiler)
+
+    testImplementation(libs.mockk)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.dagger.hilt.test)
+    testImplementation(libs.androidx.junit)
+    testImplementation(libs.coroutines.test)
 }

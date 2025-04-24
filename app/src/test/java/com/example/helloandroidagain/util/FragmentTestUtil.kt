@@ -1,4 +1,4 @@
-package com.example.helloandroidagain
+package com.example.helloandroidagain.util
 
 import android.content.ComponentName
 import android.content.Intent
@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
+import com.example.helloandroidagain.HiltActivityForTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 const val THEME_EXTRAS_BUNDLE_KEY =
@@ -16,7 +17,7 @@ const val THEME_EXTRAS_BUNDLE_KEY =
 @ExperimentalCoroutinesApi
 inline fun <reified T : Fragment> launchFragmentInHiltContainer(
     fragmentArgs: Bundle? = null,
-    themeResId: Int = R.style.Theme_HelloAndroidAgain,
+    themeResId: Int = com.example.helloandroidagain.core.R.style.Theme_HelloAndroidAgain,
     fragmentFactory: FragmentFactory? = null,
     crossinline action: T.() -> Unit = {}
 ): ActivityScenario<HiltActivityForTest> {

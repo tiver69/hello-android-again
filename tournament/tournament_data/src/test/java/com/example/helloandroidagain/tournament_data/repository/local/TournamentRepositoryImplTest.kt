@@ -1,15 +1,15 @@
-package com.example.helloandroidagain.data.repository.local
+package com.example.helloandroidagain.tournament_data.repository.local
 
 import androidx.room.withTransaction
-import com.example.helloandroidagain.data.db.LogoDao
-import com.example.helloandroidagain.data.db.StorageDatabase
-import com.example.helloandroidagain.data.db.TournamentDao
-import com.example.helloandroidagain.data.db.entity.LogoEntity
-import com.example.helloandroidagain.data.db.entity.TournamentEntity
-import com.example.helloandroidagain.data.mapper.LogoMapper
-import com.example.helloandroidagain.data.mapper.TournamentMapper
-import com.example.helloandroidagain.data.model.Tournament
-import com.example.helloandroidagain.data.model.TournamentLogo
+import com.example.helloandroidagain.tournament_data.db.LogoDao
+import com.example.helloandroidagain.tournament_data.db.StorageDatabase
+import com.example.helloandroidagain.tournament_data.db.TournamentDao
+import com.example.helloandroidagain.tournament_data.db.entity.LogoEntity
+import com.example.helloandroidagain.tournament_data.db.entity.TournamentEntity
+import com.example.helloandroidagain.tournament_data.mapper.LogoMapper
+import com.example.helloandroidagain.tournament_data.mapper.TournamentMapper
+import com.example.helloandroidagain.tournament_domain.model.Tournament
+import com.example.helloandroidagain.tournament_domain.model.TournamentLogo
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify

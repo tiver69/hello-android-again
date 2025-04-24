@@ -1,7 +1,7 @@
-package com.example.helloandroidagain.domain.usecase
+package com.example.helloandroidagain.tournament_domain.usecase
 
-import com.example.helloandroidagain.data.model.Tournament
-import com.example.helloandroidagain.domain.repository.TournamentRepository
+import com.example.helloandroidagain.tournament_domain.model.Tournament
+import com.example.helloandroidagain.tournament_domain.repository.TournamentRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.impl.annotations.InjectMockKs

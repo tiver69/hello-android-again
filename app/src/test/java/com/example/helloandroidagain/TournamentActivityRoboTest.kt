@@ -3,7 +3,9 @@ package com.example.helloandroidagain
 import androidx.navigation.findNavController
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.example.helloandroidagain.di.AppModule
-import com.example.helloandroidagain.di.RepositoryModule
+import com.example.helloandroidagain.tournament_data.di.TournamentDataModule
+import com.example.helloandroidagain.tournament_presentation.R
+import com.example.helloandroidagain.tournament_presentation.TournamentActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -21,7 +23,7 @@ import org.robolectric.annotation.Config
 @Config(application = HiltTestApplication::class)
 @RunWith(RobolectricTestRunner::class)
 // @LooperMode(LooperMode.Mode.PAUSED)
-@UninstallModules(AppModule::class, RepositoryModule::class)
+@UninstallModules(AppModule::class, TournamentDataModule::class)
 class TournamentActivityRoboTest {
 
     @get:Rule(order = 0)

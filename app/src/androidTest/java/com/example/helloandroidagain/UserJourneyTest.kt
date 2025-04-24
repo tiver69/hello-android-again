@@ -19,9 +19,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.helloandroidagain.auth_presentation.AuthActivity
 import com.example.helloandroidagain.di.TestAppModule
-import com.example.helloandroidagain.di.TestRepositoryModule
+import com.example.helloandroidagain.di.TestTournamentDataModule
 import com.example.helloandroidagain.presentation.component.glide.CustomActionIdleRequestListener
-import com.example.helloandroidagain.presentation.component.recyclerview.TournamentListAdapter
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -32,10 +31,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.concurrent.atomic.AtomicReference
+import com.example.helloandroidagain.tournament_presentation.R
+import com.example.helloandroidagain.tournament_presentation.component.recyclerview.TournamentListAdapter
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-@UninstallModules(TestAppModule::class, TestRepositoryModule::class)
+@UninstallModules(TestAppModule::class, TestTournamentDataModule::class)
 class UserJourneyTest {
 
     @get:Rule

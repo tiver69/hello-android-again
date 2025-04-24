@@ -1,9 +1,9 @@
-package com.example.helloandroidagain.presentation.tournament.list
+package com.example.helloandroidagain.tournament_presentation.list
 
-import com.example.helloandroidagain.data.model.Tournament
-import com.example.helloandroidagain.domain.usecase.CreateTournamentsUseCase
-import com.example.helloandroidagain.domain.usecase.LoadTournamentsUseCase
-import com.example.helloandroidagain.domain.usecase.RemoveTournamentsUseCase
+import com.example.helloandroidagain.tournament_domain.model.Tournament
+import com.example.helloandroidagain.tournament_domain.usecase.CreateTournamentsUseCase
+import com.example.helloandroidagain.tournament_domain.usecase.LoadTournamentsUseCase
+import com.example.helloandroidagain.tournament_domain.usecase.RemoveTournamentsUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.every

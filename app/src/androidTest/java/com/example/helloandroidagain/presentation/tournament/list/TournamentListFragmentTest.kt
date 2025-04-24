@@ -13,17 +13,19 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.example.helloandroidagain.R
-import com.example.helloandroidagain.data.model.Tournament
-import com.example.helloandroidagain.data.model.TournamentLogo
-import com.example.helloandroidagain.di.AppModule
-import com.example.helloandroidagain.di.RepositoryModule
-import com.example.helloandroidagain.launchFragmentInHiltContainer
-import com.example.helloandroidagain.presentation.component.navigation.DirectionsHelper
-import com.example.helloandroidagain.presentation.component.recyclerview.TournamentListAdapter
-import com.example.helloandroidagain.presentation.tournament.create.TournamentCreateFragment.Companion.CREATE_TOURNAMENT_FRAGMENT_RESULT
-import com.example.helloandroidagain.presentation.tournament.create.TournamentCreateFragment.Companion.CREATE_TOURNAMENT_RESULT_KEY
 import com.example.helloandroidagain.core.util.generateRandomDate
+import com.example.helloandroidagain.di.AppModule
+import com.example.helloandroidagain.di.fakes.FakeTournamentRepositoryImpl.Companion.NAV_TOURNAMENT
+import com.example.helloandroidagain.launchFragmentInHiltContainer
+import com.example.helloandroidagain.tournament_data.di.TournamentDataModule
+import com.example.helloandroidagain.tournament_domain.model.Tournament
+import com.example.helloandroidagain.tournament_domain.model.TournamentLogo
+import com.example.helloandroidagain.tournament_presentation.R
+import com.example.helloandroidagain.tournament_presentation.component.recyclerview.TournamentListAdapter
+import com.example.helloandroidagain.tournament_presentation.create.TournamentCreateFragment.Companion.CREATE_TOURNAMENT_FRAGMENT_RESULT
+import com.example.helloandroidagain.tournament_presentation.create.TournamentCreateFragment.Companion.CREATE_TOURNAMENT_RESULT_KEY
+import com.example.helloandroidagain.tournament_presentation.list.TournamentListFragment
+import com.example.helloandroidagain.tournament_presentation.navigation.DirectionsHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +33,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import dagger.hilt.components.SingletonComponent
-import fakes.FakeTournamentRepositoryImpl.Companion.NAV_TOURNAMENT
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -42,7 +43,7 @@ import org.junit.Test
 import kotlin.random.Random
 
 @HiltAndroidTest
-@UninstallModules(AppModule::class, RepositoryModule::class)
+@UninstallModules(AppModule::class, TournamentDataModule::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class TournamentListFragmentTest {
 

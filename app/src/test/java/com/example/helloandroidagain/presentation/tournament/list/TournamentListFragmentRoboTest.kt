@@ -1,9 +1,10 @@
 package com.example.helloandroidagain.presentation.tournament.list
 
 import com.example.helloandroidagain.di.AppModule
-import com.example.helloandroidagain.di.RepositoryModule
-import com.example.helloandroidagain.launchFragmentInHiltContainer
-import com.example.helloandroidagain.presentation.component.recyclerview.TournamentType
+import com.example.helloandroidagain.util.launchFragmentInHiltContainer
+import com.example.helloandroidagain.tournament_data.di.TournamentDataModule
+import com.example.helloandroidagain.tournament_presentation.component.recyclerview.TournamentType
+import com.example.helloandroidagain.tournament_presentation.list.TournamentListFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -21,7 +22,7 @@ import org.robolectric.annotation.Config
 @HiltAndroidTest
 @Config(application = HiltTestApplication::class)
 @RunWith(RobolectricTestRunner::class)
-@UninstallModules(AppModule::class, RepositoryModule::class)
+@UninstallModules(AppModule::class, TournamentDataModule::class)
 class TournamentListFragmentRoboTest {
 
     @get:Rule(order = 0)
