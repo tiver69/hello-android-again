@@ -1,7 +1,7 @@
-package com.example.helloandroidagain.presentation.component.navigation
+package com.example.helloandroidagain.tournament_presentation.navigation
 
 import com.example.helloandroidagain.tournament_domain.model.Tournament
-import com.example.helloandroidagain.presentation.tournament.list.TournamentListFragmentDirections
+import com.example.helloandroidagain.tournament_presentation.list.TournamentListFragmentDirections
 import javax.inject.Inject
 
 class DirectionsHelper @Inject constructor() {

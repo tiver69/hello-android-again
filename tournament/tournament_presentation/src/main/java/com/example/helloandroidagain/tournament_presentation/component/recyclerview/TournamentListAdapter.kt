@@ -1,4 +1,4 @@
-package com.example.helloandroidagain.presentation.component.recyclerview
+package com.example.helloandroidagain.tournament_presentation.component.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.helloandroidagain.R
 import com.example.helloandroidagain.core.util.convertToString
-import com.example.helloandroidagain.databinding.ItemTournamentActiveBinding
-import com.example.helloandroidagain.databinding.ItemTournamentOutdatedBinding
-import com.example.helloandroidagain.presentation.component.recyclerview.TournamentListAdapter.TournamentViewHolder
 import com.example.helloandroidagain.tournament_domain.model.Tournament
+import com.example.helloandroidagain.tournament_presentation.R
+import com.example.helloandroidagain.tournament_presentation.component.recyclerview.TournamentListAdapter.TournamentViewHolder
+import com.example.helloandroidagain.tournament_presentation.databinding.ItemTournamentActiveBinding
+import com.example.helloandroidagain.tournament_presentation.databinding.ItemTournamentOutdatedBinding
 import java.time.LocalDate
 import javax.inject.Inject
 

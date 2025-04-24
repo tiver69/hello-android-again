@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/tournamentListFragment"
-        android:name="com.example.helloandroidagain.presentation.tournament.list.TournamentListFragment">
+        android:name="com.example.helloandroidagain.tournament_presentation.list.TournamentListFragment">
         <action
             android:id="@+id/navToCreateTournament"
             app:destination="@id/createTournamentFragment">
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/createTournamentFragment"
-        android:name="com.example.helloandroidagain.presentation.tournament.create.TournamentCreateFragment">
+        android:name="com.example.helloandroidagain.tournament_presentation.create.TournamentCreateFragment">
         <argument
             android:name="nextTournamentCount"
             android:defaultValue="0"
@@ -27,7 +27,7 @@
 
     <fragment
         android:id="@+id/exportTournamentFragment"
-        android:name="com.example.helloandroidagain.presentation.tournament.export.TournamentExportFragment">
+        android:name="com.example.helloandroidagain.tournament_presentation.export.TournamentExportFragment">
         <argument
             android:name="tournament"
             app:argType="com.example.helloandroidagain.tournament_domain.model.Tournament" />

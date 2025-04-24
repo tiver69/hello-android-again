@@ -1,4 +1,4 @@
-package com.example.helloandroidagain
+package com.example.helloandroidagain.tournament_presentation
 
 import android.os.Bundle
 import android.view.Menu
@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.helloandroidagain.databinding.ActivityTournamentBinding
+import com.example.helloandroidagain.tournament_presentation.databinding.ActivityTournamentBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

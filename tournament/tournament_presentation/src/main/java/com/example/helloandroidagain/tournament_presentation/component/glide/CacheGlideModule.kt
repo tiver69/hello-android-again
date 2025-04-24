@@ -1,4 +1,4 @@
-package com.example.helloandroidagain.presentation.component.glide
+package com.example.helloandroidagain.tournament_presentation.component.glide
 
 import android.content.Context
 import android.graphics.Bitmap

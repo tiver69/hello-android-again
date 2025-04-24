@@ -1,4 +1,4 @@
-package com.example.helloandroidagain.presentation.component.glide
+package com.example.helloandroidagain.tournament_presentation.component.glide
 
 import android.content.Context
 import android.database.sqlite.SQLiteException
@@ -18,9 +18,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.signature.ObjectKey
-import com.example.helloandroidagain.di.GlideEntryPoint
 import com.example.helloandroidagain.tournament_domain.repository.ImageCacheRepository
-import com.example.helloandroidagain.presentation.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
+import com.example.helloandroidagain.tournament_presentation.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
+import com.example.helloandroidagain.tournament_presentation.di.GlideEntryPoint
 import dagger.hilt.EntryPoints
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

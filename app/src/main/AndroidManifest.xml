@@ -22,7 +22,7 @@
 
 <!--        </activity>-->
         <activity
-            android:name=".TournamentActivity"
+            android:name=".tournament_presentation.TournamentActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.example.helloandroidagain.presentation.tournament.list
+package com.example.helloandroidagain.tournament_presentation.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

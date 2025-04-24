@@ -1,4 +1,4 @@
-package com.example.helloandroidagain.presentation.component.recyclerview
+package com.example.helloandroidagain.tournament_presentation.component.recyclerview
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView

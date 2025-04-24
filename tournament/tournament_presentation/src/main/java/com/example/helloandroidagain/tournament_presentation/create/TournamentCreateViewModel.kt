@@ -1,4 +1,4 @@
-package com.example.helloandroidagain.presentation.tournament.create
+package com.example.helloandroidagain.tournament_presentation.create
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

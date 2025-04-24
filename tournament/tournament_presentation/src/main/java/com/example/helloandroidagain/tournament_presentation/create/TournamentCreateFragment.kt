@@ -1,4 +1,4 @@
-package com.example.helloandroidagain.presentation.tournament.create
+package com.example.helloandroidagain.tournament_presentation.create
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -21,18 +21,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
-import com.example.helloandroidagain.BuildConfig
-import com.example.helloandroidagain.R
-import com.example.helloandroidagain.tournament_domain.model.Tournament
-import com.example.helloandroidagain.tournament_domain.model.TournamentLogo
-import com.example.helloandroidagain.databinding.FragmentTournamentCreateBinding
-import com.example.helloandroidagain.presentation.component.glide.CustomActionIdleRequestListener
-import com.example.helloandroidagain.presentation.component.glide.CustomActionRequestListener
-import com.example.helloandroidagain.presentation.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
 import com.example.helloandroidagain.core.util.convertToLocalDate
 import com.example.helloandroidagain.core.util.convertToLocalDateAsEpochMilli
 import com.example.helloandroidagain.core.util.convertToLongAsEpochMilli
 import com.example.helloandroidagain.core.util.convertToString
+import com.example.helloandroidagain.tournament_domain.model.Tournament
+import com.example.helloandroidagain.tournament_domain.model.TournamentLogo
+import com.example.helloandroidagain.tournament_presentation.R
+import com.example.helloandroidagain.tournament_presentation.component.glide.CustomActionRequestListener
+import com.example.helloandroidagain.tournament_presentation.component.glide.CustomCacheLoader.SQLiteCacheFetcher.Companion.SKIP_CUSTOM_CACHE
+import com.example.helloandroidagain.tournament_presentation.databinding.FragmentTournamentCreateBinding
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.logEvent
@@ -84,11 +82,11 @@ class TournamentCreateFragment : Fragment() {
             }
         }
         if (savedInstanceState == null) {
-            startIdleRequest()
+//            startIdleRequest()
             viewModel.fetchTournamentLogoPage()
         }
         binding.tournamentCreateRegenerateImageButton.setOnClickListener {
-            startIdleRequest()
+//            startIdleRequest()
             viewModel.regenerateTournamentLogo()
         }
         binding.tournamentCreateSaveButton.setOnClickListener {
@@ -201,18 +199,18 @@ class TournamentCreateFragment : Fragment() {
         findNavController().popBackStack()
     }
 
-    private fun startIdleRequest() {
-        if (BuildConfig.DEBUG) {
-            CustomActionIdleRequestListener.increment()
-        }
-    }
-
+    //    private fun startIdleRequest() {
+//        if (BuildConfig.DEBUG) {
+//            CustomActionIdleRequestListener.increment()
+//        }
+//    }
+//
     private fun getGlideRequestListener(logoUrl: String): RequestListener<Drawable> =
-        if (BuildConfig.DEBUG) {
-            CustomActionIdleRequestListener.resetListenerWithAction { onGlideLoadFailed(logoUrl) }
-        } else {
-            CustomActionRequestListener().setUpCustomAction { onGlideLoadFailed(logoUrl) }
-        }
+//        if (BuildConfig.DEBUG) {
+//            CustomActionIdleRequestListener.resetListenerWithAction { onGlideLoadFailed(logoUrl) }
+//        } else {
+        CustomActionRequestListener().setUpCustomAction { onGlideLoadFailed(logoUrl) }
+//        }
 
     @Parcelize
     data class TournamentCreateFragmentState(

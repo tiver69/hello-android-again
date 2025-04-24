@@ -1,4 +1,4 @@
-package com.example.helloandroidagain.presentation.tournament.list
+package com.example.helloandroidagain.tournament_presentation.list
 
 import android.os.Bundle
 import android.util.Log
@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.helloandroidagain.tournament_domain.model.Tournament
-import com.example.helloandroidagain.databinding.FragmentTournamentListBinding
-import com.example.helloandroidagain.presentation.component.navigation.DirectionsHelper
-import com.example.helloandroidagain.presentation.component.recyclerview.ItemLeftSwipeHelper
-import com.example.helloandroidagain.presentation.component.recyclerview.TournamentClickListener
-import com.example.helloandroidagain.presentation.component.recyclerview.TournamentListAdapter
-import com.example.helloandroidagain.presentation.component.recyclerview.TournamentSwipeListener
-import com.example.helloandroidagain.presentation.tournament.create.TournamentCreateFragment.Companion.CREATE_TOURNAMENT_FRAGMENT_RESULT
-import com.example.helloandroidagain.presentation.tournament.create.TournamentCreateFragment.Companion.CREATE_TOURNAMENT_RESULT_KEY
+import com.example.helloandroidagain.tournament_presentation.component.recyclerview.ItemLeftSwipeHelper
+import com.example.helloandroidagain.tournament_presentation.component.recyclerview.TournamentClickListener
+import com.example.helloandroidagain.tournament_presentation.component.recyclerview.TournamentListAdapter
+import com.example.helloandroidagain.tournament_presentation.component.recyclerview.TournamentSwipeListener
+import com.example.helloandroidagain.tournament_presentation.create.TournamentCreateFragment.Companion.CREATE_TOURNAMENT_FRAGMENT_RESULT
+import com.example.helloandroidagain.tournament_presentation.create.TournamentCreateFragment.Companion.CREATE_TOURNAMENT_RESULT_KEY
+import com.example.helloandroidagain.tournament_presentation.databinding.FragmentTournamentListBinding
+import com.example.helloandroidagain.tournament_presentation.navigation.DirectionsHelper
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.logEvent
 import dagger.hilt.android.AndroidEntryPoint
