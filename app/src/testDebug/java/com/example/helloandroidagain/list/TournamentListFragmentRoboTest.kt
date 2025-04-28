@@ -2,9 +2,9 @@ package com.example.helloandroidagain.list
 
 import com.example.helloandroidagain.di.AppModule
 import com.example.helloandroidagain.util.launchFragmentInHiltContainer
-import com.example.helloandroidagain.tournament_data.di.TournamentDataModule
-import com.example.helloandroidagain.tournament_presentation.component.recyclerview.TournamentType
-import com.example.helloandroidagain.tournament_presentation.list.TournamentListFragment
+import com.example.helloandroidagain.tournament.data.di.TournamentDataModule
+import com.example.helloandroidagain.tournament.presentation.component.recyclerview.TournamentType
+import com.example.helloandroidagain.tournament.presentation.list.TournamentListFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication

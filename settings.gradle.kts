@@ -22,9 +22,7 @@ dependencyResolutionManagement {
 rootProject.name = "Hello Android Again"
 include(":app")
 include(":core")
-include(":auth")
-include(":auth:auth-presentation")
-include(":tournament")
-include(":tournament:tournament_data")
-include(":tournament:tournament_domain")
-include(":tournament:tournament_presentation")
+include(":auth:presentation")
+include(":tournament:data")
+include(":tournament:domain")
+include(":tournament:presentation")

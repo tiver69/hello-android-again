@@ -4,10 +4,10 @@ import com.example.helloandroidagain.di.fakes.FakeExportRepositoryImpl
 import com.example.helloandroidagain.di.fakes.FakeImageCacheRepositoryImpl
 import com.example.helloandroidagain.di.fakes.FakeImageRemoteRepositoryImpl
 import com.example.helloandroidagain.di.fakes.FakeTournamentRepositoryImpl
-import com.example.helloandroidagain.tournament_domain.repository.ExportRepository
-import com.example.helloandroidagain.tournament_domain.repository.ImageCacheRepository
-import com.example.helloandroidagain.tournament_domain.repository.ImageRemoteRepository
-import com.example.helloandroidagain.tournament_domain.repository.TournamentRepository
+import com.example.helloandroidagain.tournament.domain.repository.ExportRepository
+import com.example.helloandroidagain.tournament.domain.repository.ImageCacheRepository
+import com.example.helloandroidagain.tournament.domain.repository.ImageRemoteRepository
+import com.example.helloandroidagain.tournament.domain.repository.TournamentRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

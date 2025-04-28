@@ -1,7 +1,7 @@
 package com.example.helloandroidagain.di.fakes
 
-import com.example.helloandroidagain.tournament_domain.model.TournamentLogo
-import com.example.helloandroidagain.tournament_domain.repository.ImageRemoteRepository
+import com.example.helloandroidagain.tournament.domain.model.TournamentLogo
+import com.example.helloandroidagain.tournament.domain.repository.ImageRemoteRepository
 import javax.inject.Inject
 
 class FakeImageRemoteRepositoryImpl @Inject constructor() : ImageRemoteRepository {

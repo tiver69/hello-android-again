@@ -1,8 +1,8 @@
 package com.example.helloandroidagain.di.fakes
 
-import com.example.helloandroidagain.tournament_domain.model.Tournament
-import com.example.helloandroidagain.tournament_domain.model.TournamentLogo
-import com.example.helloandroidagain.tournament_domain.repository.TournamentRepository
+import com.example.helloandroidagain.tournament.domain.model.Tournament
+import com.example.helloandroidagain.tournament.domain.model.TournamentLogo
+import com.example.helloandroidagain.tournament.domain.repository.TournamentRepository
 import com.example.helloandroidagain.core.util.generateRandomDate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

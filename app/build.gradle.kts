@@ -129,11 +129,11 @@ ktlint {
 
 dependencies {
 
-    implementation(project(":auth:auth-presentation"))
+    implementation(project(":auth:presentation"))
     implementation(project(":core"))
-    implementation(project(":tournament:tournament_presentation"))
-    implementation(project(":tournament:tournament_domain"))
-    implementation(project(":tournament:tournament_data"))
+    implementation(project(":tournament:presentation"))
+    implementation(project(":tournament:domain"))
+    implementation(project(":tournament:data"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
