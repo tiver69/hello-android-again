@@ -12,7 +12,7 @@ class ExportRepositoryImpl @Inject constructor(
     private val contentResolver: ContentResolver
 ) : ExportRepository {
 
-    override fun saveExportImage(tournament: Tournament, bitmap: Bitmap): Boolean {
+    override suspend fun saveExportImage(tournament: Tournament, bitmap: Bitmap): Boolean {
         val contentValues = ContentValues().apply {
             put(
                 MediaStore.Images.Media.DISPLAY_NAME,

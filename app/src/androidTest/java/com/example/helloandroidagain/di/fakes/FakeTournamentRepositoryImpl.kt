@@ -7,9 +7,10 @@ import com.example.helloandroidagain.core.util.generateRandomDate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 import kotlin.random.Random
 
-class FakeTournamentRepositoryImpl : TournamentRepository {
+class FakeTournamentRepositoryImpl @Inject constructor() : TournamentRepository {
 
     companion object {
         val NAV_TOURNAMENT = Tournament(

@@ -6,5 +6,5 @@ import com.example.helloandroidagain.tournament_domain.repository.ExportReposito
 import javax.inject.Inject
 
 class FakeExportRepositoryImpl @Inject constructor() : ExportRepository {
-    override fun saveExportImage(tournament: Tournament, bitmap: Bitmap): Boolean = true
+    override suspend fun saveExportImage(tournament: Tournament, bitmap: Bitmap): Boolean = true
 }
