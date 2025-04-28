@@ -16,7 +16,7 @@ const val THEME_EXTRAS_BUNDLE_KEY =
 @ExperimentalCoroutinesApi
 inline fun <reified T : Fragment> launchFragmentInHiltContainer(
     fragmentArgs: Bundle? = null,
-    themeResId: Int = R.style.Theme_HelloAndroidAgain,
+    themeResId: Int = com.example.helloandroidagain.core.R.style.Theme_HelloAndroidAgain,
     fragmentFactory: FragmentFactory? = null,
     crossinline action: T.() -> Unit = {}
 ) {

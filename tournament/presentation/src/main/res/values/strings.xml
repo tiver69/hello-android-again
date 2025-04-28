@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Hello Android Again</string>
+    <string name="create_tournament_fragment_name">Create Tournament</string>
+    <string name="create_tournament_name_hint">Name</string>
+    <string name="create_tournament_participant_count_hint">Participant Count</string>
+    <string name="create_tournament_date_hint">Date</string>
+    <string name="create_tournament_fragment_date_picker">Select Date</string>
+    <string name="general_save_button">Save</string>
+    <string name="tournament_create_logo">Create tournament logo</string>
+    <string name="tournament_create_regenerate_image_button">Load another image</string>
+    <string name="create_tournament_load_error">Couldn\'t load image. Lets try another one!</string>
+    <string name="export_tournament_detail_format">Participants: %1$d\n  %2$s</string>
+    <string name="export_tournament_save_to_gallery_button">Save to Gallery</string>
+    <string name="export_tournament_success_message">Image saved!</string>
+    <string name="export_tournament_fail_message">Failed to save image</string>
+</resources>
