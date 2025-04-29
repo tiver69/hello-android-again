@@ -17,22 +17,29 @@ He started to create 4 modules:
 - Each question is more complex than the previous one. Be sure to cover them correctly before going to the next one
 - Don't hesitate to look at the FAQ section at the end of that file
 
+#### Time Log
+- ---- 1h ---- | Initial architecture and app implementation analysis
+- -- 15min - | Figuring out where to put this block
+- -- 20min - | Update SearchPresenter to testable implementation
+- -- 40min - | Implement Unit tests
+
 ### 1st - Architecture:
 
 Can you give him feedback on the architecture of his project?  
 You should point out the good things and the issues you found (at least 3 of each).
 
 **Good things:**
-- ...
-- ...
-- ...
+- Very initial modularization - logical modules present
+- API layer encapsulation with common retrofit logic with its DTOs
+- MVP attempt in Search module
 
 **Issues:**
-- ...
-- ...
-- ...
-- ...
-- ...
+- Current Search module is actually only presentation layer. It should depend on Search-related domain layer, not on common API module directly.
+- Tight coupling between Activity and Presenter in search module.
+- Direct initialization of service inside API module 
+- No domain entities (+mappers) direct DTO usage from presentation layer 
+- Hardcoded intent search->pokemon navigation
+- No usecases
 
 ### 2nd - Unit tests:
 
