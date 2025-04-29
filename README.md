@@ -1,3 +1,17 @@
+# [HomeTask #13](https://github.com/tiver69/hello-android-again/tree/hometask_13_multimodule)
+Split App from [HomeTask #11](https://github.com/tiver69/hello-android-again/tree/hometask_11_tests?tab=readme-ov-file#hometask-11_tests) into multimodule structure.
+
+## Checklist:
+
+- [x] Tournament Activity and its presentation<-domain->data modules should be a separate 3 modules.
+- [x] Dummy Auth Activity with single presentation module should be in separate module.
+- [x] Common logic and UI elements should be in separate core module
+- [x] App module should depend on all other modules
+- [x] Navigation Auth Activity -> Tournament Activity should work
+- [ ] All test should be in their respective modules
+
+---
+
 # [HomeTask #11](https://github.com/tiver69/hello-android-again/tree/hometask_11_tests)
 Cover App from [HomeTask #10](https://github.com/tiver69/hello-android-again/tree/hometask_10?tab=readme-ov-file#hometask-10) with different test layers
 
