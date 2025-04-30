@@ -1,16 +1,18 @@
-package com.thefork.challenge.pokemon
+package com.thefork.challenge.pokemon.presentation
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.text.BasicText
+import com.thefork.challenge.pokemon.presentation.theme.PokemonTheme
 
 class PokemonActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BasicText(text = "Hello world!")
+            PokemonTheme {
+                PokemonScreen()
+            }
         }
     }
 }

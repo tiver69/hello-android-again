@@ -22,6 +22,7 @@ He started to create 4 modules:
 - -- 15min - | Figuring out where to put this block
 - -- 20min - | Update SearchPresenter to testable implementation
 - -- 40min - | Implement Unit tests
+- ---- 5h ---- | PokemonActivity design implementation
 
 ### 1st - Architecture:
 
