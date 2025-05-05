@@ -11,5 +11,7 @@ include(
     ":api",
     ":search",
     ":pokemon",
+    ":pokemon:presentation",
+    ":pokemon:domain",
+    ":pokemon:data"
 )
-include(":pokemon:presentation")

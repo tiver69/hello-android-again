@@ -8,53 +8,39 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.thefork.challenge.pokemon.presentation.component.BackgroundAwareText
 import com.thefork.challenge.pokemon.presentation.component.PokemonContent
 import com.thefork.challenge.pokemon.presentation.component.PokemonContentState
-import com.thefork.challenge.pokemon.presentation.component.PokemonContentState.StatState
 import com.thefork.challenge.pokemon.presentation.theme.PokemonTheme
 
 @Composable
 fun PokemonScreen(
     modifier: Modifier = Modifier
 ) {
-    val state by remember {
-        mutableStateOf(
-            PokemonContentState(
-                name = "Mew",
-                speciesName = "Psychic",
-                speciesColor = Color.Red,
-                logoUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
-                height = 4,
-                weight = 4,
-                baseStats = listOf(
-                    StatState("Hp", 100),
-                    StatState("Attack", 100),
-                    StatState("Defence", 100),
-                    StatState("Special-attack", 100),
-                    StatState("Special-defence", 100),
-                    StatState("Speed", 100),
-                )
+    val viewModel: PokemonViewModel = viewModel()
+    LaunchedEffect(17) {
+        viewModel.getPokemonScreenState(19)
+    }
+    val uiState by viewModel.uiState.collectAsState()
+    if (uiState.isDataAvailable)
+        Scaffold(
+            topBar = { PokemonTopBar(uiState.data!!.name, uiState.data!!.speciesColor) },//todo
+        ) { innerPadding ->
+            PokemonContent(
+                pokemonState = uiState.data!!,//todo
+                modifier = modifier.padding(innerPadding)
             )
-        )
-    }
-
-    Scaffold(
-        topBar = { PokemonTopBar(state.name, state.speciesColor) },
-    ) { innerPadding ->
-        PokemonContent(
-            pokemonState = state,
-            modifier = modifier.padding(innerPadding)
-        )
-    }
+        }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,14 +50,15 @@ private fun PokemonTopBar(
     speciesColor: Color,
 ) {
     CenterAlignedTopAppBar(
-        title = { Text(name) },
+        title = { BackgroundAwareText(name, speciesColor) },
         navigationIcon = {
             IconButton(onClick = {
                 // todo: back nav handler
             }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "top menu"
+                    contentDescription = "top menu",
+                    tint = if (speciesColor.luminance() > 0.2) Color.Black else Color.White
                 )
             }
         },
@@ -79,6 +66,11 @@ private fun PokemonTopBar(
             .copy(containerColor = speciesColor),
     )
 }
+
+data class PokemonScreenState(
+    val isDataAvailable: Boolean = true,
+    val data: PokemonContentState?
+)
 
 @Preview(showBackground = true)
 @Composable

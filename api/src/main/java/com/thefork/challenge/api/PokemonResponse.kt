@@ -1,10 +1,11 @@
 package com.thefork.challenge.api
 
-data class PokemonFull(
+data class PokemonResponse(
     val id: Long,
     val name: String,
     val height: Int,
     val weight: Int,
+    val species: Species,
     val types: List<TypeContainer>,
     val stats: List<StatContainer>,
 ) {
@@ -23,5 +24,9 @@ data class PokemonFull(
 
     data class Stat(
         val name: String,
+    )
+
+    data class Species(
+        val url: String
     )
 }

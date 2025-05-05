@@ -8,7 +8,7 @@
         android:theme="@style/Theme.AppCompat">
 
         <activity
-            android:name=".search.SearchActivity"
+            android:name=".pokemon.presentation.PokemonActivity"
             android:exported="true">
 
             <intent-filter>

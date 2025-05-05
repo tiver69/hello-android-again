@@ -72,8 +72,9 @@ private fun PokemonContentHeader(
                 .background(Color.Black)
         )
         PokemonHeaderPicture(logoUrl)
-        Text(
+        BackgroundAwareText (
             text = types,
+            backgroundColor = speciesColor,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(LocalSpacing.current.spaceSmall)
@@ -104,7 +105,7 @@ private fun PokemonHeaderPicture(logoUrl: String) {
 
 @Composable
 private fun PokemonContentBody(
-    height: Int,
+    height: Float,
     weight: Int,
     baseStats: List<StatState>
 ) {
@@ -178,7 +179,7 @@ data class PokemonContentState(
     val types: String,
     val speciesColor: Color,
     val logoUrl: String,
-    val height: Int,
+    val height: Float,
     val weight: Int,
     val baseStats: List<StatState>
 ) {
@@ -198,7 +199,7 @@ fun PokemonContentPreview() {
                 types = "Psychic",
                 speciesColor = Color.Red,
                 logoUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
-                height = 4,
+                height = 0.4f,
                 weight = 4,
                 baseStats = listOf(
                     StatState("Hp", 100),
