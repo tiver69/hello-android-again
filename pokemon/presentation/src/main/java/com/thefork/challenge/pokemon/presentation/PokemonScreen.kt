@@ -21,6 +21,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thefork.challenge.pokemon.presentation.component.BackgroundAwareText
 import com.thefork.challenge.pokemon.presentation.component.PokemonContent
 import com.thefork.challenge.pokemon.presentation.component.PokemonContentState
+import com.thefork.challenge.pokemon.presentation.component.PokemonErrorContent
+import com.thefork.challenge.pokemon.presentation.component.PokemonLoadingContent
 import com.thefork.challenge.pokemon.presentation.theme.PokemonTheme
 
 @Composable
@@ -28,19 +30,36 @@ fun PokemonScreen(
     modifier: Modifier = Modifier
 ) {
     val viewModel: PokemonViewModel = viewModel()
-    LaunchedEffect(17) {
+    LaunchedEffect(19) {
         viewModel.getPokemonScreenState(19)
     }
     val uiState by viewModel.uiState.collectAsState()
-    if (uiState.isDataAvailable)
-        Scaffold(
-            topBar = { PokemonTopBar(uiState.data!!.name, uiState.data!!.speciesColor) },//todo
-        ) { innerPadding ->
-            PokemonContent(
-                pokemonState = uiState.data!!,//todo
+
+    Scaffold(
+        topBar = { PokemonTopBar(uiState.topBarTitle, uiState.topBarColor) },
+    ) { innerPadding ->
+        when (uiState) {
+            is PokemonScreenState.DataLoading -> PokemonLoadingContent(
                 modifier = modifier.padding(innerPadding)
             )
+
+            is PokemonScreenState.DataNotAvailable -> {
+                PokemonErrorContent(
+                    modifier = modifier.padding(innerPadding)
+                ) {
+                    viewModel.getPokemonScreenState(19)
+                }
+            }
+
+            is PokemonScreenState.DataAvailable -> {
+                val pokemonData = (uiState as PokemonScreenState.DataAvailable).pokemonContentState
+                PokemonContent(
+                    pokemonState = pokemonData,
+                    modifier = modifier.padding(innerPadding)
+                )
+            }
         }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,10 +86,12 @@ private fun PokemonTopBar(
     )
 }
 
-data class PokemonScreenState(
-    val isDataAvailable: Boolean = true,
-    val data: PokemonContentState?
-)
+sealed class PokemonScreenState(val topBarTitle: String, val topBarColor: Color = Color.Red) {
+    data object DataLoading : PokemonScreenState("Loading")
+    data object DataNotAvailable : PokemonScreenState("")
+    data class DataAvailable(val name: String, val pokemonContentState: PokemonContentState) :
+        PokemonScreenState(name, pokemonContentState.speciesColor)
+}
 
 @Preview(showBackground = true)
 @Composable

@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thefork.challenge.pokemon.data.repository.PokemonRepositoryImpl
+import com.thefork.challenge.pokemon.domain.entity.Pokemon
 import com.thefork.challenge.pokemon.domain.usecase.GetPokemonDetailUseCase
 import com.thefork.challenge.pokemon.presentation.component.PokemonContentState
 import com.thefork.challenge.pokemon.presentation.component.PokemonContentState.StatState
@@ -13,30 +14,34 @@ import kotlinx.coroutines.launch
 
 class PokemonViewModel : ViewModel() {
 
-    private val _uiState = MutableStateFlow(PokemonScreenState(false, null))
+    private val _uiState = MutableStateFlow<PokemonScreenState>(PokemonScreenState.DataLoading)
     val uiState: StateFlow<PokemonScreenState> = _uiState
 
     private val getPokemonDetailUseCase: GetPokemonDetailUseCase =
         GetPokemonDetailUseCase(PokemonRepositoryImpl())
 
     fun getPokemonScreenState(id: Int) {
+        _uiState.value = PokemonScreenState.DataLoading
         viewModelScope.launch {
             val pokemon = getPokemonDetailUseCase.invoke(id)
             if (pokemon == null) {
-                _uiState.value = PokemonScreenState(false, null)
-            } else
-                _uiState.value = PokemonScreenState(
-                    data =
-                        PokemonContentState(
-                            name = pokemon.name,
-                            types = pokemon.types.joinToString(separator = ", "),
-                            speciesColor = Color(pokemon.speciesColor!!.argb),
-                            logoUrl = pokemon.logoUrl,
-                            height = pokemon.height,
-                            weight = pokemon.weight,
-                            baseStats = pokemon.stats.map { StatState(it.name, it.value) }
-                        )
+                _uiState.value = PokemonScreenState.DataNotAvailable
+            } else {
+                _uiState.value = PokemonScreenState.DataAvailable(
+                    name = pokemon.name,
+                    PokemonContentState(
+                        types = pokemon.types.joinToString(separator = ", "),
+                        speciesColor = determineSpeciesColor(pokemon.speciesColor),
+                        logoUrl = pokemon.logoUrl,
+                        height = pokemon.height,
+                        weight = pokemon.weight,
+                        baseStats = pokemon.stats.map { StatState(it.name, it.value) }
+                    )
                 )
+            }
         }
     }
+
+    private fun determineSpeciesColor(color: Pokemon.SpeciesColor?) =
+        if (color != null) Color(color.argb) else Color.Red
 }

@@ -4,7 +4,7 @@ data class Pokemon(
     val id: Long,
     val name: String,
     val logoUrl: String,
-    val speciesColor: SpeciesColor?,  //todo
+    val speciesColor: SpeciesColor?,
     val height: Float,
     val weight: Int,
     val types: List<String>,

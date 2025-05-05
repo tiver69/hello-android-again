@@ -11,22 +11,26 @@ class PokemonRepositoryImpl : PokemonRepository {
 
     private val pokemonService: PokemonService = Api().pokemonService
 
-    override suspend fun getPokemonDetails(id: Int): Pokemon? {
+    override suspend fun getPokemonDetails(id: Int): Pokemon? = try {
         val response = pokemonService.getPokemon(id.toString())
-        return if (response.isSuccessful && response.body() != null) {
-            val speciesColor = getPokemonColor(response.body()!!.species!!.url) //todo
-            val pokemon = PokemonMapper().mapToEntity(
-                response.body() as PokemonResponse,
-                speciesColor
-            )
-            pokemon
+        if (response.isSuccessful) {
+            response.body()?.let { responseBody ->
+                val speciesColor = getPokemonColor(responseBody.species.url)
+                PokemonMapper().mapToEntity(
+                    response.body() as PokemonResponse,
+                    speciesColor
+                )
+            }
         } else null
+    } catch (e: Exception) {
+        null
     }
 
     private suspend fun getPokemonColor(speciesUrl: String): String? {
         val speciesId = speciesUrl.split("/".toRegex()).dropLast(1).last()
         val colorResponse = pokemonService.getPokemonSpecies(speciesId)
-        return if (colorResponse.isSuccessful) colorResponse.body()!!.color.name
+        return if (colorResponse.isSuccessful)
+            colorResponse.body()?.color?.name
         else null
     }
 }

@@ -1,30 +1,22 @@
 package com.thefork.challenge.pokemon.presentation.component
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import com.thefork.challenge.pokemon.presentation.R
@@ -58,47 +50,26 @@ private fun PokemonContentHeader(
     speciesColor: Color,
     logoUrl: String,
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .clip(RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp))
-            .background(speciesColor),
-        contentAlignment = Alignment.Center
-    ) {
-        HorizontalDivider(
-            modifier = Modifier
-                .height(20.dp)
-                .background(Color.Black)
-        )
-        PokemonHeaderPicture(logoUrl)
-        BackgroundAwareText (
-            text = types,
-            backgroundColor = speciesColor,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier
-                .padding(LocalSpacing.current.spaceSmall)
-                .align(Alignment.BottomCenter)
-        )
-    }
-}
-
-@Composable
-private fun PokemonHeaderPicture(logoUrl: String) {
-    Box(
-        modifier = Modifier
-            .size(120.dp)
-            .background(Color.White, shape = CircleShape)
-            .border(10.dp, Color.Black, CircleShape),
-        contentAlignment = Alignment.Center
+    PokemonContentHeader(
+        speciesColor = speciesColor,
+        additionalContent = {
+            BackgroundAwareText(
+                text = types,
+                backgroundColor = speciesColor,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier
+                    .padding(LocalSpacing.current.spaceSmall)
+                    .align(Alignment.BottomCenter)
+            )
+        }
     ) {
         AsyncImage(
             model = logoUrl,
             contentDescription = null,
-            error = rememberAsyncImagePainter(R.drawable.img), //todo: change
-            placeholder = rememberAsyncImagePainter(R.drawable.img), //todo: change
+            error = rememberAsyncImagePainter(R.drawable.pokemon_logo_placeholder),
+            placeholder = rememberAsyncImagePainter(R.drawable.pokemon_logo_placeholder),
             contentScale = ContentScale.Fit,
-            modifier = Modifier.fillMaxWidth(0.75f),
+            modifier = Modifier.fillMaxSize(0.75f),
         )
     }
 }
@@ -175,7 +146,6 @@ fun PokemonStatsItem(stat: StatState) {
 }
 
 data class PokemonContentState(
-    val name: String,
     val types: String,
     val speciesColor: Color,
     val logoUrl: String,
@@ -195,7 +165,6 @@ fun PokemonContentPreview() {
     PokemonTheme {
         PokemonContent(
             PokemonContentState(
-                name = "Mew",
                 types = "Psychic",
                 speciesColor = Color.Red,
                 logoUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
