@@ -4,8 +4,9 @@ import com.thefork.challenge.pokemon.domain.entity.Pokemon
 import com.thefork.challenge.pokemon.domain.repository.PokemonRepository
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 
-class GetPokemonDetailUseCase(
+class GetPokemonDetailUseCase @Inject constructor(
     private val repository: PokemonRepository
 ) {
     suspend fun invoke(id: Int): Pokemon? = withContext(Dispatchers.IO) {

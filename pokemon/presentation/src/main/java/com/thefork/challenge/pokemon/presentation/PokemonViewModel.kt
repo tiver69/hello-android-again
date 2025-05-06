@@ -3,22 +3,23 @@ package com.thefork.challenge.pokemon.presentation
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.thefork.challenge.pokemon.data.repository.PokemonRepositoryImpl
 import com.thefork.challenge.pokemon.domain.entity.Pokemon
 import com.thefork.challenge.pokemon.domain.usecase.GetPokemonDetailUseCase
 import com.thefork.challenge.pokemon.presentation.component.PokemonContentState
 import com.thefork.challenge.pokemon.presentation.component.PokemonContentState.StatState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PokemonViewModel : ViewModel() {
+@HiltViewModel
+class PokemonViewModel @Inject constructor(
+    private val getPokemonDetailUseCase: GetPokemonDetailUseCase
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<PokemonScreenState>(PokemonScreenState.DataLoading)
     val uiState: StateFlow<PokemonScreenState> = _uiState
-
-    private val getPokemonDetailUseCase: GetPokemonDetailUseCase =
-        GetPokemonDetailUseCase(PokemonRepositoryImpl())
 
     fun getPokemonScreenState(id: Int) {
         _uiState.value = PokemonScreenState.DataLoading

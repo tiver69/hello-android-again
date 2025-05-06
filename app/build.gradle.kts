@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
 
 android {
@@ -21,9 +23,13 @@ kotlin {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.0.20")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-
     implementation(project(":search"))
     implementation(project(":pokemon:presentation"))
+    implementation(project(":pokemon:data"))
+    implementation(project(":pokemon:domain"))
+
+    implementation("androidx.appcompat:appcompat:1.6.1")
+
+    implementation("com.google.dagger:hilt-android:2.52")
+    kapt("com.google.dagger:hilt-compiler:2.52")
 }

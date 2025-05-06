@@ -1,6 +1,7 @@
 plugins {
     id("kotlin")
     id("org.jetbrains.kotlin.jvm")
+    kotlin("kapt")
 }
 
 kotlin {
@@ -10,4 +11,7 @@ kotlin {
 dependencies{
     implementation(project(":api"))
     implementation(project(":pokemon:domain"))
+
+    implementation("com.google.dagger:hilt-core:2.52")
+    kapt("com.google.dagger:hilt-compiler:2.52")
 }

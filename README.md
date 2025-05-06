@@ -23,6 +23,8 @@ He started to create 4 modules:
 - -- 20min - | Update SearchPresenter to testable implementation
 - -- 40min - | Implement Unit tests
 - ---- 5h ---- | PokemonActivity design implementation
+- ---- 5h ---- | Pokemon module functionality implementation + corresponding design improvements
+- ---- 1h ---- | Configuring DI for Pokemon module
 
 ### 1st - Architecture:
 

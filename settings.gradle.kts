@@ -6,11 +6,21 @@ dependencyResolutionManagement {
     }
 }
 
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+    plugins {
+        id("com.google.dagger.hilt.android") version "2.52"
+    }
+}
+
 include(
     ":app",
     ":api",
     ":search",
-    ":pokemon",
     ":pokemon:presentation",
     ":pokemon:domain",
     ":pokemon:data"

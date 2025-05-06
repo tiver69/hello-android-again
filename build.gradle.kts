@@ -8,3 +8,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.20")
     }
 }
+
+plugins {
+    id("com.google.dagger.hilt.android") version "2.52" apply false
+}
