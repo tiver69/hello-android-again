@@ -22,6 +22,7 @@ kotlin {
 
 dependencies {
     implementation(project(":pokemon:domain"))
+    implementation(project(":common:navigation"))
 
     implementation("androidx.core:core-ktx:1.16.0")
     implementation("androidx.appcompat:appcompat:1.7.0")

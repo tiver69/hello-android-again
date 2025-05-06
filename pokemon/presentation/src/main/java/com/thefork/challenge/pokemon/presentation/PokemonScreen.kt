@@ -1,5 +1,6 @@
 package com.thefork.challenge.pokemon.presentation
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -27,11 +28,12 @@ import com.thefork.challenge.pokemon.presentation.theme.PokemonTheme
 
 @Composable
 fun PokemonScreen(
+    pokemonId: String,
     modifier: Modifier = Modifier
 ) {
     val viewModel: PokemonViewModel = viewModel()
-    LaunchedEffect(19) {
-        viewModel.getPokemonScreenState(19)
+    LaunchedEffect(pokemonId) {
+        viewModel.getPokemonScreenState(pokemonId)
     }
     val uiState by viewModel.uiState.collectAsState()
 
@@ -47,7 +49,7 @@ fun PokemonScreen(
                 PokemonErrorContent(
                     modifier = modifier.padding(innerPadding)
                 ) {
-                    viewModel.getPokemonScreenState(19)
+                    viewModel.getPokemonScreenState(pokemonId)
                 }
             }
 
@@ -68,12 +70,14 @@ private fun PokemonTopBar(
     name: String,
     speciesColor: Color,
 ) {
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     CenterAlignedTopAppBar(
         title = { BackgroundAwareText(name, speciesColor) },
         navigationIcon = {
-            IconButton(onClick = {
-                // todo: back nav handler
-            }) {
+            IconButton(
+                onClick = {
+                    backDispatcher?.onBackPressed()
+                }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "top menu",

@@ -19,6 +19,7 @@ pluginManagement {
 
 include(
     ":app",
+    ":common:navigation",
     ":api",
     ":search",
     ":pokemon:presentation",

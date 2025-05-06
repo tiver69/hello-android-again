@@ -21,7 +21,7 @@ class PokemonViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<PokemonScreenState>(PokemonScreenState.DataLoading)
     val uiState: StateFlow<PokemonScreenState> = _uiState
 
-    fun getPokemonScreenState(id: Int) {
+    fun getPokemonScreenState(id: String) {
         _uiState.value = PokemonScreenState.DataLoading
         viewModelScope.launch {
             val pokemon = getPokemonDetailUseCase.invoke(id)

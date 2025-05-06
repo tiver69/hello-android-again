@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("com.google.dagger.hilt.android") version "2.52"
+    kotlin("kapt")
 }
 
 android {
@@ -26,7 +28,11 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
+    implementation("com.google.dagger:hilt-android:2.52")
+    kapt("com.google.dagger:hilt-compiler:2.52")
+
     implementation(project(":api"))
+    implementation(project(":common:navigation"))
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("io.mockk:mockk:1.13.17")

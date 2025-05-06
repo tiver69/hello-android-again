@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetPokemonDetailUseCase @Inject constructor(
     private val repository: PokemonRepository
 ) {
-    suspend fun invoke(id: Int): Pokemon? = withContext(Dispatchers.IO) {
+    suspend fun invoke(id: String): Pokemon? = withContext(Dispatchers.IO) {
         repository.getPokemonDetails(id)
     }
 }

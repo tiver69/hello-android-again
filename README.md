@@ -25,6 +25,7 @@ He started to create 4 modules:
 - ---- 5h ---- | PokemonActivity design implementation
 - ---- 5h ---- | Pokemon module functionality implementation + corresponding design improvements
 - ---- 1h ---- | Configuring DI for Pokemon module
+- ---- 1h ---- | Configuring Search->Pokemon Navigation
 
 ### 1st - Architecture:
 
@@ -72,10 +73,10 @@ As you can see, `PokemonActivity.kt` is opened by setting the class name as a st
 What are the drawbacks of this approach? Neige would like to improve the navigation without creating a dependency between the `:search` and `:pokemon` modules.
 
 Can you explain why?
-> ...Your answer...
+> Tight coupling to package name via string hardcoding - maintaining issues (no compile-time checks, save delete/renaming/moving), testing/mocking issues, not compatible with multi-module architecture.
 
 Could you suggest a solution and even **implement** it?
-> ...Your suggested solution...
+> Implemented
 
 ### Congrats!!
 

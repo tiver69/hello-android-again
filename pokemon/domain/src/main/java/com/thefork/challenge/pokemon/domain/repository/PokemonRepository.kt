@@ -4,5 +4,5 @@ import com.thefork.challenge.pokemon.domain.entity.Pokemon
 
 
 interface PokemonRepository {
-    suspend fun getPokemonDetails(id: Int) : Pokemon?
+    suspend fun getPokemonDetails(id: String) : Pokemon?
 }

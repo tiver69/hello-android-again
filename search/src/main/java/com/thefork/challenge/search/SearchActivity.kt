@@ -1,6 +1,5 @@
 package com.thefork.challenge.search
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -8,8 +7,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.thefork.challenge.api.Api
 import com.thefork.challenge.api.PokemonPreview
+import com.thefork.challenge.common.navigation.PokemonNavigator
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SearchActivity : AppCompatActivity(), SearchContract.View {
+
+    @Inject
+    lateinit var pokemonNavigator: PokemonNavigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +26,8 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
     }
 
     override fun displayPokemonList(pokemonList: List<PokemonPreview>) {
-        findViewById<RecyclerView>(R.id.recycler_view).adapter = PokemonListAdapter(pokemonList)
+        findViewById<RecyclerView>(R.id.recycler_view).adapter =
+            PokemonListAdapter(pokemonList) { pokemonId -> navigateToPokemon(pokemonId) }
     }
 
     override fun displayError() {
@@ -29,10 +36,7 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
             .show()
     }
 
-    fun navigateToPokemon(pokemonPreview: PokemonPreview) {
-        startActivity(Intent().apply {
-            setClassName("com.thefork.challenge", "com.thefork.challenge.pokemon.PokemonActivity")
-            putExtra("POKEMON_ID", pokemonPreview.id)
-        })
+    private fun navigateToPokemon(pokemonId: String) {
+        pokemonNavigator.navigateToPokemonDetail(this, pokemonId)
     }
 }

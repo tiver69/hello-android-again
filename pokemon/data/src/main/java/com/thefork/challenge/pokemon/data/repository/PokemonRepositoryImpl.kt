@@ -12,8 +12,8 @@ class PokemonRepositoryImpl @Inject constructor() : PokemonRepository {
 
     private val pokemonService: PokemonService = Api().pokemonService //todo
 
-    override suspend fun getPokemonDetails(id: Int): Pokemon? = try {
-        val response = pokemonService.getPokemon(id.toString())
+    override suspend fun getPokemonDetails(id: String): Pokemon? = try {
+        val response = pokemonService.getPokemon(id)
         if (response.isSuccessful) {
             response.body()?.let { responseBody ->
                 val speciesColor = getPokemonColor(responseBody.species.url)
