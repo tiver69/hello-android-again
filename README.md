@@ -17,22 +17,34 @@ He started to create 4 modules:
 - Each question is more complex than the previous one. Be sure to cover them correctly before going to the next one
 - Don't hesitate to look at the FAQ section at the end of that file
 
+#### Time Log
+- ---- 1h ---- | Initial architecture and app implementation analysis
+- -- 15min - | Figuring out where to put this block
+- -- 20min - | Update SearchPresenter to testable implementation
+- -- 40min - | Implement Unit tests
+- ---- 5h ---- | PokemonActivity design implementation
+- ---- 5h ---- | Pokemon module functionality implementation + corresponding design improvements
+- ---- 1h ---- | Configuring DI for Pokemon module
+- ---- 1h ---- | Configuring Search->Pokemon Navigation
+- ---- 1h ---- | DI improvements for api module
+
 ### 1st - Architecture:
 
 Can you give him feedback on the architecture of his project?  
 You should point out the good things and the issues you found (at least 3 of each).
 
 **Good things:**
-- ...
-- ...
-- ...
+- Very initial modularization - logical modules present
+- API layer encapsulation with common retrofit logic with its DTOs
+- MVP attempt in Search module
 
 **Issues:**
-- ...
-- ...
-- ...
-- ...
-- ...
+- Current Search module is actually only presentation layer. It should depend on Search-related domain layer, not on common API module directly.
+- Tight coupling between Activity and Presenter in search module.
+- Direct initialization of service inside API module 
+- No domain entities (+mappers) direct DTO usage from presentation layer 
+- Hardcoded intent search->pokemon navigation
+- No usecases
 
 ### 2nd - Unit tests:
 
@@ -62,10 +74,10 @@ As you can see, `PokemonActivity.kt` is opened by setting the class name as a st
 What are the drawbacks of this approach? Neige would like to improve the navigation without creating a dependency between the `:search` and `:pokemon` modules.
 
 Can you explain why?
-> ...Your answer...
+> Tight coupling to package name via string hardcoding - maintaining issues (no compile-time checks, save delete/renaming/moving), testing/mocking issues, not compatible with multi-module architecture.
 
 Could you suggest a solution and even **implement** it?
-> ...Your suggested solution...
+> Implemented
 
 ### Congrats!!
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loading_error_message">Something went terribly wrong!</string>
+    <string name="loading_info_message">Fetching Your Pokemon…</string>
+    <string name="retry_button">Retry</string>
+</resources>

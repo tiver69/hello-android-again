@@ -1,0 +1,36 @@
+package com.thefork.challenge.pokemon.data.repository
+
+import com.thefork.challenge.common.api.PokemonService
+import com.thefork.challenge.common.api.model.PokemonResponse
+import com.thefork.challenge.pokemon.data.mapper.PokemonMapper
+import com.thefork.challenge.pokemon.domain.entity.Pokemon
+import com.thefork.challenge.pokemon.domain.repository.PokemonRepository
+import javax.inject.Inject
+
+class PokemonRepositoryImpl @Inject constructor(
+    private val pokemonService: PokemonService
+) : PokemonRepository {
+
+    override suspend fun getPokemonDetails(id: String): Pokemon? = try {
+        val response = pokemonService.getPokemon(id)
+        if (response.isSuccessful) {
+            response.body()?.let { responseBody ->
+                val speciesColor = getPokemonColor(responseBody.species.url)
+                PokemonMapper().mapToEntity(
+                    response.body() as PokemonResponse,
+                    speciesColor
+                )
+            }
+        } else null
+    } catch (e: Exception) {
+        null
+    }
+
+    private suspend fun getPokemonColor(speciesUrl: String): String? {
+        val speciesId = speciesUrl.split("/".toRegex()).dropLast(1).last()
+        val colorResponse = pokemonService.getPokemonSpecies(speciesId)
+        return if (colorResponse.isSuccessful)
+            colorResponse.body()?.color?.name
+        else null
+    }
+}
