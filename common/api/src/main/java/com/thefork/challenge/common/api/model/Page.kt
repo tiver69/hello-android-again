@@ -1,4 +1,4 @@
-package com.thefork.challenge.api
+package com.thefork.challenge.common.api.model
 
 class Page<T>(
     val results: List<T>,

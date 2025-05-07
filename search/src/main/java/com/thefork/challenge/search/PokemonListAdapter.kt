@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.thefork.challenge.api.PokemonPreview
+import com.thefork.challenge.common.api.model.PokemonPreview
 
 class PokemonListAdapter(
     private val pokemonPreviewList: List<PokemonPreview>,

@@ -26,6 +26,7 @@ He started to create 4 modules:
 - ---- 5h ---- | Pokemon module functionality implementation + corresponding design improvements
 - ---- 1h ---- | Configuring DI for Pokemon module
 - ---- 1h ---- | Configuring Search->Pokemon Navigation
+- ---- 1h ---- | DI improvements for api module
 
 ### 1st - Architecture:
 

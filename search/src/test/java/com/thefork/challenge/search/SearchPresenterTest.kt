@@ -1,12 +1,11 @@
 package com.thefork.challenge.search
 
-import com.thefork.challenge.api.Page
-import com.thefork.challenge.api.PokemonPreview
-import com.thefork.challenge.api.PokemonService
+import com.thefork.challenge.common.api.PokemonService
+import com.thefork.challenge.common.api.model.Page
+import com.thefork.challenge.common.api.model.PokemonPreview
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -41,7 +40,8 @@ class SearchPresenterTest {
         MockKAnnotations.init(this)
 
         underTest =
-            SearchPresenter(activityMock, serviceMock, CoroutineScope(dispatcher))
+            SearchPresenter(serviceMock)
+        underTest.attachView(activityMock)
     }
 
     @Test
@@ -51,7 +51,7 @@ class SearchPresenterTest {
 
         coEvery { serviceMock.getPokemonList(REQUEST_LIMIT) } returns response
 
-        underTest.getPokemonList(REQUEST_LIMIT)
+        underTest.getPokemonList(REQUEST_LIMIT, this)
 
         activityMock.displayPokemonList(pokemonList)
     }
@@ -62,7 +62,7 @@ class SearchPresenterTest {
         coEvery { serviceMock.getPokemonList(REQUEST_LIMIT) } returns
                 Response.error(404, errorResponse)
 
-        underTest.getPokemonList(REQUEST_LIMIT)
+        underTest.getPokemonList(REQUEST_LIMIT, this)
 
         activityMock.displayError()
     }

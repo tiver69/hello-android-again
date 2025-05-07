@@ -1,4 +1,4 @@
-package com.thefork.challenge.api
+package com.thefork.challenge.common.api.model
 
 data class PokemonResponse(
     val id: Long,

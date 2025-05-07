@@ -1,18 +1,23 @@
 package com.thefork.challenge.search
 
-import com.thefork.challenge.api.PokemonService
+import com.thefork.challenge.common.api.PokemonService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class SearchPresenter(
-    private val view: SearchContract.View,
+class SearchPresenter @Inject constructor(
     private val pokemonService: PokemonService,
-    private val scope: CoroutineScope,
 ) : SearchContract.Presenter {
 
-    override fun getPokemonList(limit: UInt) {
+    private lateinit var view: SearchContract.View
+
+    override fun attachView(view: SearchContract.View) {
+        this.view = view
+    }
+
+    override fun getPokemonList(limit: UInt, scope: CoroutineScope) {
         scope.launch(Dispatchers.IO) {
             val response = pokemonService.getPokemonList(limit)
             withContext(Dispatchers.Main) {

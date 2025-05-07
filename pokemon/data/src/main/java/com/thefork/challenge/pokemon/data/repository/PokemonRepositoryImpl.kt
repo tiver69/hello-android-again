@@ -1,16 +1,15 @@
 package com.thefork.challenge.pokemon.data.repository
 
-import com.thefork.challenge.api.Api
-import com.thefork.challenge.api.PokemonResponse
-import com.thefork.challenge.api.PokemonService
+import com.thefork.challenge.common.api.PokemonService
+import com.thefork.challenge.common.api.model.PokemonResponse
 import com.thefork.challenge.pokemon.data.mapper.PokemonMapper
 import com.thefork.challenge.pokemon.domain.entity.Pokemon
 import com.thefork.challenge.pokemon.domain.repository.PokemonRepository
 import javax.inject.Inject
 
-class PokemonRepositoryImpl @Inject constructor() : PokemonRepository {
-
-    private val pokemonService: PokemonService = Api().pokemonService //todo
+class PokemonRepositoryImpl @Inject constructor(
+    private val pokemonService: PokemonService
+) : PokemonRepository {
 
     override suspend fun getPokemonDetails(id: String): Pokemon? = try {
         val response = pokemonService.getPokemon(id)

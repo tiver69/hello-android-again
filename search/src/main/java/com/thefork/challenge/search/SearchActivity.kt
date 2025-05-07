@@ -5,8 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.thefork.challenge.api.Api
-import com.thefork.challenge.api.PokemonPreview
+import com.thefork.challenge.common.api.model.PokemonPreview
 import com.thefork.challenge.common.navigation.PokemonNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -16,13 +15,15 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
 
     @Inject
     lateinit var pokemonNavigator: PokemonNavigator
+    @Inject
+    lateinit var presenter: SearchContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val presenter = SearchPresenter(this, Api().pokemonService, lifecycleScope)
-        presenter.getPokemonList(151u)
+        presenter.attachView(this)
+        presenter.getPokemonList(151u, lifecycleScope)
     }
 
     override fun displayPokemonList(pokemonList: List<PokemonPreview>) {

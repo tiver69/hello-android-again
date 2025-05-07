@@ -1,6 +1,7 @@
 package com.thefork.challenge.search
 
-import com.thefork.challenge.api.PokemonPreview
+import com.thefork.challenge.common.api.model.PokemonPreview
+import kotlinx.coroutines.CoroutineScope
 
 class SearchContract {
     interface View {
@@ -9,6 +10,7 @@ class SearchContract {
     }
 
     interface Presenter {
-        fun getPokemonList(limit: UInt)
+        fun attachView(view: View)
+        fun getPokemonList(limit: UInt, scope: CoroutineScope)
     }
 }

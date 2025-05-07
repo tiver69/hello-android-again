@@ -31,7 +31,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.52")
     kapt("com.google.dagger:hilt-compiler:2.52")
 
-    implementation(project(":api"))
+    implementation(project(":common:api"))
     implementation(project(":common:navigation"))
 
     testImplementation("junit:junit:4.13.2")

@@ -1,6 +1,6 @@
 package com.thefork.challenge.pokemon.data.mapper
 
-import com.thefork.challenge.api.PokemonResponse
+import com.thefork.challenge.common.api.model.PokemonResponse
 import com.thefork.challenge.pokemon.domain.entity.Pokemon
 
 class PokemonMapper {
